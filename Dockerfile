@@ -1,4 +1,4 @@
-FROM gradle:8.12-jdk-alpine
+FROM openjdk:8-jdk-alpine
 WORKDIR /app
-COPY ./ ./
+COPY ./*.jar ./
 CMD java -jar *.jar

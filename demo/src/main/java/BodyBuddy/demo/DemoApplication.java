@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
 
+//테스트 코드 짜기전에 임시로 해봄
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 

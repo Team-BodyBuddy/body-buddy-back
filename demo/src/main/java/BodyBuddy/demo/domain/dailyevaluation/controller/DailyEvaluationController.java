@@ -1,5 +1,7 @@
 package BodyBuddy.demo.domain.dailyevaluation.controller;
 
+import BodyBuddy.demo.domain.dailyevaluation.dto.DailyEvaluationResponse;
+import BodyBuddy.demo.global.apiPayLoad.ApiResponse;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +22,22 @@ import lombok.Data;
 @RequestMapping("/api/evaluations")
 public class DailyEvaluationController {
 
-	private final DailyEvaluationService dailyEvaluationService;
+    private final DailyEvaluationService dailyEvaluationService;
 
-	public DailyEvaluationController(DailyEvaluationService dailyEvaluationService) {
-		this.dailyEvaluationService = dailyEvaluationService;
-	}
-	/**
-	 * 오늘 평가 저장 API
-	 */
-	@PostMapping
-	public ResponseEntity<DailyEvaluation> saveDailyEvaluation(@RequestBody @Valid EvaluationRequest request) {
-		DailyEvaluation dailyEvaluation = dailyEvaluationService.saveDailyEvaluation(request);
-		return ResponseEntity.ok(dailyEvaluation);
-	}
+    public DailyEvaluationController(DailyEvaluationService dailyEvaluationService) {
+        this.dailyEvaluationService = dailyEvaluationService;
+    }
 
+    /**
+     * 오늘 평가 저장 API
+     */
+    @PostMapping
+    public ResponseEntity<ApiResponse<DailyEvaluationResponse>> saveDailyEvaluation(
+        @RequestBody @Valid EvaluationRequest request) {
+        DailyEvaluationResponse dailyEvaluation = dailyEvaluationService.saveDailyEvaluation(
+            request);
+        return ResponseEntity.ok(ApiResponse.onSuccess(dailyEvaluation));
+    }
 
 
 }

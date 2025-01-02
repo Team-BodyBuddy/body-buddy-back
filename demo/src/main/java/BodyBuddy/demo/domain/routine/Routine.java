@@ -15,34 +15,39 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Routine {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", nullable = false)
-	@JsonIgnore
-	private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    @JsonIgnore
+    private Member member;
 
-	private String name;
+    private String name;
 
-	@Enumerated(EnumType.STRING)
-	private RoutineType type; // "ROUTINE" or "CLASS"
+    @Enumerated(EnumType.STRING)
+    private RoutineType type; // "ROUTINE" or "CLASS"
 
-	private LocalDate date;
+    private LocalDate date;
 
-	@Column(nullable = false)
-	private Boolean completed = false;
+    @Column(nullable = false)
+    private Boolean completed = false;
 
 
 }

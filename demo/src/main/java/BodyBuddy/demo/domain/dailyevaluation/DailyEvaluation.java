@@ -15,26 +15,31 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@Getter @Setter
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class DailyEvaluation {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", nullable = false)
-	@JsonIgnore
-	private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    @JsonIgnore
+    private Member member;
 
-	private LocalDate date;
+    private LocalDate date;
 
-	@Enumerated(EnumType.STRING)
-	private EvaluationStatus evaluation;
+    @Enumerated(EnumType.STRING)
+    private EvaluationStatus evaluation; //NONE,BAD,SOSO,GOOD
 }

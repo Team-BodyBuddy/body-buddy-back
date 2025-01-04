@@ -51,9 +51,8 @@ public class InbodyService {
         return memberInbodyRepository.findFirstByMemberIdOrderByUploadDateDesc(memberId)
             .map(memberInbody -> {
                 if (memberInbody.getUploadDate() != null) {
-                    return memberInbody.getUploadDate().toLocalDate().toString();
-                }
-                return "0000년 00월 00일"; // 업로드 날짜가 없는 경우 기본값 반환
+                    return memberInbody.getUploadDate().toLocalDate().toString();}
+                return "0000년 00월 00일"; // 업로드 날짜가 없는 경우 기본값 반환.
             })
             .orElse("0000년 00월 00일"); // 데이터가 없는 경우 기본값 반환
     }

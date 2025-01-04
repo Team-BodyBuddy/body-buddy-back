@@ -49,9 +49,16 @@ public class InbodyService {
     // 마지막 등록 날짜 조회
     public String getLastUploadDate(Long memberId) {
         return memberInbodyRepository.findFirstByMemberIdOrderByUploadDateDesc(memberId)
-            .map(memberInbody -> memberInbody.getUploadDate().toLocalDate().toString())
-            .orElse("0000년 00월 00일");
+            .map(memberInbody -> {
+                if (memberInbody.getUploadDate() != null) {
+                    return memberInbody.getUploadDate().toLocalDate().toString();
+                }
+                return "0000년 00월 00일"; // 업로드 날짜가 없는 경우 기본값 반환
+            })
+            .orElse("0000년 00월 00일"); // 데이터가 없는 경우 기본값 반환
     }
+
+
 
     // PDF 유효성 검사 (임시 구현)
     private boolean isValidPdf(MultipartFile file) {

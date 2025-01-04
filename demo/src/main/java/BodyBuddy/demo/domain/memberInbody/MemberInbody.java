@@ -1,11 +1,13 @@
 package BodyBuddy.demo.domain.memberInbody;
 
 import BodyBuddy.demo.domain.member.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,8 @@ public class MemberInbody {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false) // FK 컬럼명 설정
+    @JsonIgnore
     private Member member;
 
     private LocalDateTime uploadDate; // 업로드 날짜

@@ -1,1 +1,13 @@
 .DS_Store
+/.idea
+/.idea/.gitignore
+/.idea/body-buddy-back.iml
+/.idea/compiler.xml
+/.idea/dataSources.xml
+/.idea/modules/demo.main.iml
+/.idea/gradle.xml
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/uiDesigner.xml
+/.idea/vcs.xml

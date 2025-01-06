@@ -6,6 +6,8 @@ import BodyBuddy.demo.global.common.entity.Member;
 import BodyBuddy.demo.global.common.repository.MemberRepository;
 import BodyBuddy.demo.gym.entity.Gym;
 import BodyBuddy.demo.gym.repository.GymRepository;
+import BodyBuddy.demo.ranking.entity.RankingPoint;
+import BodyBuddy.demo.ranking.repository.RankingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberExperienceService memberExperienceService;
     private final GymRepository gymRepository;
+    private final RankingRepository rankingRepository;
 
     /**
      * 모든 회원 목록 조회
@@ -57,7 +60,7 @@ public class MemberService {
         member.setHeight(memberDto.getHeight());
         member.setWeight(memberDto.getWeight());
 
-        // 체육관 ID를 기반으로 체육관 엔티티 설정
+        // gymId로 Gym 엔티티 조회 및 설정
         if (memberDto.getGymId() != null) {
             Gym gym = gymRepository.findById(memberDto.getGymId())
                     .orElseThrow(() -> new IllegalArgumentException("Gym not found"));
@@ -65,6 +68,10 @@ public class MemberService {
         }
 
         Member savedMember = memberRepository.save(member);
+
+        // 새로운 회원의 초기 랭킹 데이터 생성
+        createInitialRanking(savedMember);
+
         return toDto(savedMember);
     }
 
@@ -112,5 +119,16 @@ public class MemberService {
         }
 
         return dto;
+    }
+
+    private void createInitialRanking(Member member) {
+        RankingPoint rankingPoint = RankingPoint.builder()
+                .member(member)
+                .totalScore(0)
+                .activityScore(0)
+                .goalBonus(0)
+                .intensityBonus(0)
+                .build();
+        rankingRepository.save(rankingPoint);
     }
 }

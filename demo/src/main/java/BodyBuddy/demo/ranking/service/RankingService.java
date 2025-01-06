@@ -4,10 +4,12 @@ import BodyBuddy.demo.ranking.dto.RankingResponseDto;
 import BodyBuddy.demo.ranking.entity.RankingPoint;
 import BodyBuddy.demo.ranking.repository.RankingRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -16,9 +18,13 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RankingService {
 
     private final RankingRepository rankingRepository;
+
+    private static final int[] POINT_BONUSES = {500, 450, 400, 300, 250, 200, 120, 80};
+    private static final int[] EXP_BONUSES = {500, 450, 400, 300, 250, 200, 120, 80};
 
     /**
      * 글로벌 랭킹 조회
@@ -27,7 +33,7 @@ public class RankingService {
     public List<RankingResponseDto> getGlobalRankings() {
         List<RankingPoint> rankings = rankingRepository.findTopRankings();
         return rankings.stream()
-                .map(this::toResponseDto)
+                .map(ranking -> RankingResponseDto.fromRankingPoint(rankings.indexOf(ranking) + 1, ranking))
                 .collect(Collectors.toList());
     }
 
@@ -37,23 +43,45 @@ public class RankingService {
      * @return 체육관 랭킹 목록
      */
     public List<RankingResponseDto> getGymRankings(Long gymId) {
-        List<RankingPoint> rankings = rankingRepository.findRankingsByGym(gymId);
+        List<Object[]> rankings = rankingRepository.findRankingsByGymId(gymId);
+
         return rankings.stream()
-                .map(this::toResponseDto)
+                .map(row -> {
+                    int rank = (row[0] != null) ? ((Number) row[0]).intValue() : 0;
+                    Long memberId = (row[1] != null) ? ((Number) row[1]).longValue() : null;
+                    String nickname = (row[2] != null) ? (String) row[2] : "Unknown";
+                    int totalScore = (row[3] != null) ? ((Number) row[3]).intValue() : 0;
+                    int level = (row[4] != null) ? ((Number) row[4]).intValue() : 0;
+
+                    return RankingResponseDto.builder()
+                            .rank(rank)
+                            .nickname(nickname)
+                            .level(level)
+                            .totalScore(totalScore)
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
     /**
-     * 특정 사용자 랭킹 조회
+     * 특정 회원의 체육관 내 랭킹 조회
      * @param memberId 회원 ID
-     * @return 사용자 랭킹 정보
+     * @param gymId 체육관 ID
+     * @return 사용자 랭킹
      */
-    public RankingResponseDto getUserRanking(Long memberId) {
-        RankingPoint ranking = rankingRepository.findByMemberId(memberId);
-        if (ranking == null) {
-            throw new RuntimeException("Member ranking not found");
+    public RankingResponseDto getUserRanking(Long memberId, Long gymId) {
+        Optional<Integer> rankOptional = rankingRepository.findRankByMemberIdAndGymId(memberId, gymId);
+        if (rankOptional.isEmpty()) {
+            throw new RuntimeException("The user does not belong to the specified gym or has no rank.");
         }
-        return toResponseDto(ranking);
+
+        RankingPoint ranking = rankingRepository.findByMemberId(memberId);
+        return RankingResponseDto.builder()
+                .rank(rankOptional.get())
+                .nickname(ranking.getMember().getNickname())
+                .level(ranking.getMember().getLevel())
+                .totalScore(ranking.getTotalScore())
+                .build();
     }
 
     /**
@@ -66,124 +94,26 @@ public class RankingService {
     }
 
     /**
-     * RankingPoint를 RankingResponseDto로 변환
-     * @param rankingPoint 랭킹 포인트 데이터
-     * @return 변환된 응답 DTO
-     */
-    private RankingResponseDto toResponseDto(RankingPoint rankingPoint) {
-        return RankingResponseDto.builder()
-                .rank(rankingRepository.findRankByMemberId(rankingPoint.getMember().getId()))
-                .nickname(rankingPoint.getMember().getNickname())
-                .level(rankingPoint.getMember().getLevel())
-                .totalScore(rankingPoint.getTotalScore())
-                .build();
-    }
-
-    /**
-     * 매주 월요일 0시에 랭킹 점수 갱신 및 보상 지급
+     * 랭킹 점수 및 경험치 갱신
      */
     @Scheduled(cron = "0 0 0 * * MON")
     public void updateRankingsAndRewards() {
-        List<RankingPoint> allRankings = rankingRepository.findAll();
+        List<RankingPoint> rankings = rankingRepository.findAll();
 
-        // 데이터가 없는 경우 처리
-        if (allRankings.isEmpty()) {
-            System.out.println("랭킹 데이터가 없습니다.");
-            return;
-        }
-
-        // 랭킹 점수 갱신
-        allRankings.forEach(ranking -> {
-            int newScore = calculateRankingScore(ranking);
-            ranking.setTotalScore(newScore);
-        });
-
-        rankingRepository.saveAll(allRankings);
-
-        // 보상 지급
-        distributeRewards(allRankings);
-        System.out.println("랭킹 갱신 및 보상이 지급되었습니다.");
-    }
-
-    /**
-     * 랭킹 점수 계산
-     * @param ranking 랭킹 포인트 객체
-     * @return 계산된 점수
-     */
-    private int calculateRankingScore(RankingPoint ranking) {
-        if (ranking == null || ranking.getMember() == null) {
-            System.out.println("랭킹 데이터가 유효하지 않습니다.");
-            return 0;
-        }
-
-        int baseScore = ranking.getTotalScore();
-        int activityScore = calculateActivityScore(ranking);
-        int goalBonus = calculateGoalBonus(ranking);
-
-        double intensityMultiplier = getIntensityMultiplier(ranking);
-        return (int) ((baseScore + activityScore + goalBonus) * intensityMultiplier);
-    }
-
-    /**
-     * 운동량 기반 점수 계산
-     * @param ranking 랭킹 포인트 객체
-     * @return 운동량 점수
-     */
-    private int calculateActivityScore(RankingPoint ranking) {
-        int activityTimeScore = 100; // 예제 값
-        int calorieScore = 20;      // 예제 값
-        return activityTimeScore + calorieScore;
-    }
-
-    /**
-     * 목표 달성 보너스 점수 계산
-     * @param ranking 랭킹 포인트 객체
-     * @return 목표 달성 보너스 점수
-     */
-    private int calculateGoalBonus(RankingPoint ranking) {
-        int weeklyGoalBonus = 500;  // 예제 값
-        int monthlyGoalBonus = 1000; // 예제 값
-        return weeklyGoalBonus + monthlyGoalBonus;
-    }
-
-    /**
-     * 운동 강도 가중치 계산
-     * @param ranking 랭킹 포인트 객체
-     * @return 강도 가중치
-     */
-    private double getIntensityMultiplier(RankingPoint ranking) {
-        return 1.2; // 예제 값
-    }
-
-    /**
-     * 랭킹 순위에 따른 보상 지급
-     * @param allRankings 전체 랭킹 리스트
-     */
-    private void distributeRewards(List<RankingPoint> allRankings) {
-        if (allRankings == null || allRankings.isEmpty()) {
-            System.out.println("보상 지급을 위한 데이터가 없습니다.");
-            return;
-        }
-
-        allRankings.sort((a, b) -> b.getTotalScore() - a.getTotalScore());
-
-        for (int i = 0; i < allRankings.size(); i++) {
-            RankingPoint ranking = allRankings.get(i);
-            if (ranking.getMember() == null) {
-                System.out.println("회원 정보가 없는 랭킹 데이터가 있습니다.");
-                continue;
-            }
-
+        // 모든 랭킹 데이터에 대해 순위별 보너스 적용
+        for (int i = 0; i < rankings.size(); i++) {
+            RankingPoint ranking = rankings.get(i);
             int rank = i + 1;
-            int rewardPoints = getRewardPointsByRank(rank);
-            int rewardExperience = getRewardExperienceByRank(rank);
 
-            ranking.getMember().setExperience(
-                    ranking.getMember().getExperience() + rewardExperience
-            );
-            System.out.printf("Rank %d: Member %s awarded %d points and %d experience.\n",
-                    rank, ranking.getMember().getNickname(), rewardPoints, rewardExperience);
+            int pointBonus = getPointBonusByRank(rank);
+            int expBonus = getExpBonusByRank(rank);
+
+            ranking.setTotalScore(ranking.getTotalScore() + pointBonus);
+            ranking.getMember().addExperience(expBonus);
         }
+
+        rankingRepository.saveAll(rankings);
+        log.info("Rankings and rewards updated successfully.");
     }
 
     /**
@@ -191,12 +121,11 @@ public class RankingService {
      * @param rank 순위
      * @return 보너스 포인트
      */
-    private int getRewardPointsByRank(int rank) {
-        if (rank == 1) return 1000;
-        if (rank <= 5) return 750;
-        if (rank <= 10) return 500;
-        if (rank <= 50) return 250;
-        return 100;
+    private int getPointBonusByRank(int rank) {
+        if (rank <= 0 || rank > POINT_BONUSES.length) {
+            return POINT_BONUSES[POINT_BONUSES.length - 1];
+        }
+        return POINT_BONUSES[rank - 1];
     }
 
     /**
@@ -204,11 +133,10 @@ public class RankingService {
      * @param rank 순위
      * @return 보너스 경험치
      */
-    private int getRewardExperienceByRank(int rank) {
-        if (rank == 1) return 1000;
-        if (rank <= 5) return 750;
-        if (rank <= 10) return 500;
-        if (rank <= 50) return 250;
-        return 100;
+    private int getExpBonusByRank(int rank) {
+        if (rank <= 0 || rank > EXP_BONUSES.length) {
+            return EXP_BONUSES[EXP_BONUSES.length - 1];
+        }
+        return EXP_BONUSES[rank - 1];
     }
 }

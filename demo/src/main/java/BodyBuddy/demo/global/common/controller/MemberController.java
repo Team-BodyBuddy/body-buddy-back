@@ -3,6 +3,8 @@ package BodyBuddy.demo.global.common.controller;
 import BodyBuddy.demo.global.common.dto.MemberDto;
 import BodyBuddy.demo.global.common.entity.ActivityType;
 import BodyBuddy.demo.global.common.service.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
+@Tag(name = "Member API", description = "멤버 관련 API")
 public class MemberController {
 
     private final MemberService memberService; // 서비스 계층
@@ -25,6 +28,7 @@ public class MemberController {
      * @return 회원 목록
      */
     @GetMapping
+    @Operation(summary = "모든 회원 조회", description = "등록된 모든 회원의 목록을 조회합니다.")
     public ResponseEntity<List<MemberDto>> getAllMembers() {
         return ResponseEntity.ok(memberService.getAllMembers());
     }
@@ -35,6 +39,7 @@ public class MemberController {
      * @return 회원 상세 정보
      */
     @GetMapping("/{id}")
+    @Operation(summary = "특정 회원 조회", description = "회원 ID를 이용해 특정 회원의 상세 정보를 조회합니다.")
     public ResponseEntity<MemberDto> getMemberById(@PathVariable Long id) {
         return ResponseEntity.ok(memberService.getMemberById(id));
     }
@@ -45,6 +50,7 @@ public class MemberController {
      * @return 생성된 회원 정보
      */
     @PostMapping
+    @Operation(summary = "회원 생성", description = "새로운 회원을 생성하고 해당 회원 정보를 반환합니다.")
     public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto memberDto) {
         return ResponseEntity.ok(memberService.createMember(memberDto));
     }
@@ -58,6 +64,7 @@ public class MemberController {
      * @return HTTP 상태코드
      */
     @PostMapping("/{id}/experience")
+    @Operation(summary = "경험치 추가", description = "회원 ID를 이용하여 특정 회원의 경험치를 활동 유형, 연속 운동 일수, 순위를 기반으로 추가합니다.")
     public ResponseEntity<Void> addExperience(
             @PathVariable Long id,
             @RequestParam ActivityType activityType,

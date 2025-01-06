@@ -39,20 +39,22 @@ public class RankingController {
      * @return 해당 체육관의 랭킹 목록
      */
     @GetMapping("/gym/{gymId}")
-    @Operation(summary = "GYM 랭킹 조회", description = "특정 GYM의 랭킹을 조회합니다.")
+    @Operation(summary = "GYM 랭킹 조회", description = "특정 GYM의 전체 랭킹을 조회합니다.")
     public ResponseEntity<List<RankingResponseDto>> getGymRankings(@PathVariable Long gymId) {
-        return ResponseEntity.ok(rankingService.getGymRankings(gymId));
+        List<RankingResponseDto> rankings = rankingService.getGymRankings(gymId);
+        return ResponseEntity.ok(rankings);
     }
 
     /**
-     * 특정 사용자 랭킹 조회 API
-     * @param requestDto 요청 DTO
-     * @return 해당 사용자의 랭킹 정보
+     * 사용자 랭킹 조회 API
+     * @param requestDto 요청 DTO (memberId와 gymId 포함)
+     * @return 사용자 랭킹 정보
      */
     @PostMapping("/user")
-    @Operation(summary = "사용자 랭킹 조회", description = "특정 사용자의 랭킹을 조회합니다.")
+    @Operation(summary = "사용자 랭킹 조회", description = "특정 체육관에서 사용자의 랭킹을 조회합니다.")
     public ResponseEntity<RankingResponseDto> getUserRanking(@RequestBody RankingRequestDto requestDto) {
-        return ResponseEntity.ok(rankingService.getUserRanking(requestDto.getMemberId()));
+        RankingResponseDto response = rankingService.getUserRanking(requestDto.getMemberId(), requestDto.getGymId());
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -72,7 +74,7 @@ public class RankingController {
      * @return 회원의 순위
      */
     @GetMapping("/rank/{memberId}")
-    @Operation(summary = "회원 순위 조회", description = "특정 회원의 순위를 조회합니다.")
+    @Operation(summary = "회원 순위 조회", description = "특정 회원의 전체 랭킹을 조회합니다.")
     public ResponseEntity<Integer> getMemberRank(@PathVariable Long memberId) {
         int rank = rankingService.getMemberRank(memberId);
         return ResponseEntity.ok(rank);

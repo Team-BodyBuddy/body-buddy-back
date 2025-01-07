@@ -1,4 +1,4 @@
-package BodyBuddy.demo.domain.mainPage.DTO;
+package BodyBuddy.demo.domain.func.mainPage.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

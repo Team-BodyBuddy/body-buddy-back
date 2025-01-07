@@ -1,9 +1,8 @@
-package BodyBuddy.demo.domain.mainPage.DTO;
+package BodyBuddy.demo.domain.func.mainPage.DTO;
 
-import lombok.AllArgsConstructor;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -13,5 +12,8 @@ public class MainPageDTO {
     private Long level;
     private Long points;
     private InBodyDTO recentInBody;
+    private String weightChange;
+    private AvatarDTO avatar;
+    private List<WeightChangeDTO> weightHistory;
 }
 

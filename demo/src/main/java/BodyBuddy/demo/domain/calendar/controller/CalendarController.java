@@ -44,6 +44,10 @@ public class CalendarController {
      * 캘린더 생성 API
      */
     @PostMapping
+    @Operation(
+        summary = "캘린더 생성 및 업데이트",
+        description = "캘린더를 생성하거나 이미 존재하는 경우 업데이트합니다."
+    )
     public ResponseEntity<ApiResponse<CalendarResponse>> createOrUpdateCalendar(
         @RequestBody @Valid CalendarRequest request) {
         CalendarResponse response = calendarService.createOrUpdateCalendar(request);
@@ -55,6 +59,10 @@ public class CalendarController {
      */
 
     @GetMapping("/{memberId}")
+    @Operation(
+        summary = "특정 회원의 캘린더 조회",
+        description = "회원 ID를 기준으로 캘린더 정보를 조회합니다."
+    )
     public ResponseEntity<ApiResponse<List<CalendarResponse>>> getCalendarByMemberId(
         @PathVariable @NotNull Long memberId) {
         List<CalendarResponse> calendars = calendarService.getCalendarByMemberId(memberId);
@@ -65,6 +73,10 @@ public class CalendarController {
      * 캘린더 평가 상태 업데이트 API
      */
     @PatchMapping("/evaluation")
+    @Operation(
+        summary = "캘린더 평가 상태 업데이트",
+        description = "회원 ID와 날짜를 기준으로 캘린더 평가 상태를 업데이트합니다."
+    )
     public ResponseEntity<ApiResponse<CalendarResponse>> updateCalendarEvaluation(
         @RequestParam @NotNull Long memberId,
         @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
@@ -79,6 +91,10 @@ public class CalendarController {
      * 특정 회원의 한 달치 점 상태 조회 API
      */
     @GetMapping("/indicators")
+    @Operation(
+        summary = "특정 회원의 한 달치 점 상태 조회",
+        description = "회원 ID와 기간(해당 달의 시작 날짜, 종료 날짜)을 기준으로 점 상태(IndicatorType)를 조회합니다."
+    )
     public ResponseEntity<ApiResponse<Map<LocalDate, CalendarDayInfo.IndicatorType>>> getMonthlyIndicators(
         @RequestParam @NotNull Long memberId,
         @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,

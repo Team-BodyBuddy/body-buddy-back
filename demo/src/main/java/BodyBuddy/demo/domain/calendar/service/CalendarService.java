@@ -87,13 +87,28 @@ public class CalendarService {
             .toList();
     }
 
+    /**
+     * 캘린더 점 상태 업데이트 메서드
+     */
+    @Transactional
+    public void updateIndicator(Long memberId, LocalDate date) {
+        Calendar calendar = calendarRepository.findByMemberIdAndDate(memberId, date)
+            .orElseThrow(() -> new IllegalArgumentException("캘린더가 존재하지 않습니다."));
+
+        List<Object[]> counts = routineRepository.findTypeCountsByMemberAndDate(memberId, date);
+
+        CalendarDayInfo.IndicatorType indicator = determineIndicator(counts);
+        calendar.setIndicator(indicator);
+
+        calendarRepository.save(calendar);
+    }
 
     /**
      * 특정 회원의 한 달치 캘린더 데이터 조회
      */
-    public Map<LocalDate, CalendarDayInfo> getMonthlyCalendarData(Long memberId,
+    public Map<LocalDate, CalendarDayInfo.IndicatorType> getMonthlyCalendarData(Long memberId,
         LocalDate startDate, LocalDate endDate) {
-        Map<LocalDate, CalendarDayInfo> calendarData = new HashMap<>();
+        Map<LocalDate, CalendarDayInfo.IndicatorType> calendarData = new HashMap<>();
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             List<Object[]> counts = routineRepository.findTypeCountsByMemberAndDate(memberId, date);
             CalendarDayInfo.IndicatorType indicator = determineIndicator(counts);
@@ -103,7 +118,7 @@ public class CalendarService {
             EvaluationStatus evaluationStatus = evaluation.map(DailyEvaluation::getEvaluation)
                 .orElse(null);
 
-            calendarData.put(date, new CalendarDayInfo(indicator, evaluationStatus));
+            calendarData.put(date, indicator);
         }
         return calendarData;
     }
@@ -128,13 +143,13 @@ public class CalendarService {
         }
 
         if (hasRoutine && hasClass) {
-            return CalendarDayInfo.IndicatorType.BOTH; // Enum 사용
+            return CalendarDayInfo.IndicatorType.BOTH;
         } else if (hasRoutine) {
-            return CalendarDayInfo.IndicatorType.BLUE; // Enum 사용
+            return CalendarDayInfo.IndicatorType.BLUE;
         } else if (hasClass) {
-            return CalendarDayInfo.IndicatorType.RED; // Enum 사용
+            return CalendarDayInfo.IndicatorType.RED;
         } else {
-            return CalendarDayInfo.IndicatorType.NONE; // Enum 사용
+            return CalendarDayInfo.IndicatorType.NONE;
         }
     }
 }

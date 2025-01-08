@@ -11,6 +11,8 @@ import BodyBuddy.demo.domain.calendar.Calendar;
 
 @Repository
 public interface CalendarRepository extends JpaRepository<Calendar, Long> {
-	Optional<Calendar> findByMemberIdAndDate(Long memberId, LocalDate date);
-	List<Calendar> findByMemberId(Long memberId);
+
+    Optional<Calendar> findByMemberIdAndDate(Long memberId, LocalDate date);
+
+    List<Calendar> findByMemberId(Long memberId);
 }

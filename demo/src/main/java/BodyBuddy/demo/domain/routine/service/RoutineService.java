@@ -2,6 +2,7 @@ package BodyBuddy.demo.domain.routine.service;
 
 import BodyBuddy.demo.domain.calendar.Calendar;
 import BodyBuddy.demo.domain.calendar.CalendarMapper;
+import BodyBuddy.demo.domain.calendar.service.CalendarService;
 import BodyBuddy.demo.domain.routine.RoutineMapper;
 import BodyBuddy.demo.domain.routine.dto.RoutineResponse;
 import java.time.LocalDate;
@@ -26,6 +27,9 @@ public class RoutineService {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private CalendarService calendarService;
+
     /**
      * 루틴 추가 메서드
      */
@@ -40,6 +44,9 @@ public class RoutineService {
         routine.setType(request.getType());
         routine.setDate(request.getDate());
         routine.setCompleted(false);
+
+        //캘린더 점  업데이트
+        calendarService.updateIndicator(request.getMemberId(), request.getDate());
 
         Routine savedRoutine = routineRepository.save(routine);
         return RoutineMapper.toResponse(savedRoutine);

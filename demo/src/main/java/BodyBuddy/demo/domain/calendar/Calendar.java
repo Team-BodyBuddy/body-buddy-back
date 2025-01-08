@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.calendar;
 
+import BodyBuddy.demo.domain.calendar.dto.CalendarDayInfo.IndicatorType;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,4 +45,9 @@ public class Calendar {
 
     @Enumerated(EnumType.STRING) // Enum을 문자열로 저장
     private EvaluationStatus evaluationStatus; // BAD,SOSO,GOOD
+
+    @Enumerated(EnumType.STRING)
+    private IndicatorType indicator = IndicatorType.NONE; // 점 상태 (NONE이 기본값)
+
+
 }

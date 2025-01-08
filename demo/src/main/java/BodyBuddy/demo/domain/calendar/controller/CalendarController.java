@@ -1,5 +1,8 @@
 package BodyBuddy.demo.domain.calendar.controller;
 
+import BodyBuddy.demo.domain.calendar.CalendarMapper;
+import BodyBuddy.demo.domain.calendar.dto.CalendarResponse;
+import BodyBuddy.demo.global.apiPayLoad.ApiResponse;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -31,52 +34,58 @@ import jakarta.validation.constraints.NotNull;
 @Tag(name = "Calendar", description = "캘린더 API")
 public class CalendarController {
 
-	private final CalendarService calendarService;
+    private final CalendarService calendarService;
 
-	public CalendarController(CalendarService calendarService) {
-		this.calendarService = calendarService;
-	}
+    public CalendarController(CalendarService calendarService) {
+        this.calendarService = calendarService;
+    }
 
-	/**
-	 * 캘린더 생성 API
-	 */
-	@PostMapping
-	public ResponseEntity<Calendar> createOrUpdateCalendar(@RequestBody @Valid CalendarRequest request) {
-		Calendar calendar = calendarService.createOrUpdateCalendar(request);
-		return ResponseEntity.ok(calendar);
-	}
+    /**
+     * 캘린더 생성 API
+     */
+    @PostMapping
+    public ResponseEntity<ApiResponse<CalendarResponse>> createOrUpdateCalendar(
+        @RequestBody @Valid CalendarRequest request) {
+        CalendarResponse response = calendarService.createOrUpdateCalendar(request);
+        return ResponseEntity.ok(ApiResponse.onSuccess(response));
+    }
 
-	/**
-	 * 특정 회원의 캘린더 조회 API
-	 */
+    /**
+     * 특정 회원의 캘린더 조회 API
+     */
 
-	@GetMapping("/{memberId}")
-	public ResponseEntity<List<Calendar>> getCalendarByMemberId(@PathVariable @NotNull Long memberId) {
-		List<Calendar> calendars = calendarService.getCalendarByMemberId(memberId);
-		return ResponseEntity.ok(calendars);
-	}
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ApiResponse<List<CalendarResponse>>> getCalendarByMemberId(
+        @PathVariable @NotNull Long memberId) {
+        List<CalendarResponse> calendars = calendarService.getCalendarByMemberId(memberId);
+        return ResponseEntity.ok(ApiResponse.onSuccess(calendars));
+    }
 
-	/**
-	 * 캘린더 평가 상태 업데이트 API
-	 */
-	@PatchMapping("/evaluation")
-	public ResponseEntity<Calendar> updateCalendarEvaluation(
-		@RequestParam @NotNull Long memberId,
-		@RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-		@RequestParam @NotNull EvaluationStatus evaluationStatus) {
-		Calendar updatedCalendar = calendarService.updateCalendarEvaluation(memberId, date, evaluationStatus);
-		return ResponseEntity.ok(updatedCalendar);
-	}
+    /**
+     * 캘린더 평가 상태 업데이트 API
+     */
+    @PatchMapping("/evaluation")
+    public ResponseEntity<ApiResponse<CalendarResponse>> updateCalendarEvaluation(
+        @RequestParam @NotNull Long memberId,
+        @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+        @RequestParam @NotNull EvaluationStatus evaluationStatus) {
+        CalendarResponse updatedCalendar = calendarService.updateCalendarEvaluation(memberId, date,
+            evaluationStatus);
+        return ResponseEntity.ok(ApiResponse.onSuccess(updatedCalendar));
+    }
 
-	/**
-	 * 특정 회원의 한 달치 점 상태 조회 API
-	 */
-	@GetMapping("/indicators")
-	public ResponseEntity<Map<LocalDate, CalendarDayInfo>> getMonthlyIndicators(
-		@RequestParam @NotNull Long memberId,
-		@RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-		@RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-		Map<LocalDate, CalendarDayInfo> indicators = calendarService.getMonthlyCalendarData(memberId, startDate, endDate);
-		return ResponseEntity.ok(indicators);
-	}
+
+    /**
+     * 특정 회원의 한 달치 점 상태 조회 API
+     */
+    @GetMapping("/indicators")
+    public ResponseEntity<ApiResponse<Map<LocalDate, CalendarDayInfo.IndicatorType>>> getMonthlyIndicators(
+        @RequestParam @NotNull Long memberId,
+        @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+        @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        Map<LocalDate, CalendarDayInfo.IndicatorType> indicators = calendarService.getMonthlyCalendarData(
+            memberId, startDate, endDate);
+        return ResponseEntity.ok(ApiResponse.onSuccess(indicators));
+    }
+
 }

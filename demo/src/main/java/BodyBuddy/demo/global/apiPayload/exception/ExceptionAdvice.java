@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
-@RestControllerAdvice(annotations = {RestController.class})
+// @RestControllerAdvice(annotations = {RestController.class}) TODO <Swagger 오류 발생으로 인한 주석처리>
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
 

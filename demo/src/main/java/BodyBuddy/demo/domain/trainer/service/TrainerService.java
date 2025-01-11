@@ -3,6 +3,7 @@ package BodyBuddy.demo.domain.trainer.service;
 import BodyBuddy.demo.domain.member.dto.MemberInfoDto;
 import BodyBuddy.demo.domain.trainer.Trainer;
 import BodyBuddy.demo.domain.trainer.dto.TrainerResponseDto;
+import BodyBuddy.demo.domain.trainer.dto.TrainerSimpleResponseDto;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
 import BodyBuddy.demo.global.apiPayload.code.status.ErrorStatus;
 import BodyBuddy.demo.global.apiPayload.exception.GeneralException;
@@ -18,7 +19,8 @@ public class TrainerService {
 
     private final TrainerRepository trainerRepository;
 
-    public List<TrainerResponseDto> getTrainersByRegionAndGym(Long regionId, Long gymId) {
+    // 수정: 간단한 트레이너 정보를 반환
+    public List<TrainerSimpleResponseDto> getTrainersByRegionAndGym(Long regionId, Long gymId) {
         List<Trainer> trainers = trainerRepository.findByRegionAndGym(regionId, gymId);
 
         if (trainers.isEmpty()) {
@@ -26,9 +28,11 @@ public class TrainerService {
         }
 
         return trainers.stream()
-                .map(trainer -> TrainerResponseDto.builder()
+                .map(trainer -> TrainerSimpleResponseDto.builder()
                         .id(trainer.getId())
                         .name(trainer.getName())
+                        .gender(trainer.getGender().name())
+                        .age((trainer.getAge()))
                         .build())
                 .collect(Collectors.toList());
     }

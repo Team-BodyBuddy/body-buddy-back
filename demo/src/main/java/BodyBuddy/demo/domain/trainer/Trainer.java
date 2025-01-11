@@ -24,6 +24,8 @@ public class Trainer {
 
     private String name; // 트레이너 이름
 
+    private int age; // 트레이너 나이
+
     private String portfolio; // 트레이너 포트폴리오
 
     private int badgeCount; // 뱃지 개수

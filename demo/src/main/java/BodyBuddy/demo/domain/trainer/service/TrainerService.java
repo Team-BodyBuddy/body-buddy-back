@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.trainer.service;
 
+import BodyBuddy.demo.domain.member.dto.MemberInfoDto;
 import BodyBuddy.demo.domain.trainer.Trainer;
 import BodyBuddy.demo.domain.trainer.dto.TrainerResponseDto;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
@@ -28,10 +29,33 @@ public class TrainerService {
                 .map(trainer -> TrainerResponseDto.builder()
                         .id(trainer.getId())
                         .name(trainer.getName())
-                        .portfolio(trainer.getPortfolio())
-                        .badgeCount(trainer.getBadgeCount())
-                        .gymName(trainer.getGym().getName())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public TrainerResponseDto getTrainerDetails(Long trainerId) {
+        Trainer trainer = trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.TRAINER_NOT_FOUND));
+
+        List<MemberInfoDto> members = trainer.getMembers().stream()
+                .map(member -> MemberInfoDto.builder()
+                        .id(member.getId())
+                        .nickname(member.getNickname())
+                        .level(member.getLevel())
+                        .build())
+                .collect(Collectors.toList());
+
+        return TrainerResponseDto.builder()
+                .id(trainer.getId())
+                .name(trainer.getName())
+                .gender(trainer.getGender().name())
+                .height(trainer.getHeight())
+                .weight(trainer.getWeight())
+                .regionName(trainer.getGym().getRegion().getName())
+                .gymName(trainer.getGym().getName())
+                .portfolio(trainer.getPortfolio())
+                .badgeCount(trainer.getBadgeCount())
+                .members(members)
+                .build();
     }
 }

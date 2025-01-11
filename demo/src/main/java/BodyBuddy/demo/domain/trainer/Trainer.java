@@ -2,6 +2,7 @@ package BodyBuddy.demo.domain.trainer;
 
 import BodyBuddy.demo.domain.gym.Gym;
 import BodyBuddy.demo.domain.member.Member;
+import BodyBuddy.demo.domain.member.memberEnum.Gender;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -26,6 +27,12 @@ public class Trainer {
     private String portfolio; // 트레이너 포트폴리오
 
     private int badgeCount; // 뱃지 개수
+
+    private Gender gender;
+
+    private int weight;
+
+    private int height;
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Member> members = new ArrayList<>();

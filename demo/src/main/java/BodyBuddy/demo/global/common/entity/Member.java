@@ -1,6 +1,6 @@
 package BodyBuddy.demo.global.common.entity;
 
-import BodyBuddy.demo.gym.entity.Gym;
+import BodyBuddy.demo.domain.gym.entity.Gym;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

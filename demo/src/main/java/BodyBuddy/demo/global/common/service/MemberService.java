@@ -4,10 +4,10 @@ import BodyBuddy.demo.global.common.dto.MemberDto;
 import BodyBuddy.demo.global.common.entity.ActivityType;
 import BodyBuddy.demo.global.common.entity.Member;
 import BodyBuddy.demo.global.common.repository.MemberRepository;
-import BodyBuddy.demo.gym.entity.Gym;
-import BodyBuddy.demo.gym.repository.GymRepository;
-import BodyBuddy.demo.ranking.entity.RankingPoint;
-import BodyBuddy.demo.ranking.repository.RankingRepository;
+import BodyBuddy.demo.domain.gym.entity.Gym;
+import BodyBuddy.demo.domain.gym.repository.GymRepository;
+import BodyBuddy.demo.domain.ranking.entity.RankingPoint;
+import BodyBuddy.demo.domain.ranking.repository.RankingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

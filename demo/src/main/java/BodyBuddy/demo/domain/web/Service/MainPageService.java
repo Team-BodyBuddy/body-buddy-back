@@ -31,11 +31,11 @@ public class MainPageService {
    * 포인트 총합 조회 로직
    */
   public PointDTO.Response getTotalPoints(Long memberId) {
-    // 멤버 조회
+    // 멤버 조회 (존재하지 않으면 예외 발생)
     Member member = memberRepository.findById(memberId)
-        .orElseThrow(() -> new IllegalArgumentException("멤버가 없습니다."));
+        .orElseThrow(() -> new IllegalArgumentException("해당 멤버를 찾을 수 없습니다."));
 
-    // PointDTO 생성 및 반환
+    // 총 포인트를 DTO로 변환하여 반환
     return PointDTO.Response.builder()
         .amount(member.getTotalPoints())
         .build();

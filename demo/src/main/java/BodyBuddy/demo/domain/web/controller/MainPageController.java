@@ -30,8 +30,8 @@ public class MainPageController {
   /**
    * 포인트 총합 조회 API
    */
-  @Operation(summary = "포인트 총량 조회", description = "회원의 총 포인트를 반환.")
-  @GetMapping("/{memberId}/points/total")
+  @Operation(summary = "포인트 총량 조회", description = "회원의 총 포인트를 반환합니다.")
+  @GetMapping("/api/members/{memberId}/points/total")
   public ResponseEntity<PointDTO.Response> getTotalPoints(@PathVariable Long memberId) {
     PointDTO.Response totalPoints = mainPageService.getTotalPoints(memberId);
     return ResponseEntity.ok(totalPoints);

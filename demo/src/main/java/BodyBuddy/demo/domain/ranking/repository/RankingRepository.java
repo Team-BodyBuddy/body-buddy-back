@@ -90,6 +90,29 @@ public interface RankingRepository extends JpaRepository<RankingPoint, Long> {
                 WHERE ranked.member_id = :memberId
             """, nativeQuery = true)
     Optional<Integer> findRankByMemberIdAndGymId(@Param("memberId") Long memberId, @Param("gymId") Long gymId);
+
+    /**
+     * 회원 ID를 기반으로 소속 GYM 이름 조회
+     * @param memberId 회원 ID
+     * @return 소속 GYM 이름
+     */
+    @Query("SELECT g.name FROM Member m JOIN m.gym g WHERE m.id = :memberId")
+    String findGymNameByMemberId(@Param("memberId") Long memberId);
+
+    /**
+     * 회원 ID를 기반으로 랭킹 정보 조회
+     * @param memberId 회원 ID
+     * @return 랭킹 정보
+     */
+    @Query("SELECT r FROM RankingPoint r WHERE r.member.id = :memberId")
+    RankingPoint findRankingByMemberId(@Param("memberId") Long memberId);
+
+    @Query("SELECT DISTINCT g.name FROM Member m JOIN m.gym g")
+    List<String> findAllGyms();
+
+    @Query("SELECT r FROM RankingPoint r WHERE r.member.gym.name = :gymName ORDER BY r.totalScore DESC")
+    List<RankingPoint> findRankingsByGymName(@Param("gymName") String gymName);
 }
+
 
 

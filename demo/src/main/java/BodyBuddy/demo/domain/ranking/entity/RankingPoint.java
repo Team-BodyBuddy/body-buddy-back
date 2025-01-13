@@ -4,6 +4,9 @@ import BodyBuddy.demo.global.common.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 랭킹 점수 엔티티 (RankingPoint)
  * 회원별 랭킹 데이터를 관리
@@ -29,4 +32,17 @@ public class RankingPoint {
     private int intensityBonus; // 운동 강도 보너스
 
     private int totalScore; // 총 점수 (자동 계산)
+
+    @ElementCollection
+    @CollectionTable(name = "unread_notifications", joinColumns = @JoinColumn(name = "ranking_point_id"))
+    @Column(name = "message")
+    private List<String> unreadNotifications = new ArrayList<>(); // 사용자에게 랭킹 보너스 메시지
+
+    public void addNotification(String message) {
+        this.unreadNotifications.add(message);
+    }
+
+    public void clearNotifications() {
+        this.unreadNotifications.clear();
+    }
 }

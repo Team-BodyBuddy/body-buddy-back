@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -72,7 +73,7 @@ public class RankingService {
     public RankingResponseDto getUserRanking(Long memberId, Long gymId) {
         Optional<Integer> rankOptional = rankingRepository.findRankByMemberIdAndGymId(memberId, gymId);
         if (rankOptional.isEmpty()) {
-            throw new RuntimeException("The user does not belong to the specified gym or has no rank.");
+            throw new RuntimeException("사용자는 지정된 체육관에 소속되어 있지 않거나 랭크가 없습니다.");
         }
 
         RankingPoint ranking = rankingRepository.findByMemberId(memberId);
@@ -94,26 +95,61 @@ public class RankingService {
     }
 
     /**
-     * 랭킹 점수 및 경험치 갱신
+     * 매주 월요일 자정에 랭킹 보너스 지급 및 메시지 저장
      */
     @Scheduled(cron = "0 0 0 * * MON")
     public void updateRankingsAndRewards() {
-        List<RankingPoint> rankings = rankingRepository.findAll();
+        List<RankingPoint> rankings = rankingRepository.findTopRankings();
+        List<String> messages = new ArrayList<>();
 
-        // 모든 랭킹 데이터에 대해 순위별 보너스 적용
+        // 1. 바디버디 리그 보너스 지급
+        messages.addAll(distributeBonusesForLeague(rankings, "바디버디 리그"));
+
+        // 2. GYM 리그 보너스 지급
+        List<String> gyms = rankingRepository.findAllGyms();
+        for (String gym : gyms) {
+            List<RankingPoint> gymRankings = rankingRepository.findRankingsByGymName(gym);
+            messages.addAll(distributeBonusesForLeague(gymRankings, gym + " 리그"));
+        }
+
+        // 로그에 메시지 출력
+        messages.forEach(log::info);
+        log.info("랭킹 보너스 지급 및 메시지 저장 완료.");
+    }
+
+    /**
+     * 특정 리그의 보너스를 지급하고 메시지를 생성하여 저장
+     * @param rankings 순위별 데이터
+     * @param leagueName 리그 이름
+     * @return 생성된 메시지 리스트
+     */
+    private List<String> distributeBonusesForLeague(List<RankingPoint> rankings, String leagueName) {
+        List<String> messages = new ArrayList<>();
+
         for (int i = 0; i < rankings.size(); i++) {
             RankingPoint ranking = rankings.get(i);
             int rank = i + 1;
 
+            // 순위별 보너스 계산
             int pointBonus = getPointBonusByRank(rank);
             int expBonus = getExpBonusByRank(rank);
 
+            // 보너스 지급
             ranking.setTotalScore(ranking.getTotalScore() + pointBonus);
             ranking.getMember().addExperience(expBonus);
+
+            // 메시지 생성 및 저장
+            String message = String.format(
+                    "%s %d위 달성! +%d 포인트와 +%d 경험치를 획득했습니다.",
+                    leagueName, rank, pointBonus, expBonus
+            );
+            ranking.addNotification(message);
+            messages.add(message);
         }
 
+        // 변경된 랭킹 저장
         rankingRepository.saveAll(rankings);
-        log.info("Rankings and rewards updated successfully.");
+        return messages;
     }
 
     /**
@@ -138,5 +174,61 @@ public class RankingService {
             return EXP_BONUSES[EXP_BONUSES.length - 1];
         }
         return EXP_BONUSES[rank - 1];
+    }
+
+    /**
+     * 특정 사용자의 미확인 알림 메시지를 조회합니다.
+     *
+     * @param memberId 사용자 ID
+     * @return 사용자의 미확인 알림 메시지 리스트
+     */
+    public List<String> getUnreadNotifications(Long memberId) {
+        RankingPoint rankingPoint = rankingRepository.findRankingByMemberId(memberId);
+        return rankingPoint.getUnreadNotifications();
+    }
+
+    /**
+     * 특정 사용자의 미확인 알림 메시지를 초기화(삭제)합니다.
+     *
+     * @param memberId 사용자 ID
+     */
+    public void clearNotifications(Long memberId) {
+        RankingPoint rankingPoint = rankingRepository.findRankingByMemberId(memberId);
+        rankingPoint.clearNotifications();
+        rankingRepository.save(rankingPoint);
+    }
+
+    /**
+     * 회원 ID를 기반으로 소속 GYM 이름 조회
+     * @param memberId 회원 ID
+     * @return 소속 GYM 이름
+     */
+    public String getGymNameByMemberId(Long memberId) {
+        // 회원 ID를 통해 소속된 GYM 이름 조회
+        String gymName = rankingRepository.findGymNameByMemberId(memberId);
+        if (gymName == null || gymName.isEmpty()) {
+            return "소속되어 있는 GYM이 없습니다.";
+        }
+        return gymName;
+    }
+
+    /**
+     * 회원 ID를 기반으로 랭킹, 레벨, 닉네임, 점수 조회
+     * @param memberId 회원 ID
+     * @return 사용자 랭킹 정보
+     */
+    public RankingResponseDto getUserRankingByMemberId(Long memberId) {
+        // 회원의 랭킹 정보 조회
+        RankingPoint rankingPoint = rankingRepository.findRankingByMemberId(memberId);
+        if (rankingPoint == null) {
+            throw new RuntimeException("사용자 랭킹 정보 없음");
+        }
+
+        return RankingResponseDto.builder()
+                .rank(rankingRepository.findRankByMemberId(memberId)) // 사용자 순위 조회
+                .nickname(rankingPoint.getMember().getNickname())
+                .level(rankingPoint.getMember().getLevel())
+                .totalScore(rankingPoint.getTotalScore())
+                .build();
     }
 }

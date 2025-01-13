@@ -16,4 +16,15 @@ public class MemberDTO {
   private Long level;
   private Long exp;
 
+  @Getter
+  @Builder
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class Response{
+    private Long id;
+    private String nickName;
+    private Long level;
+    private Long exp;
+  }
+
 }

@@ -1,7 +1,15 @@
 package BodyBuddy.demo.domain.web.controller;
 
+import BodyBuddy.demo.domain.avatar.DTO.AvatarDTO;
 import BodyBuddy.demo.domain.web.Service.DecoPageService;
+import BodyBuddy.demo.global.common.member.DTO.MemberDTO;
+import BodyBuddy.demo.global.common.point.DTO.PointDTO;
+import BodyBuddy.demo.global.common.point.DTO.PointDTO.Response;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,8 +37,41 @@ public class DecoPageController {
    */
 
   /**
-   * 1. 포인트 총합 조회
+   * 포인트 총합 조회 API
    */
+
+  @Operation(summary = "포인트 총량 조회", description = "회원의 총 포인트를 반환합니다.")
+  @GetMapping("/{memberId}/points/total")
+  public ResponseEntity<PointDTO.Response> getTotalPoints(@PathVariable Long memberId) {
+    PointDTO.Response response = decoPageService.getTotalPoints(memberId);
+    return ResponseEntity.ok(response);
+  }
+
+  /**
+   * 멤버 정보 조회 API
+   */
+
+  @GetMapping("/api/members/{memberId}/nickname")
+  public ResponseEntity<MemberDTO.Response> getMemberNickname(@PathVariable Long memberId) {
+    MemberDTO.Response response = decoPageService.getMemberInfo(memberId);
+    return ResponseEntity.ok(response);
+  }
+
+  /**
+   * 아바타 정보 조회 API
+   */
+
+  @Operation(summary = "아바타 정보 조회", description = "회원 아바타 이미지와 최신 스킨 정보를 반환.")
+  @GetMapping("/{memberId}/avatar")
+  public ResponseEntity<AvatarDTO> getAvatar(@PathVariable Long memberId) {
+    AvatarDTO avatarInfo = decoPageService.getLatestAvatarInfo(memberId);
+    return ResponseEntity.ok(avatarInfo);
+  }
+
+  /**
+   * 카테고리 별 아이템 정보 조회 API
+   */
+
 
 
 

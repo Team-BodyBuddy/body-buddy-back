@@ -1,7 +1,9 @@
 package BodyBuddy.demo.domain.web.controller;
 
 import BodyBuddy.demo.domain.avatar.DTO.AvatarDTO;
+import BodyBuddy.demo.domain.item.DTO.CategoryItemResponse;
 import BodyBuddy.demo.domain.web.Service.DecoPageService;
+import BodyBuddy.demo.global.common.Category;
 import BodyBuddy.demo.global.common.member.DTO.MemberDTO;
 import BodyBuddy.demo.global.common.point.DTO.PointDTO;
 import BodyBuddy.demo.global.common.point.DTO.PointDTO.Response;
@@ -71,7 +73,14 @@ public class DecoPageController {
   /**
    * 카테고리 별 아이템 정보 조회 API
    */
-
+  @GetMapping("/{memberId}/category/{category}")
+  public ResponseEntity<CategoryItemResponse> getItemsByCategory(
+      @PathVariable Long memberId,
+      @PathVariable Category category
+  ) {
+    CategoryItemResponse response = decoPageService.getItemsByCategory(memberId, category);
+    return ResponseEntity.ok(response);
+  }
 
 
 

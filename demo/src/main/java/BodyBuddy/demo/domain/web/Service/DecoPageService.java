@@ -7,10 +7,19 @@ import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
 import BodyBuddy.demo.domain.avatarSkin.entity.AvatarSkin;
 import BodyBuddy.demo.domain.avatarSkin.repository.AvatarSkinRepository;
 import BodyBuddy.demo.domain.inBody.repository.InBodyRepository;
+import BodyBuddy.demo.domain.item.repository.ItemRepository;
+import BodyBuddy.demo.domain.item.DTO.CategoryItemResponse;
+import BodyBuddy.demo.domain.item.DTO.ItemResponse;
+import BodyBuddy.demo.domain.item.entity.Item;
+import BodyBuddy.demo.domain.memberItem.repository.MemberItemRepository;
+import BodyBuddy.demo.global.common.Category;
 import BodyBuddy.demo.global.common.member.DTO.MemberDTO;
 import BodyBuddy.demo.global.common.member.entity.Member;
 import BodyBuddy.demo.global.common.member.repository.MemberRepository;
 import BodyBuddy.demo.global.common.point.DTO.PointDTO;
+import BodyBuddy.demo.global.common.point.repository.PointRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +31,8 @@ public class DecoPageService {
   private final AvatarRepository avatarRepository;
   private final AvatarSkinRepository avatarSkinRepository;
   private final InBodyRepository inBodyRepository;
+  private final ItemRepository itemRepository;
+  private final MemberItemRepository memberItemRepository;
 
   /**
    포인트 총합 조회 로직
@@ -79,7 +90,28 @@ public class DecoPageService {
   /**
    * 카테고리별 아이템 조회 로직
    */
+  public CategoryItemResponse getItemsByCategory(Long memberId, Category category) {
+    // 1. 카테고리에 속한 모든 아이템 조회
+    List<Item> items = itemRepository.findAllByCategory(category);
 
+    // 2. 회원이 소유한 아이템 ID 리스트 조회
+    List<Long> ownedItemIds = memberItemRepository.findItemIdsByMemberId(memberId);
+
+    // 3. 응답 데이터 구성
+    List<ItemResponse> itemResponses = items.stream()
+        .map(item -> ItemResponse.builder()
+            .id(item.getId())
+            .name(item.getName())
+            .imagePath(item.getImagePath())
+            .isOwned(ownedItemIds.contains(item.getId()))
+            .build())
+        .collect(Collectors.toList());
+
+    return CategoryItemResponse.builder()
+        .category(category)
+        .items(itemResponses)
+        .build();
+  }
 
 
 }

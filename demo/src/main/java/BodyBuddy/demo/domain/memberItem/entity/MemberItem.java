@@ -29,16 +29,15 @@ public class MemberItem {
     @Enumerated(EnumType.STRING)
     private ItemStatus status;
 
+    //아이템 구매시점
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime purchasedAt = LocalDateTime.now();
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)   //FK 컬럼 이름
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", nullable = false)   //FK 컬럼 이름
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
-
-    @Column(nullable = false, updatable = false)
-    // updatable = false -> update 쿼리 실행 시 createdAt필드 변경 X
-    private LocalDateTime purchasedAt = LocalDateTime.now();
-
 }

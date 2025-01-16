@@ -17,15 +17,14 @@ public class TrainerService {
 
   public List<MemberDTO.Response> getTrainerMembers(Long trainerId) {
     Trainer trainer = trainerRepository.findById(trainerId)
-        .orElseThrow(() -> new EntityNotFoundException("Trainer not found"));
+        .orElseThrow(() -> new EntityNotFoundException("트레이너가 없습니다"));
 
     return trainer.getMembers().stream()
-        .map(member -> new MemberDTO(
-            member.getId(),
-            member.getRealName(),
-            member.getLevel(),
-            member.getAvatars().isEmpty() ? null : member.getAvatars().get(0).getLevel()
-        ))
+        .map(member -> MemberDTO.Response.builder()
+            .id(member.getId())
+            .realName(member.getRealName())
+            .level(member.getLevel())
+            .build())
         .collect(Collectors.toList());
   }
 

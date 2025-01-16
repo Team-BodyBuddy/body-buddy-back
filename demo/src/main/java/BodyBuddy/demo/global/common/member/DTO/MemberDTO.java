@@ -23,6 +23,7 @@ public class MemberDTO {
   public static class Response{
     private Long id;
     private String nickName;
+    private String realName;
     private Long level;
     private Long exp;
   }

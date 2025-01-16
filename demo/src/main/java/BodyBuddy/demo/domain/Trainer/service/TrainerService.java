@@ -6,8 +6,6 @@ import BodyBuddy.demo.global.common.member.repository.MemberRepository;
 import BodyBuddy.demo.global.common.member.DTO.MemberDTO;
 import BodyBuddy.demo.global.common.member.DTO.MemberDTO.MemberInquiry;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +21,7 @@ public class TrainerService {
 
   public Page<MemberInquiry> getTrainerMembers(Long trainerId, int page, int size) {
     Trainer trainer = trainerRepository.findById(trainerId)
-        .orElseThrow(() -> new EntityNotFoundException("Trainer not found"));
+        .orElseThrow(() -> new EntityNotFoundException("트레이너 사망"));
 
     Pageable pageable = PageRequest.of(page, size);
 

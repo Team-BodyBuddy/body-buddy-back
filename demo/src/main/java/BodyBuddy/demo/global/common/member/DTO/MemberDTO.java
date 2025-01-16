@@ -23,9 +23,21 @@ public class MemberDTO {
   public static class Response{
     private Long id;
     private String nickName;
-    private String realName;
+    private String profileImage;
     private Long level;
     private Long exp;
   }
+
+  @Getter
+  @Builder
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class MemberInquiry{
+    private Long id;
+    private String realName;
+    private String profileImage;
+    private Long level;
+  }
+
 
 }

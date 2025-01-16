@@ -39,6 +39,9 @@ public class Member {
 
     private Long weight;
 
+    //프로필 이미지
+    private String profileImage;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

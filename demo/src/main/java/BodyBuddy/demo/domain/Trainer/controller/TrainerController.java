@@ -27,8 +27,8 @@ public class TrainerController {
 
   @Operation(summary = "메인페이지에서 회원 조회", description = "메인 페이지에서 회원 조회")
   @GetMapping("/{trainerId}/members")
-  public ResponseEntity<List<MemberDTO.Response>> getTrainerMembers(@PathVariable Long trainerId) {
-    List<MemberDTO.Response> members = trainerService.getTrainerMembers(trainerId);
+  public ResponseEntity<List<MemberDTO.MemberInquiry>> getTrainerMembers(@PathVariable Long trainerId) {
+    List<MemberDTO.MemberInquiry> members = trainerService.getTrainerMembers(trainerId);
     return ResponseEntity.ok(members);
   }
 

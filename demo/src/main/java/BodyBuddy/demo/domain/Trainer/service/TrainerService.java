@@ -15,15 +15,16 @@ public class TrainerService {
 
   private final TrainerRepository trainerRepository;
 
-  public List<MemberDTO.Response> getTrainerMembers(Long trainerId) {
+  public List<MemberDTO.MemberInquiry> getTrainerMembers(Long trainerId) {
     Trainer trainer = trainerRepository.findById(trainerId)
         .orElseThrow(() -> new EntityNotFoundException("트레이너가 없습니다"));
 
     return trainer.getMembers().stream()
-        .map(member -> MemberDTO.Response.builder()
+        .map(member -> MemberDTO.MemberInquiry.builder()
             .id(member.getId())
             .realName(member.getRealName())
             .level(member.getLevel())
+            .profileImage(member.getProfileImage())
             .build())
         .collect(Collectors.toList());
   }

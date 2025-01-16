@@ -1,5 +1,6 @@
 package BodyBuddy.demo.global.common.member.entity;
 
+import BodyBuddy.demo.domain.Trainer.entity.Trainer;
 import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.inBody.entity.InBody;
 import BodyBuddy.demo.domain.memberItem.entity.MemberItem;
@@ -62,5 +63,10 @@ public class Member {
     @JsonIgnore
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberItem> memberItems = new ArrayList<>();
+
+    //회원 트레이너 관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trainer_id")
+    private Trainer trainer;
 
 }

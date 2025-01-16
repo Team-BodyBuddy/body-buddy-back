@@ -2,13 +2,16 @@ package BodyBuddy.demo.domain.Trainer.controller;
 
 import BodyBuddy.demo.domain.Trainer.service.TrainerService;
 import BodyBuddy.demo.global.common.member.DTO.MemberDTO;
+import BodyBuddy.demo.global.common.member.DTO.MemberDTO.MemberInquiry;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,8 +30,11 @@ public class TrainerController {
 
   @Operation(summary = "메인페이지에서 회원 조회", description = "메인 페이지에서 회원 조회")
   @GetMapping("/{trainerId}/members")
-  public ResponseEntity<List<MemberDTO.MemberInquiry>> getTrainerMembers(@PathVariable Long trainerId) {
-    List<MemberDTO.MemberInquiry> members = trainerService.getTrainerMembers(trainerId);
+  public ResponseEntity<Page<MemberDTO.MemberInquiry>> getTrainerMembers
+  (@PathVariable Long trainerId,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "12") int size) {
+    Page<MemberInquiry> members = trainerService.getTrainerMembers(trainerId, page, size);
     return ResponseEntity.ok(members);
   }
 

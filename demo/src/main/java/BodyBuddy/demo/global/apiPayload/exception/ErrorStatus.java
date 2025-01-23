@@ -1,4 +1,4 @@
-package BodyBuddy.demo.global.exception;
+package BodyBuddy.demo.global.apiPayload.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

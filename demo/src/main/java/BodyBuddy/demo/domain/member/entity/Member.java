@@ -56,7 +56,6 @@ public class Member {
 
 	private String nickname; // 닉네임
 	private String realName; // 실명
-	private Long level; // 회원 레벨
 	private Float height; // 키 (cm)
 	private Float weight; // 몸무게 (kg)
 

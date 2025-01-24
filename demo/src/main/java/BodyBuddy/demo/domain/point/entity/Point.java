@@ -32,7 +32,7 @@ public class Point {
 	private Member member;
 
 	@Column(nullable = false)
-	private long amount;
+	private Long amount;
 
 	private String description;
 

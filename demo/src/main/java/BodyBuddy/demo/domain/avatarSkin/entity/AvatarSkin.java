@@ -33,8 +33,6 @@ public class AvatarSkin {
 
 	private String imagePath;
 
-	private String description;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "avatar_id", nullable = false)   //FK 컬럼 이름
 	private Avatar avatar;

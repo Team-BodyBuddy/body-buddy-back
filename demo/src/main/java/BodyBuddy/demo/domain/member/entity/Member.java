@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import BodyBuddy.demo.domain.dailyEvaluation.entity.DailyEvaluation;
 import BodyBuddy.demo.domain.memberItem.entity.MemberItem;
-import BodyBuddy.demo.domain.point.entity.Point;
 import BodyBuddy.demo.domain.routine.entity.Routine;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainerCalendar.entity.TrainerCalendar;
@@ -29,6 +28,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -70,17 +70,14 @@ public class Member {
 	@JoinColumn(name = "trainer_id")
 	private Trainer trainer;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Point> points = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<MemberItem> items = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Avatar> avatars = new ArrayList<>();
+	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Avatar avatar;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -95,7 +92,6 @@ public class Member {
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Routine> routines = new ArrayList<>();
-
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TrainerCalendar> trainerCalendars = new ArrayList<>();

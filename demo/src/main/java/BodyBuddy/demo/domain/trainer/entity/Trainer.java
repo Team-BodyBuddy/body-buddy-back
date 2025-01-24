@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import BodyBuddy.demo.domain.badge.entity.Badge;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.global.common.commonEnum.Gender;
@@ -50,7 +51,6 @@ public class Trainer {
 
 	private int badgeCount; // 뱃지 개수
 
-	private String realName; // 실명
 	private Float height; // 키 (cm)
 	private Float weight; // 몸무게 (kg)
 
@@ -60,6 +60,9 @@ public class Trainer {
 
 	@OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Member> members = new ArrayList<>();
+
+	@OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Badge> badges=new ArrayList<>();
 
 	@PrePersist
 	public void createUuid() {

@@ -15,7 +15,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,8 +39,14 @@ public class Avatar {
 
 	private Long exp;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", nullable = false)   //FK 컬럼 이름
+	private Long point;
+
+	private Long rankingScore; // 나의 랭킹 점수
+
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId // This ensures Avatar ID is the same as Member ID
+	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
 	@JsonIgnore

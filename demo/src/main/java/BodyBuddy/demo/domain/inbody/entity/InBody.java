@@ -41,6 +41,5 @@ public class InBody {
 	// updatable = false -> update 쿼리 실행 시 createdAt필드 변경 X
 	private LocalDateTime createdAt = LocalDateTime.now();
 
-	private String pdfFileName; // 업로드된 PDF 파일 이름
 
 }

@@ -27,6 +27,9 @@ public class SignUpRequestDto {
         )
         private final String password;
 
+        @NotBlank(message = "비밀번호 확인은 필수 입력 항목입니다.")
+        private final String confirmPassword;
+
         @NotBlank(message = "닉네임은 필수 입력 항목입니다.")
         private final String nickname;
 
@@ -77,6 +80,9 @@ public class SignUpRequestDto {
                 message = "비밀번호는 8~12자, 영문, 숫자, 특수문자를 포함해야 합니다."
         )
         private final String password;
+
+        @NotBlank(message = "비밀번호 확인은 필수 입력 항목입니다.")
+        private final String confirmPassword;
 
         @NotBlank(message = "실명은 필수 입력 항목입니다.")
         private final String realName;

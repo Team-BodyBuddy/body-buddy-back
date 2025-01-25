@@ -28,6 +28,12 @@ public class MemberService {
      * 일반 회원(Member) 회원가입
      */
     public void signupMember(SignUpRequestDto.MemberSignupRequest request) {
+
+        // 비밀번호 확인
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new IllegalArgumentException("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        }
+
         // ID 및 닉네임 중복 체크
         if (memberRepository.existsByLoginId(request.getLoginId())) {
             throw new IllegalArgumentException("이미 사용 중인 ID입니다.");
@@ -50,6 +56,12 @@ public class MemberService {
      * 트레이너(Trainer) 회원가입
      */
     public void signupTrainer(SignUpRequestDto.TrainerSignupRequest request) {
+
+        // 비밀번호 확인
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new IllegalArgumentException("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        }
+
         // ID 중복 체크
         if (trainerRepository.existsByLoginId(request.getLoginId())) {
             throw new IllegalArgumentException("이미 사용 중인 ID입니다.");

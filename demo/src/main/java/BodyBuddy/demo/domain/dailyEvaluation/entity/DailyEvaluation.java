@@ -46,5 +46,29 @@ public class DailyEvaluation {
 	@JoinColumn(name = "calendar_id", nullable = false, unique = true)
 	private Calendar calendar;
 
+	/**
+	 * == 도메인 메서드 ==
+	 * 평가 상태 변경
+	 */
+	public void changeEvaluationStatus(EvaluationStatus newStatus) {
+		this.evaluation = newStatus;
+	}
+
+
+	public void setCalendar(Calendar calendar) {
+		this.calendar = calendar;
+	}
+
+	/**
+	 * DailyEvaluation 생성 시 초기화
+	 */
+	public static DailyEvaluation createDailyEvaluation(Calendar calendar, Member member, LocalDate date, EvaluationStatus evaluation) {
+		return DailyEvaluation.builder()
+			.calendar(calendar)
+			.member(member)
+			.date(date)
+			.evaluation(evaluation)
+			.build();
+	}
 
 }

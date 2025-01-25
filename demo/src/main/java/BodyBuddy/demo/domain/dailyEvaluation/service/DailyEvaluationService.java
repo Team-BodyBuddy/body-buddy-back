@@ -6,6 +6,7 @@ import BodyBuddy.demo.domain.calendar.dto.CalendarResponse;
 import BodyBuddy.demo.domain.calendar.entity.Calendar;
 import BodyBuddy.demo.domain.calendar.repository.CalendarRepository;
 import BodyBuddy.demo.domain.calendar.service.CalendarService;
+import BodyBuddy.demo.domain.dailyEvalExpr.service.DailyEvalExprService;
 import BodyBuddy.demo.domain.dailyEvaluation.dto.DailyEvaluationRequestDto;
 import BodyBuddy.demo.domain.dailyEvaluation.dto.DailyEvaluationResponseDto;
 import BodyBuddy.demo.domain.dailyEvaluation.entity.DailyEvaluation;
@@ -26,6 +27,7 @@ public class DailyEvaluationService {
 	private final CalendarRepository calendarRepository;
 	private final DailyEvaluationRepository dailyEvaluationRepository;
 	private final MemberRepository memberRepository;
+	private final DailyEvalExprService dailyEvalExprService;
 
 	/**
 	 * 오늘의 평가 상태 설정
@@ -50,6 +52,9 @@ public class DailyEvaluationService {
 		// 저장
 		dailyEvaluationRepository.save(evaluation);
 		calendarRepository.save(calendar);
+
+		// 연속 평가 및 아바타 점수 업데이트
+		dailyEvalExprService.updateStreakAndAvatar(member, dto.date());
 
 		return CalendarResponse.from(calendar);
 	}

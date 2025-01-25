@@ -34,4 +34,18 @@ public class DailyEvalExpr {
 
 	private LocalDate lastEvaluatedDate; // 마지막 평가 날짜
 
+
+	public void incrementStreak() {
+		this.currentStreak += 1;
+	}
+
+
+	public void resetStreak() {
+		this.currentStreak = 1;
+	}
+
+
+	public void updateLastEvaluatedDate(LocalDate date) {
+		this.lastEvaluatedDate = date;
+	}
 }

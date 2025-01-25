@@ -48,5 +48,20 @@ public class Routine {
 	@Column(nullable = false)
 	private Boolean completed = false;
 
+	public void complete() {
+		this.completed = true;
+	}
+
+	public void uncomplete() {
+		this.completed = false;
+	}
+
+	public void changeName(String newName) {
+		this.name = newName;
+	}
+
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
 
 }

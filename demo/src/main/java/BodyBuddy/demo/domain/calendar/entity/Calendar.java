@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import BodyBuddy.demo.domain.calendar.dto.CalendarDayInfo;
+import BodyBuddy.demo.domain.dailyEvaluation.entity.DailyEvaluation;
 import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.global.common.commonEnum.EvaluationStatus;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,5 +48,29 @@ public class Calendar {
 	@Enumerated(EnumType.STRING)
 	private CalendarDayInfo.IndicatorType indicator = CalendarDayInfo.IndicatorType.NONE; // 점 상태 (NONE이 기본값)
 
+	@OneToOne(mappedBy = "calendar", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private DailyEvaluation dailyEvaluation;
+
+
+    //캘린더의 Indicator(점 상태) 변경
+	public void changeIndicator(CalendarDayInfo.IndicatorType newIndicator) {
+		this.indicator = newIndicator;
+	}
+
+
+	//오늘의 평가 변경
+	public void changeEvaluationStatus(EvaluationStatus newStatus) {
+		this.evaluationStatus = newStatus;
+	}
+
+	// 캘린더가 처음 생성될 때 필요한 정적 팩토리 메서드를 추가할 수도 있음
+	public static Calendar createCalendar(Member member, LocalDate date) {
+		return Calendar.builder()
+			.member(member)
+			.date(date)
+			.evaluationStatus(EvaluationStatus.NONE)
+			.indicator(CalendarDayInfo.IndicatorType.NONE)
+			.build();
+	}
 
 }

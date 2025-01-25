@@ -51,26 +51,35 @@ public class Calendar {
 	@OneToOne(mappedBy = "calendar", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private DailyEvaluation dailyEvaluation;
 
-
-    //캘린더의 Indicator(점 상태) 변경
 	public void changeIndicator(CalendarDayInfo.IndicatorType newIndicator) {
 		this.indicator = newIndicator;
 	}
 
-
-	//오늘의 평가 변경
-	public void changeEvaluationStatus(EvaluationStatus newStatus) {
-		this.evaluationStatus = newStatus;
+	/**
+	 * DailyEvaluation 설정
+	 */
+	public void setDailyEvaluation(DailyEvaluation evaluation) {
+		if (evaluation == null) {
+			if (this.dailyEvaluation != null) {
+				this.dailyEvaluation.setCalendar(null);
+			}
+		} else {
+			evaluation.setCalendar(this);
+		}
+		this.dailyEvaluation = evaluation;
 	}
 
-	// 캘린더가 처음 생성될 때 필요한 정적 팩토리 메서드를 추가할 수도 있음
+
+	/**
+	 * 캘린더 생성 시 초기화
+	 */
 	public static Calendar createCalendar(Member member, LocalDate date) {
 		return Calendar.builder()
 			.member(member)
 			.date(date)
-			.evaluationStatus(EvaluationStatus.NONE)
 			.indicator(CalendarDayInfo.IndicatorType.NONE)
 			.build();
 	}
+
 
 }

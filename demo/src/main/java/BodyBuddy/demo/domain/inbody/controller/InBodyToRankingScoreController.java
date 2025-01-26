@@ -7,13 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/ranking-score")
+@RequestMapping("/api/inbody")
 @RequiredArgsConstructor
 public class InBodyToRankingScoreController {
 
     private final InBodyToRankingScoreService inBodyToRankingScoreService;
 
-    @PostMapping("/{memberId}")
+    @PostMapping("/ranking-score/{memberId}")
     public ResponseEntity<InBodyToRankingScoreDTO> updateRankingScore(@PathVariable Long memberId) {
         InBodyToRankingScoreDTO inBodyToRankingScoreDTO = inBodyToRankingScoreService.calculateAndSaveRankingScore(memberId);
         return ResponseEntity.ok(inBodyToRankingScoreDTO);

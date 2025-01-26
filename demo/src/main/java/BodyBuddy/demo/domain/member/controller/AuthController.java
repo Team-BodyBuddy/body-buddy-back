@@ -19,7 +19,7 @@ public class AuthController {
     /**
      * 일반 회원 회원가입
      */
-    @PostMapping("/signup/member")
+    @PostMapping("/members/signup")
     public ResponseEntity<String> signupMember(@Valid @RequestBody SignUpRequestDto.MemberSignupRequest request) {
         memberService.signupMember(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("일반 회원 가입이 완료되었습니다.");
@@ -28,7 +28,7 @@ public class AuthController {
     /**
      * 트레이너 회원가입
      */
-    @PostMapping("/signup/trainer")
+    @PostMapping("/trainer/signup")
     public ResponseEntity<String> signupTrainer(@Valid @RequestBody SignUpRequestDto.TrainerSignupRequest request) {
         memberService.signupTrainer(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("트레이너 회원 가입이 완료되었습니다.");
@@ -41,15 +41,6 @@ public class AuthController {
     public ResponseEntity<String> login(@Valid @RequestBody SignUpRequestDto.MemberLoginRequest request) {
         String token = memberService.login(request);
         return ResponseEntity.ok(token);
-    }
-
-    /**
-     * 로그아웃
-     */
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout() {
-        memberService.logout();
-        return ResponseEntity.ok("로그아웃 되었습니다. 클라이언트 토큰을 삭제해주세요.");
     }
 
     /**

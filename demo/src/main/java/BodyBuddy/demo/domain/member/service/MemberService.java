@@ -108,13 +108,6 @@ public class MemberService {
     }
 
     /**
-     * 로그아웃 처리 (서버 작업 없음)
-     */
-    public void logout() {
-        // 클라이언트에서 JWT 삭제 처리
-    }
-
-    /**
      * 회원 탈퇴 (일반 회원 및 트레이너 구분)
      */
     public void deleteUser(String loginId) {

@@ -14,19 +14,24 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/gym")
+@RequestMapping("/api/gyms")
 public class GymController {
 
     private final GymRepository gymRepository;
 
     @GetMapping("/regions")
-    public ResponseEntity<List<Region>> getRegions() {
+    public ResponseEntity<List<Region>> getAllRegions() {
         return ResponseEntity.ok(List.of(Region.values()));
     }
 
-    @GetMapping("/by-region")
-    public ResponseEntity<List<Gym>> getGymsByRegion(@RequestParam Region region) {
-        List<Gym> gyms = gymRepository.findByRegion(region);
+    @GetMapping
+    public ResponseEntity<List<Gym>> getGymsByRegion(@RequestParam(required = false) Region region) {
+        List<Gym> gyms;
+        if (region != null) {
+            gyms = gymRepository.findByRegion(region);
+        } else {
+            gyms = gymRepository.findAll(); // 모든 체육관을 조회하는 메서드가 필요합니다.
+        }
         return ResponseEntity.ok(gyms);
     }
 }

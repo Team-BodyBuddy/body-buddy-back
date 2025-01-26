@@ -48,5 +48,8 @@ public class Routine {
 	@Column(nullable = false)
 	private Boolean completed = false;
 
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
 
 }

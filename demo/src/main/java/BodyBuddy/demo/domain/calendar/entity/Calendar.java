@@ -59,11 +59,9 @@ public class Calendar {
 	 * DailyEvaluation 설정
 	 */
 	public void setDailyEvaluation(DailyEvaluation evaluation) {
-		if (evaluation == null) {
-			if (this.dailyEvaluation != null) {
-				this.dailyEvaluation.setCalendar(null);
-			}
-		} else {
+		if (evaluation == null && this.dailyEvaluation != null) {
+			this.dailyEvaluation.setCalendar(null);
+		} else if (evaluation != null) {
 			evaluation.setCalendar(this);
 		}
 		this.dailyEvaluation = evaluation;

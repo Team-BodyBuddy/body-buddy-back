@@ -52,7 +52,7 @@ public class RoutineService {
 			.map(Routine::getType)
 			.toList();
 
-		CalendarDayInfo.IndicatorType newIndicator = calendarService.calculateNewIndicatorBasedOnRoutines(routineTypes);
+		CalendarDayInfo.IndicatorType newIndicator = calendarService.calculateIndicators(routineTypes);
 		calendar.changeIndicator(newIndicator);
 
 		// 5. Indicator 업데이트 및 저장
@@ -88,7 +88,7 @@ public class RoutineService {
 			.map(Routine::getType)
 			.toList();
 
-		CalendarDayInfo.IndicatorType recalculated = calendarService.calculateNewIndicatorBasedOnRoutines(remainingRoutineTypes);
+		CalendarDayInfo.IndicatorType recalculated = calendarService.calculateIndicators(remainingRoutineTypes);
 		calendar.changeIndicator(recalculated);
 
 		// 6. Indicator 업데이트 및 저장

@@ -81,7 +81,7 @@ public class CalendarService {
 	/**
 	 * Indicator 계산 로직 (Routine 추가/삭제 시 호출)
 	 */
-	public CalendarDayInfo.IndicatorType calculateNewIndicatorBasedOnRoutines(List<RoutineType> routineTypes) {
+	public CalendarDayInfo.IndicatorType calculateIndicators(List<RoutineType> routineTypes) {
 		boolean hasClass = routineTypes.contains(RoutineType.CLASS);
 		boolean hasRoutine = routineTypes.contains(RoutineType.ROUTINE);
 

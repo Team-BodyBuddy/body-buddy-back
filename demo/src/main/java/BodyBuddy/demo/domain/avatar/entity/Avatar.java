@@ -52,6 +52,18 @@ public class Avatar {
 	@OneToMany(mappedBy = "avatar", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<AvatarSkin> avatarSkins = new ArrayList<>();
 
+	public void addExp(long amount) {
+		this.exp += amount;
+	}
+
+	public void addPoint(long amount) {
+		this.point += amount;
+	}
+
+	public void addRankingScore(long amount) {
+		this.rankingScore += amount;
+	}
+
 	public void updateRankingScore(int additionalScore) {
 		this.rankingScore += additionalScore;
 	}

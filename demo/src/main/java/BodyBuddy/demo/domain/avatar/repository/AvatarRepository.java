@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
-
+// @ JpaRepository 사용시 @Repository 에너테이션 필요 없어서 삭제했습니다.
 public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 
     Page<Avatar> findAllByOrderByRankingScoreDesc(Pageable pageable);

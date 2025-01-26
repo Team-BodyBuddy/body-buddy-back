@@ -2,6 +2,7 @@ package BodyBuddy.demo.domain.dailyEvalExpr.entity;
 
 import java.time.LocalDate;
 
+import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.member.entity.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,4 +35,18 @@ public class DailyEvalExpr {
 
 	private LocalDate lastEvaluatedDate; // 마지막 평가 날짜
 
+
+	public void incrementStreak() {
+		this.currentStreak += 1;
+	}
+
+
+	public void resetStreak() {
+		this.currentStreak = 1;
+	}
+
+
+	public void updateLastEvaluatedDate(LocalDate date) {
+		this.lastEvaluatedDate = date;
+	}
 }

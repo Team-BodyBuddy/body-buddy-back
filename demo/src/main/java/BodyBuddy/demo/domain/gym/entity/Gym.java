@@ -5,6 +5,7 @@ import java.util.List;
 
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.global.common.commonEnum.Region;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +39,7 @@ public class Gym {
 	@Column(nullable = false)
 	private Region region; // 지역
 
+	@JsonIgnore // 순환 참조 방지
 	@OneToMany(mappedBy = "gym", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Trainer> trainers= new ArrayList<>();; // 해당 체육관의 트레이너 리스트
 }

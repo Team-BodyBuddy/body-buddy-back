@@ -2,6 +2,7 @@ package BodyBuddy.demo.domain.dailyEvalExpr.entity;
 
 import java.time.LocalDate;
 
+import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.member.entity.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,8 +28,8 @@ public class DailyEvalExpr {
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", nullable = false, unique = true)
-	private Member member;
+	@JoinColumn(name = "avatar_id", nullable = false, unique = true)
+	private Avatar avatar;
 
 	private int currentStreak; // 연속 수행 일수
 

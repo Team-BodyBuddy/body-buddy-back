@@ -28,7 +28,7 @@ public class AuthController {
     /**
      * 트레이너 회원가입
      */
-    @PostMapping("/trainer/signup")
+    @PostMapping("/trainers/signup")
     public ResponseEntity<String> signupTrainer(@Valid @RequestBody SignUpRequestDto.TrainerSignupRequest request) {
         memberService.signupTrainer(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("트레이너 회원 가입이 완료되었습니다.");

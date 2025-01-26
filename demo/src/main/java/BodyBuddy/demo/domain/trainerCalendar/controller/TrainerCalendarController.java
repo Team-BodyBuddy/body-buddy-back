@@ -36,13 +36,13 @@ public class TrainerCalendarController {
 	 * 특정 트레이너, 회원의 특정 날짜의 캘린더 조회
 	 */
 	@PostMapping("/date")
-	public ResponseEntity<ApiResponse<TrainerCalendarResponse>> getCalendarByDate(
+	public ResponseEntity<ApiResponse<TrainerCalendarResponse>> getOrCreateCalendarByDate(
 		@RequestParam Long trainerId,
 		@RequestParam Long memberId,
 		@RequestParam String date
 	) {
 		LocalDate parsedDate = LocalDate.parse(date);
-		TrainerCalendar calendar = trainerCalendarService.getCalendarByDate(trainerId, memberId, parsedDate);
+		TrainerCalendar calendar = trainerCalendarService.getOrCreateCalendarByDate(trainerId, memberId, parsedDate);
 		return ResponseEntity.ok(ApiResponse.onSuccess(TrainerCalendarResponse.from(calendar)));
 	}
 

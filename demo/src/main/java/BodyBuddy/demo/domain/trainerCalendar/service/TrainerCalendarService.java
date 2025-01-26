@@ -9,7 +9,9 @@ import BodyBuddy.demo.domain.classSchedule.entity.ClassSchedule;
 import BodyBuddy.demo.domain.classSchedule.repository.ClassScheduleRepository;
 import BodyBuddy.demo.domain.dailyMemo.entity.DailyMemo;
 import BodyBuddy.demo.domain.dailyMemo.repository.DailyMemoRepository;
+import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
+import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
 import BodyBuddy.demo.domain.trainerCalendar.entity.TrainerCalendar;
 import BodyBuddy.demo.domain.trainerCalendar.repository.TrainerCalendarRepository;
@@ -29,14 +31,23 @@ public class TrainerCalendarService {
 	 * 특정 트레이너, 회원의 특정 날짜의 캘린더 조회
 	 */
 	@Transactional(readOnly = true)
-	public TrainerCalendar getCalendarByDate(Long trainerId, Long memberId, LocalDate date) {
-		trainerRepository.findById(trainerId)
+	public TrainerCalendar getOrCreateCalendarByDate(Long trainerId, Long memberId, LocalDate date) {
+		Trainer trainer = trainerRepository.findById(trainerId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 트레이너가 존재하지 않습니다."));
-		memberRepository.findById(memberId)
+		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
+		// 캘린더 조회 또는 생성
 		return trainerCalendarRepository.findByTrainerIdAndMemberIdAndDate(trainerId, memberId, date)
-			.orElseThrow(() -> new IllegalArgumentException("해당 날짜의 캘린더가 존재하지 않습니다."));
+			.orElseGet(() -> {
+				TrainerCalendar newCalendar = TrainerCalendar.builder()
+					.trainer(trainer)
+					.member(member)
+					.date(date)
+					.hasClass(false)
+					.build();
+				return trainerCalendarRepository.save(newCalendar);
+			});
 	}
 
 	/**

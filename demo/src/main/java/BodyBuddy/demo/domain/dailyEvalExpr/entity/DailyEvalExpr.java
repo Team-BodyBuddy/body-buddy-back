@@ -28,11 +28,25 @@ public class DailyEvalExpr {
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "avatar_id", nullable = false, unique = true)
-	private Avatar avatar;
+	@JoinColumn(name = "member_id", nullable = false, unique = true)
+	private Member member;
 
 	private int currentStreak; // 연속 수행 일수
 
 	private LocalDate lastEvaluatedDate; // 마지막 평가 날짜
 
+
+	public void incrementStreak() {
+		this.currentStreak += 1;
+	}
+
+
+	public void resetStreak() {
+		this.currentStreak = 1;
+	}
+
+
+	public void updateLastEvaluatedDate(LocalDate date) {
+		this.lastEvaluatedDate = date;
+	}
 }

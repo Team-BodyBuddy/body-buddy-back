@@ -2,6 +2,8 @@ package BodyBuddy.demo.domain.member.controller;
 
 import BodyBuddy.demo.domain.member.dto.SignUpRequestDto;
 import BodyBuddy.demo.domain.member.service.MemberService;
+import BodyBuddy.demo.global.apiPayload.ApiResponse;
+import BodyBuddy.demo.global.apiPayload.code.status.SuccessStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,35 +22,35 @@ public class AuthController {
      * 일반 회원 회원가입
      */
     @PostMapping("/members/signup")
-    public ResponseEntity<String> signupMember(@Valid @RequestBody SignUpRequestDto.MemberSignupRequest request) {
+    public ApiResponse<Void> signupMember(@Valid @RequestBody SignUpRequestDto.MemberSignupRequest request) {
         memberService.signupMember(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("일반 회원 가입이 완료되었습니다.");
+        return ApiResponse.of(SuccessStatus.SIGNUP_SUCCESS, null);
     }
 
     /**
      * 트레이너 회원가입
      */
     @PostMapping("/trainers/signup")
-    public ResponseEntity<String> signupTrainer(@Valid @RequestBody SignUpRequestDto.TrainerSignupRequest request) {
+    public ApiResponse<Void> signupTrainer(@Valid @RequestBody SignUpRequestDto.TrainerSignupRequest request) {
         memberService.signupTrainer(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("트레이너 회원 가입이 완료되었습니다.");
+        return ApiResponse.of(SuccessStatus.SIGNUP_SUCCESS, null);
     }
 
     /**
      * 로그인
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody SignUpRequestDto.MemberLoginRequest request) {
+    public ApiResponse<String> login(@Valid @RequestBody SignUpRequestDto.MemberLoginRequest request) {
         String token = memberService.login(request);
-        return ResponseEntity.ok(token);
+        return ApiResponse.of(SuccessStatus.LOGIN_SUCCESS, token);
     }
 
     /**
      * 회원 탈퇴
      */
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteUser(@RequestParam String loginId) {
+    public ApiResponse<Void> deleteUser(@RequestParam String loginId) {
         memberService.deleteUser(loginId);
-        return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
+        return ApiResponse.of(SuccessStatus.DELETE_ACCOUNT_SUCCESS, null);
     }
 }

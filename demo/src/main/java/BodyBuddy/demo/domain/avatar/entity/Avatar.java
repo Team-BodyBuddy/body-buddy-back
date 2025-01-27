@@ -14,7 +14,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -65,4 +64,17 @@ public class Avatar {
 		this.rankingScore += amount;
 	}
 
+	public void updateRankingScore(int additionalScore) {
+		this.rankingScore += additionalScore;
+	}
+
+	public void updatePointsAndExp(int additionalPoints, int additionalExp) {
+		this.point = (this.point == null ? 0 : this.point) + additionalPoints;
+		this.exp = (this.exp == null ? 0 : this.exp) + additionalExp;
+	}
+
+	// 랭킹 스코어를 설정하는 메서드
+	public void setRankingScore(Long rankingScore) {
+		this.rankingScore = rankingScore;
+	}
 }

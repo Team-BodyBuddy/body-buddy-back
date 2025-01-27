@@ -1,7 +1,9 @@
 package BodyBuddy.demo.domain.member.service;
 
+import BodyBuddy.demo.domain.avatar.service.AvatarService;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.gym.repository.GymRepository;
+import BodyBuddy.demo.domain.gym.service.GymService;
 import BodyBuddy.demo.domain.member.converter.MemberConverter;
 import BodyBuddy.demo.domain.member.dto.SignUpRequestDto;
 import BodyBuddy.demo.domain.member.entity.Member;
@@ -20,9 +22,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final TrainerRepository trainerRepository;
     private final GymRepository gymRepository;
+    private final GymService gymService;
     private final MemberConverter memberConverter;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AvatarService avatarService;
 
     /**
      * 일반 회원(Member) 회원가입
@@ -43,13 +47,17 @@ public class MemberService {
         }
 
         // 헬스장 검증 및 DTO → 엔티티 변환
-        Gym gym = gymRepository.findById(request.getGymId())
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 헬스장입니다."));
+        Gym gym = gymService.validateGym(request.getGymId());
         Member member = memberConverter.toMemberEntity(request, gym);
 
         // 비밀번호 암호화 및 저장
         member.setPassword(passwordEncoder.encode(member.getPassword()));
-        memberRepository.save(member);
+
+        // 회원 저장
+        Member savedMember = memberRepository.save(member);
+
+        // 아바타 생성 및 초기값 설정
+        avatarService.createDefaultAvatar(savedMember);
     }
 
     /**
@@ -68,8 +76,7 @@ public class MemberService {
         }
 
         // 헬스장 검증 및 DTO → 엔티티 변환
-        Gym gym = gymRepository.findById(request.getGymId())
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 헬스장입니다."));
+        Gym gym = gymService.validateGym(request.getGymId());
         Trainer trainer = memberConverter.toTrainerEntity(request, gym);
 
         // 비밀번호 암호화 및 저장
@@ -114,7 +121,7 @@ public class MemberService {
         // 일반 회원(Member) 탈퇴
         if (memberRepository.existsByLoginId(loginId)) {
             Member member = memberRepository.findByLoginId(loginId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
             memberRepository.delete(member);
             return;
         }
@@ -122,7 +129,7 @@ public class MemberService {
         // 트레이너(Trainer) 탈퇴
         if (trainerRepository.existsByLoginId(loginId)) {
             Trainer trainer = trainerRepository.findByLoginId(loginId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 트레이너입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 트레이너입니다."));
             trainerRepository.delete(trainer);
             return;
         }

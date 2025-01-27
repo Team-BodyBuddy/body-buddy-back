@@ -72,4 +72,9 @@ public class Avatar {
 		this.point = (this.point == null ? 0 : this.point) + additionalPoints;
 		this.exp = (this.exp == null ? 0 : this.exp) + additionalExp;
 	}
+
+	// 랭킹 스코어를 설정하는 메서드
+	public void setRankingScore(Long rankingScore) {
+		this.rankingScore = rankingScore;
+	}
 }

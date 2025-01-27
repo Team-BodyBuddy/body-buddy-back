@@ -36,7 +36,17 @@ public class RankingUpdateService {
             rank++;
         }
 
+        // 모든 회원의 랭킹 스코어를 0으로 초기화
+        resetRankingScores(avatars);
+
         return responses;
+    }
+
+    private void resetRankingScores(List<Avatar> avatars) {
+        for (Avatar avatar : avatars) {
+            avatar.setRankingScore(0L); // 랭킹 스코어를 0으로 설정
+            avatarRepository.save(avatar);
+        }
     }
 
     private int calculatePoints(int rank) {

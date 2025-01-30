@@ -28,37 +28,19 @@ public class CalendarService {
 	private final MemberRepository memberRepository;
 
 	/**
-	 * 특정 회원의 전체 달력 조회
+	 * 특정 날짜의 캘린더 조회 또는 생성
 	 */
 	@Transactional(readOnly = true)
-	public List<CalendarResponse> getCalendar(Long memberId) {
-
-		Member member=memberRepository.findById(memberId)
+	public Calendar getOrCreateCalendarByDate(Long memberId, LocalDate date) {
+		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
-		List<Calendar> calendars = calendarRepository.findByMemberId(memberId);
-		return calendars.stream()
-			.map(CalendarResponse::from)
-			.collect(Collectors.toList());
+		return calendarRepository.findByMemberIdAndDate(member.getId(), date)
+			.orElseGet(() -> {
+				Calendar newCalendar = Calendar.createCalendar(member, date);
+				return calendarRepository.save(newCalendar);
+			});
 	}
-
-	/**
-	 * 특정 달의 캘린더 데이터 조회
-	 */
-	public List<CalendarResponse> getCalendarByMonth(Long memberId, YearMonth yearMonth) {
-		Member member=memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
-
-		LocalDate startDate = yearMonth.atDay(1);
-		LocalDate endDate = yearMonth.atEndOfMonth();
-
-		List<Calendar> calendars = calendarRepository.findByMemberIdAndDateBetween(memberId, startDate, endDate);
-
-		return calendars.stream()
-			.map(CalendarResponse::from)
-			.collect(Collectors.toList());
-	}
-
 
 
 	/**

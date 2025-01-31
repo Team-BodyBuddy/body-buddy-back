@@ -18,10 +18,10 @@ public enum SuccessStatus implements BaseCode {
 	LOGIN_SUCCESS(HttpStatus.OK, "AUTH2000", "로그인 성공입니다."),
 
 	// 회원가입 관련 응답
-	SIGNUP_SUCCESS(HttpStatus.OK,"AUTH2010", "회원가입 성공입니다."),
+	SIGNUP_SUCCESS(HttpStatus.OK, "AUTH2010", "회원가입 성공입니다."),
 
 	// 회원 탈퇴 관련 응답
-	DELETE_ACCOUNT_SUCCESS(HttpStatus.OK,"AUTH2020", "회원 탈퇴 성공입니다."),
+	DELETE_ACCOUNT_SUCCESS(HttpStatus.OK, "AUTH2020", "회원 탈퇴 성공입니다."),
 
 	// 랭킹 관련 응답
 	RANKINGSUCCESS(HttpStatus.OK, "RANKING2000", "랭킹 조회 성공입니다."),
@@ -31,8 +31,12 @@ public enum SuccessStatus implements BaseCode {
 	//헬스장 관련 응답
 	GYMSUCCESS(HttpStatus.OK, "GYM200", "체육관 조회 성공입니다."),
 
+	//트레이너 관련 응답
+	TRAINERS_BY_GYM_SUCCESS(HttpStatus.OK, "TRAINER200", "트레이너 조회 성공입니다."),
+
 	//지역 관련 응답
-	REGIONSUCCESS(HttpStatus.OK, "REGION200", "지역 조회 성공입니다.");
+	REGIONSUCCESS(HttpStatus.OK, "REGION200", "지역 조회 성공입니다."),
+	;
 
 
 	private final HttpStatus httpStatus;
@@ -42,20 +46,20 @@ public enum SuccessStatus implements BaseCode {
 	@Override
 	public ReasonDTO getReason() {
 		return ReasonDTO.builder()
-			.message(message)
-			.code(code)
-			.isSuccess(true)
-			.build();
+				.message(message)
+				.code(code)
+				.isSuccess(true)
+				.build();
 	}
 
 	@Override
 	public ReasonDTO getReasonHttpStatus() {
 		return ReasonDTO.builder()
-			.message(message)
-			.code(code)
-			.isSuccess(true)
-			.httpStatus(httpStatus)
-			.build()
-			;
+				.message(message)
+				.code(code)
+				.isSuccess(true)
+				.httpStatus(httpStatus)
+				.build()
+				;
 	}
 }

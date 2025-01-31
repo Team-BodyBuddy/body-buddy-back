@@ -1,13 +1,10 @@
 package BodyBuddy.demo.domain.member.service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import BodyBuddy.demo.domain.gym.dto.GymResponseDto;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.gym.repository.GymRepository;
 import BodyBuddy.demo.domain.matchingAuthentication.entity.MatchingAuthentication;
@@ -19,13 +16,12 @@ import BodyBuddy.demo.domain.member.repository.MemberRepository;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
 import BodyBuddy.demo.global.common.commonEnum.AuthenticationRequest;
-import BodyBuddy.demo.global.common.commonEnum.Region;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class MyPageService {
+public class MemberMyPageService {
 
 	private final MemberRepository memberRepository;
 	private final TrainerRepository trainerRepository;
@@ -43,25 +39,6 @@ public class MyPageService {
 		return MyPageResponseDto.from(member);
 	}
 
-	/**
-	 * 지역 리스트 반환
-	 */
-	public List<String> getRegions() {
-		return Arrays.stream(Region.values())
-			.map(Region::getDisplayName)
-			.toList();
-	}
-
-	/**
-	 * 지역에 따른 GYM 목록 조회
-	 */
-	@Transactional(readOnly = true)
-	public List<GymResponseDto> getGymsByRegion(Region region) {
-		return gymRepository.findByRegion(region)
-			.stream()
-			.map(GymResponseDto::from)
-			.toList();
-	}
 
 	/**
 	 * 회원 정보 수정 (지역 및 GYM 선택 포함)

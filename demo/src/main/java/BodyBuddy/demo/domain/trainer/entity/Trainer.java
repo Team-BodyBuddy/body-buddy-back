@@ -71,6 +71,9 @@ public class Trainer {
 	@Column(nullable = false, unique = true)
 	private String uuid;  // 추가적인 고유 값(랜덤 UUID)
 
+	@Column(nullable = true) // 프로필 사진 URL
+	private String profileImageUrl;
+
 	private int badgeCount; // 뱃지 개수
 
 	@ManyToOne(optional = true) // 체육관 소속 정보 (nullable)
@@ -90,5 +93,9 @@ public class Trainer {
 	@PrePersist
 	public void createUuid() {
 		this.uuid = java.util.UUID.randomUUID().toString();
+	}
+
+	public void updateProfileImage(String newProfileImageUrl) {
+		this.profileImageUrl = newProfileImageUrl;
 	}
 }

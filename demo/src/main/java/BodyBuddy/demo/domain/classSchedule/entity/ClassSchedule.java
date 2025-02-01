@@ -32,11 +32,7 @@ public class ClassSchedule {
 	@JoinColumn(name = "trainer_calendar_id", nullable = false)
 	private TrainerCalendar trainerCalendar;
 
-	public void assignCalendar(TrainerCalendar trainerCalendar) {
-		this.trainerCalendar = trainerCalendar;
-	}
-
-	public void complete() {
-		this.completed = true;
+	public void toggleCompleted() {
+		this.completed = !this.completed;
 	}
 }

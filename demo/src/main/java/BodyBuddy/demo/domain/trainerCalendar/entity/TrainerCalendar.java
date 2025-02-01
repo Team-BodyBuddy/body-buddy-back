@@ -51,13 +51,15 @@ public class TrainerCalendar {
 	@OneToOne(mappedBy = "trainerCalendar", cascade = CascadeType.ALL, orphanRemoval = true)
 	private DailyMemo dailyMemo;
 
-	public void addClassSchedule(ClassSchedule classSchedule) {
-		this.classSchedules.add(classSchedule);
-		classSchedule.assignCalendar(this);
-	}
+	// 주황색 점 여부를 나타내는 필드
+	private boolean hasClass = false;
 
 	public void setDailyMemo(DailyMemo dailyMemo) {
 		this.dailyMemo = dailyMemo;
 		dailyMemo.assignCalendar(this);
+	}
+
+	public void updateHasClass() {
+		this.hasClass = !classSchedules.isEmpty(); // 수업이 하나라도 있으면 true
 	}
 }

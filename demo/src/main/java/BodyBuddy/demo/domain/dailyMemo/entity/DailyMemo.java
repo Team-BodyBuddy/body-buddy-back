@@ -33,4 +33,8 @@ public class DailyMemo {
 	public void assignCalendar(TrainerCalendar trainerCalendar) {
 		this.trainerCalendar = trainerCalendar;
 	}
+
+	public void updateMemo(String newMemo) {
+		this.memo = newMemo;
+	}
 }

@@ -6,14 +6,18 @@ import BodyBuddy.demo.global.common.commonEnum.Region;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import lombok.NoArgsConstructor;
 
 public class SignUpRequestDto {
 
     @Getter
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Builder
     public static class MemberSignupRequest {
 
@@ -57,6 +61,8 @@ public class SignUpRequestDto {
     }
 
     @Getter
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Builder
     public static class MemberLoginRequest {
 
@@ -68,6 +74,8 @@ public class SignUpRequestDto {
     }
 
     @Getter
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Builder
     public static class TrainerSignupRequest {
 
@@ -108,6 +116,8 @@ public class SignUpRequestDto {
     }
 
     @Getter
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Builder
     public static class TrainerLoginRequest {
 

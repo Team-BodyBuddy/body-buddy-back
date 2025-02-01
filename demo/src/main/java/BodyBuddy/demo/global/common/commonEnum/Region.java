@@ -1,6 +1,7 @@
 package BodyBuddy.demo.global.common.commonEnum;
 
 public enum Region {
+	SEOUL("서울"),
 	GANGNAM("강남구"),
 	GANGDONG("강동구"),
 	GANGBUK("강북구"),

@@ -1,9 +1,9 @@
 package BodyBuddy.demo.domain.trainer.service;
 
+import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
 import BodyBuddy.demo.domain.trainer.dto.TrainerMyPageResponseDto;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;

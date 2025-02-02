@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.matchingAuthentication.service;
 
+import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -7,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import BodyBuddy.demo.domain.trainer.dto.TrainerRequestDto;
 import BodyBuddy.demo.domain.matchingAuthentication.entity.MatchingAuthentication;
-import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;

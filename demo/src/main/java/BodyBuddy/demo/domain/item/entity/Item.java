@@ -1,5 +1,9 @@
 package BodyBuddy.demo.domain.item.entity;
 
+import BodyBuddy.demo.domain.avatar.entity.Avatar;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +39,7 @@ public class Item {
 
 	private String name;
 
-	private Integer required_level;
+	private Integer requiredLevel;
 
 	@Enumerated(EnumType.STRING)
 	private ItemStatus status;
@@ -53,14 +57,13 @@ public class Item {
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<MemberItem> memberItems = new ArrayList<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "memberItem_id", nullable = false)
+	private MemberItem memberItem;
 
 	// 특정 회원이 아이템을 소유하고 있는지 확인
 	public boolean isOwnedByMember(Long memberId) {
-		return memberItems.stream()
-			.anyMatch(memberItem -> memberItem.getMember().getId().equals(memberId));
+		return this.memberItem.getAvatar().getMember().getId().equals(memberId);
 	}
 
 }

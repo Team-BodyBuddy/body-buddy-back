@@ -1,9 +1,9 @@
 package BodyBuddy.demo.global.common.commonEnum;
 
 public enum ItemStatus {
-	ACTIVE("ACTIVE"),
-	INACTIVE("INACTIVE"),
-	COMING_SOON("COMING_SOON");
+	ACTIVE("활성화"),
+	INACTIVE("비활성화"),
+	COMING_SOON("출시 예정");
 
 	private final String description;
 

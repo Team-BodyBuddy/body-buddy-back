@@ -1,5 +1,7 @@
 package BodyBuddy.demo.domain.avatar.entity;
 
+import BodyBuddy.demo.domain.memberItem.entity.MemberItem;
+import jakarta.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,4 +79,14 @@ public class Avatar {
 	public void setRankingScore(Long rankingScore) {
 		this.rankingScore = rankingScore;
 	}
+
+	// 장착 중인 스킨
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "avatarSkin_id", nullable = false)
+	private AvatarSkin avatarSkin;
+
+	// 장착 중인 아이템
+	@OneToMany(mappedBy = "avatar", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<MemberItem> wearingItems;
+
 }

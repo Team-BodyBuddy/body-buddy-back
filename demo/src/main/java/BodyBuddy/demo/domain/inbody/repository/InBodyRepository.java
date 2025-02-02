@@ -8,4 +8,6 @@ import java.util.List;
 public interface InBodyRepository extends JpaRepository<InBody, Long> {
     // 최신 두 개의 데이터를 가져오는 메서드
     List<InBody> findTop2ByMemberIdOrderByCreatedAtDesc(Long memberId);
+    List<InBody> findByMemberIdOrderByCreatedAtAsc(Long memberId);
+    List<InBody> findByMemberIdOrderByCreatedAtDesc(Long memberId);
 }

@@ -97,9 +97,6 @@ public class Member {
 	private Trainer trainer;
 
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<MemberItem> items = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)

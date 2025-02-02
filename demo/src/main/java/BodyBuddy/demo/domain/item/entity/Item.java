@@ -47,6 +47,9 @@ public class Item {
 	@Column(nullable = false)
 	private Float price;
 
+	@Column(nullable = false)
+	private String Type;
+
 	//아이템 이미지 경로
 	@Column(nullable = true) // 이미지 경로는 nullable 가능
 	private String imagePath; // 아이템 이미지 경로

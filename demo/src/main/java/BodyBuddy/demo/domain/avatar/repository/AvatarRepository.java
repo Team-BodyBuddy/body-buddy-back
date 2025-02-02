@@ -2,6 +2,7 @@ package BodyBuddy.demo.domain.avatar.repository;
 
 import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.gym.entity.Gym;
+import BodyBuddy.demo.domain.memberItem.entity.MemberItem;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,13 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
     Optional<Avatar> findByMemberId(Long memberId);
 
     List<Avatar> findAllByOrderByRankingScoreDesc();
+
+    @Query("""
+        SELECT a FROM Avatar a
+        JOIN FETCH a.avatarSkin
+        WHERE a.member.id = :memberId
+    """)
+    Optional<Avatar> findByMemberIdWithAvatarSkin(@Param("memberId") Long memberId);
 
     @Query("""
     SELECT COUNT(a) + 1

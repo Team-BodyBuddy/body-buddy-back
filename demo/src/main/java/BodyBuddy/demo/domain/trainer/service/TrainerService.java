@@ -26,7 +26,6 @@ public class TrainerService {
 
 	private final TrainerRepository trainerRepository;
 	private final MatchingAuthenticationRepository matchingAuthenticationRepository;
-  private final TrainerRepository trainerRepository;
   private final TrainerConverter trainerConverter;
 
     public TrainerResponse getTrainerDetails(Long trainerId) {

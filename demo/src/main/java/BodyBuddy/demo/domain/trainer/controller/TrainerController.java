@@ -3,13 +3,17 @@ package BodyBuddy.demo.domain.trainer.controller;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.gym.repository.GymRepository;
 import BodyBuddy.demo.domain.trainer.converter.TrainerConverter;
+import BodyBuddy.demo.domain.trainer.dto.TrainerMyPageResponseDto;
 import BodyBuddy.demo.domain.trainer.dto.TrainerResponse;
 import BodyBuddy.demo.domain.trainer.dto.TrainerResponseDto;
+import BodyBuddy.demo.domain.trainer.dto.UpdateProfileImageRequestDto;
 import BodyBuddy.demo.domain.trainer.service.TrainerService;
 import BodyBuddy.demo.global.apiPayload.ApiResponse;
 import BodyBuddy.demo.global.apiPayload.code.status.SuccessStatus;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

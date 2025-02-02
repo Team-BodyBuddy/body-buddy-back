@@ -43,7 +43,7 @@ public enum SuccessStatus implements BaseCode {
 	USERINFO_SUCCESS(HttpStatus.OK, "USER2001", "유저 정보 조회 성공입니다."),
 
 	// 인바디 관련 응답
-	INBODY_SUCCESS(HttpStatus.OK, "INBODY2040","인바디 정보 조회 성공입니다.");
+	INBODY_SUCCESS(HttpStatus.OK, "INBODY2040","인바디 정보 조회 성공입니다."),
 
 	//뱃지 관련 응답
 	BADGE_SUCCESS(HttpStatus.OK, "BADGE200", "뱃지 조회 성공입니다."),

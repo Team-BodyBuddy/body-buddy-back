@@ -19,8 +19,6 @@ public class SignUpRequestDto {
     @NoArgsConstructor(force = true)
     @AllArgsConstructor
     @Getter
-    @NoArgsConstructor(force = true)
-    @AllArgsConstructor
     @Builder
     public static class MemberSignupRequest {
 

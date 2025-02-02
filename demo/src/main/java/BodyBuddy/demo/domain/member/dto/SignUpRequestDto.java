@@ -12,12 +12,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import lombok.NoArgsConstructor;
 
 public class SignUpRequestDto {
 
     @NoArgsConstructor(force = true)
     @AllArgsConstructor
     @Getter
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Builder
     public static class MemberSignupRequest {
 
@@ -61,6 +64,8 @@ public class SignUpRequestDto {
     }
 
     @Getter
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Builder
     public static class MemberLoginRequest {
 
@@ -72,6 +77,8 @@ public class SignUpRequestDto {
     }
 
     @Getter
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Builder
     public static class TrainerSignupRequest {
 
@@ -112,6 +119,8 @@ public class SignUpRequestDto {
     }
 
     @Getter
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Builder
     public static class TrainerLoginRequest {
 

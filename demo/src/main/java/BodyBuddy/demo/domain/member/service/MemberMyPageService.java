@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.member.service;
 
+import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;

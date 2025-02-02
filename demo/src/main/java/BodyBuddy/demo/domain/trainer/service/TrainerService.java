@@ -1,5 +1,12 @@
 package BodyBuddy.demo.domain.trainer.service;
 
+import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import BodyBuddy.demo.domain.trainer.dto.TrainerMyPageResponseDto;
+import BodyBuddy.demo.domain.trainer.entity.Trainer;
+import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
 import BodyBuddy.demo.domain.trainer.converter.TrainerConverter;
 import BodyBuddy.demo.domain.trainer.dto.TrainerResponse;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
@@ -17,9 +24,10 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class TrainerService {
 
-    private final TrainerRepository trainerRepository;
-    private final TrainerConverter trainerConverter;
+	private final TrainerRepository trainerRepository;
 	private final MatchingAuthenticationRepository matchingAuthenticationRepository;
+  private final TrainerRepository trainerRepository;
+  private final TrainerConverter trainerConverter;
 
     public TrainerResponse getTrainerDetails(Long trainerId) {
         Trainer trainer = trainerRepository.findById(trainerId)

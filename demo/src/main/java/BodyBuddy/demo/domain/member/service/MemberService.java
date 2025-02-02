@@ -136,4 +136,15 @@ public class MemberService {
 
         throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
     }
+
+    /**
+     * 회원 정보 조회
+     */
+
+    public String getNicknameByMemberId(Long memberId) {
+        return memberRepository.findById(memberId)
+            .map(Member::getNickname)
+            .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+    }
+
 }

@@ -1,15 +1,5 @@
 package BodyBuddy.demo.domain.trainer.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import BodyBuddy.demo.domain.trainer.dto.TrainerMyPageResponseDto;
-import BodyBuddy.demo.domain.trainer.dto.UpdateProfileImageRequestDto;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.gym.repository.GymRepository;
 import BodyBuddy.demo.domain.trainer.converter.TrainerConverter;

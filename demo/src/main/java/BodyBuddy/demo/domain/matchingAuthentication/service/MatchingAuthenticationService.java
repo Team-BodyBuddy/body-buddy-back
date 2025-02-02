@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.matchingAuthentication.service;
 
+import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
 import java.util.List;
 
 import org.springframework.stereotype.Service;

@@ -7,6 +7,7 @@ import java.util.List;
 import BodyBuddy.demo.domain.badge.entity.Badge;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.member.entity.Member;
+import BodyBuddy.demo.domain.portfolio.entity.Portfolio;
 import BodyBuddy.demo.global.common.commonEnum.Gender;
 import BodyBuddy.demo.global.common.commonEnum.Region;
 import jakarta.persistence.CascadeType;
@@ -71,7 +72,6 @@ public class Trainer {
 	@Column(nullable = false, unique = true)
 	private String uuid;  // 추가적인 고유 값(랜덤 UUID)
 
-	private int badgeCount; // 뱃지 개수
 
 	@ManyToOne(optional = true) // 체육관 소속 정보 (nullable)
 	@JoinColumn(name = "gym_id", nullable = true)
@@ -81,7 +81,10 @@ public class Trainer {
 	private List<Member> members = new ArrayList<>();
 
 	@OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Badge> badges=new ArrayList<>();
+	private List<Badge> badges = new ArrayList<>();
+
+	@OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Portfolio> portfolios = new ArrayList<>();
 
 	public void setPassword(String password) {
 		this.password = password;

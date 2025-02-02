@@ -3,7 +3,9 @@ package BodyBuddy.demo.domain.trainer.controller;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.gym.repository.GymRepository;
 import BodyBuddy.demo.domain.trainer.converter.TrainerConverter;
+import BodyBuddy.demo.domain.trainer.dto.TrainerResponse;
 import BodyBuddy.demo.domain.trainer.dto.TrainerResponseDto;
+import BodyBuddy.demo.domain.trainer.service.TrainerService;
 import BodyBuddy.demo.global.apiPayload.ApiResponse;
 import BodyBuddy.demo.global.apiPayload.code.status.SuccessStatus;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class TrainerController {
 
     private final GymRepository gymRepository;
     private final TrainerConverter trainerConverter;
+    private final TrainerService trainerService;
 
     /**
      * 특정 헬스장에 등록된 트레이너 목록을 반환하는 API (실명 및 나이 포함)
@@ -30,5 +33,10 @@ public class TrainerController {
         List<TrainerResponseDto> trainers = trainerConverter.convertToTrainerDtoList(gym.getTrainers());
 
         return ApiResponse.of(SuccessStatus.TRAINERS_BY_GYM_SUCCESS, trainers);
+    }
+
+    @GetMapping("/{trainerId}")
+    public ApiResponse<TrainerResponse> getTrainerDetails(@PathVariable Long trainerId) {
+        return ApiResponse.of(SuccessStatus.TRAINER_INFO_SUCCESS, trainerService.getTrainerDetails(trainerId));
     }
 }

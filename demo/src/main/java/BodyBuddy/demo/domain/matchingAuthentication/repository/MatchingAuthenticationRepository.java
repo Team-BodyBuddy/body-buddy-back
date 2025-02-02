@@ -13,9 +13,3 @@ public interface MatchingAuthenticationRepository extends JpaRepository<Matching
 
 	long countByTrainerAndStatus(Trainer trainer, AuthenticationRequest status);
 }
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import BodyBuddy.demo.domain.matchingAuthentication.entity.MatchingAuthentication;
-
-public interface MatchingAuthenticationRepository extends JpaRepository<MatchingAuthentication, Long> {
-}

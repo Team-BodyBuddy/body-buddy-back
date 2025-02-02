@@ -6,13 +6,17 @@ import BodyBuddy.demo.global.common.commonEnum.Region;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 public class SignUpRequestDto {
 
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Getter
     @Builder
     public static class MemberSignupRequest {

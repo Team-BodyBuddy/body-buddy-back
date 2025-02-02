@@ -7,6 +7,7 @@ import java.util.List;
 import BodyBuddy.demo.domain.badge.entity.Badge;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.member.entity.Member;
+import BodyBuddy.demo.domain.portfolio.entity.Portfolio;
 import BodyBuddy.demo.global.common.commonEnum.Gender;
 import BodyBuddy.demo.global.common.commonEnum.Region;
 import jakarta.persistence.CascadeType;
@@ -85,6 +86,9 @@ public class Trainer {
 
 	@OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Badge> badges=new ArrayList<>();
+
+	@OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Portfolio> portfolios = new ArrayList<>();
 
 	public void setPassword(String password) {
 		this.password = password;

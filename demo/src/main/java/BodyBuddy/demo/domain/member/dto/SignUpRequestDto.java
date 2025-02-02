@@ -9,12 +9,15 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import lombok.NoArgsConstructor;
 
 public class SignUpRequestDto {
 
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
     @Getter
     @NoArgsConstructor(force = true)
     @AllArgsConstructor

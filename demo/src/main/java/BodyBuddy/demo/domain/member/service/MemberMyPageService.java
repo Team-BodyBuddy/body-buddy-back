@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.gym.repository.GymRepository;
 import BodyBuddy.demo.domain.matchingAuthentication.entity.MatchingAuthentication;
+import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
 import BodyBuddy.demo.domain.member.dto.MyPageResponseDto;
 import BodyBuddy.demo.domain.member.dto.UpdateMemberInfoRequestDto;
 import BodyBuddy.demo.domain.member.entity.Member;

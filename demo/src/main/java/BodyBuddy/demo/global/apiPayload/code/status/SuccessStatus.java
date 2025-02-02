@@ -32,7 +32,15 @@ public enum SuccessStatus implements BaseCode {
 	GYMSUCCESS(HttpStatus.OK, "GYM200", "체육관 조회 성공입니다."),
 
 	//지역 관련 응답
-	REGIONSUCCESS(HttpStatus.OK, "REGION200", "지역 조회 성공입니다.");
+	REGIONSUCCESS(HttpStatus.OK, "REGION200", "지역 조회 성공입니다."),
+
+	// 유저 응답
+	POINT_SUCCESS(HttpStatus.OK, "USER2030", "포인트 총합 조회 성공입니다."),
+	USERINFO_SUCCESS(HttpStatus.OK, "USER2001", "유저 정보 조회 성공입니다."),
+
+	// 인바디 관련 응답
+	INBODY_SUCCESS(HttpStatus.OK, "INBODY2040","인바디 정보 조회 성공입니다.");
+
 
 
 	private final HttpStatus httpStatus;

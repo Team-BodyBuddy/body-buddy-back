@@ -6,6 +6,8 @@ import BodyBuddy.demo.domain.inbody.dto.AvatarInBodyDTO;
 import BodyBuddy.demo.domain.inbody.dto.WeightHistoryListDTO;
 import BodyBuddy.demo.domain.inbody.service.InBodyService;
 import BodyBuddy.demo.domain.member.service.MemberService;
+import BodyBuddy.demo.global.apiPayload.ApiResponse;
+import BodyBuddy.demo.global.apiPayload.code.status.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,43 +31,44 @@ public class AvatarInfoController {
   // 포인트 총 수량 조회
   @Operation(summary = "포인트 총량 조회", description = "회원의 총 포인트를 반환합니다.")
   @GetMapping("/{memberId}/points/total")
-  public ResponseEntity<Long> getTotalPoints(@Parameter(description = "회원 ID", required = true) @PathVariable Long memberId) {
+  public ApiResponse<Long> getTotalPoints(@Parameter(description = "회원 ID", required = true) @PathVariable("memberId") Long memberId) {
     Long totalPoints = avatarService.getTotalPoints(memberId);
-    return ResponseEntity.ok(totalPoints);
+    return ApiResponse.of(SuccessStatus.POINT_SUCCESS, totalPoints);
   }
 
   // 닉네임 조회
 
   @Operation(summary = "닉네임 조회", description = "회원의 닉네임을 반환합니다.")
   @GetMapping("/{memberId}/nickname")
-  public ResponseEntity<String> getNickname(@PathVariable Long memberId) {
+  public ApiResponse<String> getNickname(@PathVariable Long memberId) {
     String nickname = memberService.getNicknameByMemberId(memberId);
-    return ResponseEntity.ok(nickname);
+    return ApiResponse.of(SuccessStatus.USERINFO_SUCCESS, nickname);
   }
 
   // 아바타 스킨 , 레벨+ 경험치 조회
 
   @Operation(summary = "아바타 기본 정보 조회", description = "아바타 스킨,레벨,경험치를 반환합니다.")
   @GetMapping("/{memberId}/avatarInfo")
-  public ResponseEntity<AvatarInfoRequestDTO> getAvatarInfo(@PathVariable Long memberId) {
+  public ApiResponse<AvatarInfoRequestDTO> getAvatarInfo(@PathVariable Long memberId) {
     AvatarInfoRequestDTO avatarInfo = avatarService.getAvatarInfoRequestDTO(memberId);
-    return ResponseEntity.ok(avatarInfo);
+    return ApiResponse.of(SuccessStatus.USERINFO_SUCCESS, avatarInfo);
   }
 
   // 인바디 정보 조회
 
   @Operation(summary = "인바디 정보 조회", description = "체중,골격근량,체지방률을 반환 후 비교합니다.")
   @GetMapping("/{memberId}/inBody")
-  public ResponseEntity<AvatarInBodyDTO> getAvatarInBody(@PathVariable Long memberId) {
-    return ResponseEntity.ok(inBodyService.getAvatarInBody(memberId));
+  public ApiResponse<AvatarInBodyDTO> getAvatarInBody(@PathVariable Long memberId) {
+    AvatarInBodyDTO avatarInBody = inBodyService.getAvatarInBody(memberId);
+    return ApiResponse.of(SuccessStatus.INBODY_SUCCESS,avatarInBody);
   }
 
   // 최근 5개 체중 조회
   @Operation(summary = "인바디 체중 기록 조회", description = "최근 5개의 체중을 반환합니다.")
   @GetMapping("/{memberId}/inBody/weightHistory")
-  public ResponseEntity<WeightHistoryListDTO> getWeightHistory(@PathVariable Long memberId) {
+  public ApiResponse<WeightHistoryListDTO> getWeightHistory(@PathVariable Long memberId) {
     WeightHistoryListDTO weightHistory = inBodyService.getRecentWeightHistory(memberId);
-    return ResponseEntity.ok(weightHistory);
+    return ApiResponse.of(SuccessStatus.INBODY_SUCCESS,weightHistory);
   }
 
 }

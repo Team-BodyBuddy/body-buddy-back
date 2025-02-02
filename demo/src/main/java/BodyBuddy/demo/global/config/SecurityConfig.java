@@ -29,7 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/members/signup", "/api/auth/trainers/signup", "/api/auth/login","/swagger-ui/**", "/v3/api-docs/**").permitAll() // 인증 불필요 // 인증 없이 접근 가능
                         .anyRequest().authenticated() // 나머지는 인증 필요
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
         return http.build();
     }
 

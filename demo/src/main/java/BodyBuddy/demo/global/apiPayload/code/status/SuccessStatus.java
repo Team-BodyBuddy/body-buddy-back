@@ -33,9 +33,19 @@ public enum SuccessStatus implements BaseCode {
 
 	//트레이너 관련 응답
 	TRAINERS_BY_GYM_SUCCESS(HttpStatus.OK, "TRAINER200", "트레이너 조회 성공입니다."),
+	TRAINER_INFO_SUCCESS(HttpStatus.OK, "TRAINER201", "트레이너 페이지 조회 성공입니다."),
 
 	//지역 관련 응답
 	REGIONSUCCESS(HttpStatus.OK, "REGION200", "지역 조회 성공입니다."),
+
+	//뱃지 관련 응답
+	BADGE_SUCCESS(HttpStatus.OK, "BADGE200", "뱃지 조회 성공입니다."),
+
+	//포트폴리오 관련 응답
+	PORTFOLIO_CREATED(HttpStatus.OK, "PORTFOLIO200", "포트폴리오 등록 성공입니다. "),
+	PORTFOLIO_UPDATED(HttpStatus.OK, "PORTFOLIO201", "포트폴리오 업데이트 성공입니다. "),
+	PORTFOLIO_FETCHED(HttpStatus.OK, "PORTFOLIO202", "포트폴리오 조회 성공입니다.")
+
 	;
 
 

@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.avatar.controller;
 
+import BodyBuddy.demo.domain.avatar.dto.AvatarDecoDTO;
 import BodyBuddy.demo.domain.avatar.service.AvatarDecoService;
 import BodyBuddy.demo.domain.avatar.service.AvatarService;
 import BodyBuddy.demo.domain.member.entity.Member;
@@ -53,8 +54,8 @@ public class AvatarDecoController {
 
   @Operation(summary = "아바타 정보 조회", description = "회원 아바타 이미지와 최신 스킨 정보를 반환.")
   @GetMapping("/{memberId}/avatar")
-  public ApiResponse<DecoPageDTO.AvatarInfo> getAvatar(@PathVariable Long memberId) {
-    DecoPageDTO.AvatarInfo avatarInfo = decoPageService.getLatestAvatarInfo(memberId);
+  public ApiResponse<AvatarDecoDTO.AvatarInfo> getAvatar(@PathVariable Long memberId) {
+    AvatarDecoDTO.AvatarInfo avatarInfo = avatarDecoService.getLatestAvatarInfo(memberId);
     return ApiResponse.of(SuccessStatus.USERINFO_SUCCESS, avatarInfo);
   }
 
@@ -62,15 +63,15 @@ public class AvatarDecoController {
    * 카테고리 별 아이템 조회 API
    */
 
-  @Operation(summary = "카테고리별 아이템 조회", description = "특정 카테고리에 속한 아이템 목록을 반환")
-  @GetMapping("/{memberId}/items")
-  public ApiResponse<CategoryItemResponse> getItemsByCategory(
-      @PathVariable Long memberId,
-      @RequestParam(name = "category", defaultValue = "DEFAULT") String category
-  ) {
-    CategoryItemResponse response = decoPageService.getItemsByCategory(memberId, category);
-    return ApiResponse.of(SuccessStatus.USERINFO_SUCCESS, response);
-  }
+//  @Operation(summary = "카테고리별 아이템 조회", description = "특정 카테고리에 속한 아이템 목록을 반환")
+//  @GetMapping("/{memberId}/items")
+//  public ApiResponse<CategoryItemResponse> getItemsByCategory(
+//      @PathVariable Long memberId,
+//      @RequestParam(name = "category", defaultValue = "DEFAULT") String category
+//  ) {
+//    CategoryItemResponse response = decoPageService.getItemsByCategory(memberId, category);
+//    return ApiResponse.of(SuccessStatus.USERINFO_SUCCESS, response);
+//  }
 
   /**
    * DECO 페이지 통합 정보 조회

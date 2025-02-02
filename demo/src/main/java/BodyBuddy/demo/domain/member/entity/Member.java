@@ -102,9 +102,6 @@ public class Member {
 	private String refreshToken;
 
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<MemberItem> items = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)

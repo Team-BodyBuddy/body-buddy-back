@@ -13,6 +13,6 @@ spring:
         format_sql: true
   security:
     jwt:
-      secret: ${auth.secret-key}
+      secret: ${JWT_SECRET}
   jackson:
     time-zone: Asia/Seoul

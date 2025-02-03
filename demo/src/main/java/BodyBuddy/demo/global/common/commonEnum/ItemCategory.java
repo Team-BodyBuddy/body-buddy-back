@@ -1,5 +1,5 @@
 package BodyBuddy.demo.global.common.commonEnum;
 
-public enum ItemType {
+public enum ItemCategory {
 	TOP, BOTTOM, OUTER, INNER;
 }

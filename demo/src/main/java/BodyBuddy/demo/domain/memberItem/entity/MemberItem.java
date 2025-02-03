@@ -42,7 +42,6 @@ public class MemberItem {
 	// 현재 아이템 상태 (true: 착용 중)
 	private boolean isEquipped;
 
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "avatar_id", nullable = false)
 	private Avatar avatar;

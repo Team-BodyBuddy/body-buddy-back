@@ -42,6 +42,9 @@ public enum SuccessStatus implements BaseCode {
 	POINT_SUCCESS(HttpStatus.OK, "USER2030", "포인트 총합 조회 성공입니다."),
 	USERINFO_SUCCESS(HttpStatus.OK, "USER2001", "유저 정보 조회 성공입니다."),
 
+	// 아이템 응답
+	PURCHASE_SUCCESS(HttpStatus.OK, "POINT2050","아이템 구매 성공입니다."),
+
 	// 인바디 관련 응답
 	INBODY_SUCCESS(HttpStatus.OK, "INBODY2040","인바디 정보 조회 성공입니다."),
 

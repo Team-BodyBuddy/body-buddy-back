@@ -4,6 +4,7 @@ import BodyBuddy.demo.domain.avatar.dto.AvatarDecoDTO;
 import BodyBuddy.demo.domain.avatar.service.AvatarDecoService;
 import BodyBuddy.demo.domain.avatar.service.AvatarService;
 import BodyBuddy.demo.domain.item.DTO.CategoryItemDTO;
+import BodyBuddy.demo.domain.item.DTO.PurchaseDTO;
 import BodyBuddy.demo.domain.item.service.ItemService;
 import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.service.MemberService;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -80,12 +82,12 @@ public class AvatarDecoController {
    * 구매시 포인트 차감 필요 + 에러 핸들링
    */
 
-//  @Operation(summary = "아이템 구매", description = "유저가 특정 아이템을 구매하면 해당 아이템을 ACTIVE 상태로 변경")
-//  @PostMapping("/{memberId}/item/{itemId}")
-//  public ApiResponse<Void> purchaseItem(@PathVariable Long memberId, @PathVariable Long itemId) {
-//    purchaseService.purchaseItem(memberId, itemId);
-//    return ApiResponse.of(SuccessStatus.PURCHASE_SUCCESS);
-//  }
+  @Operation(summary = "아이템 구매", description = "유저가 특정 아이템을 구매하면 해당 아이템을 ACTIVE 상태로 변경")
+  @PostMapping("/{memberId}/item/{itemId}")
+  public ApiResponse<PurchaseDTO.ResponseDTO> purchaseItem(@RequestBody PurchaseDTO.RequestDTO requestDTO) {
+    PurchaseDTO.ResponseDTO responseDTO = itemService.purchaseItem(requestDTO);
+    return ApiResponse.of(SuccessStatus.PURCHASE_SUCCESS, responseDTO);
+  }
 
   /**
    * DECO 페이지 통합 정보 조회

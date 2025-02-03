@@ -66,6 +66,15 @@ public class Item {
 	@JoinColumn(name = "memberItem_id", nullable = true)
 	private MemberItem memberItem;
 
+	/**
+	 * 아이템 구매 시 상태 변경 메서드
+	 */
+
+	public void activate(MemberItem memberItem) {
+		this.status = ItemStatus.ACTIVE;
+		this.memberItem = memberItem;
+	}
+
 	// 특정 회원이 아이템을 소유하고 있는지 확인
 	public boolean isOwnedByMember(Long memberId) {
 		return this.memberItem.getAvatar().getMember().getId().equals(memberId);

@@ -1,26 +1,19 @@
 package BodyBuddy.demo.domain.item.entity;
 
-import BodyBuddy.demo.domain.avatar.entity.Avatar;
-import BodyBuddy.demo.global.common.commonEnum.ItemType;
+import BodyBuddy.demo.global.common.commonEnum.ItemCategory;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import BodyBuddy.demo.domain.memberItem.entity.MemberItem;
 import BodyBuddy.demo.global.common.commonEnum.ItemStatus;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,7 +56,7 @@ public class Item {
 
 	// 아이템 카테고리
 	@Enumerated(EnumType.STRING)
-	private ItemType type;
+	private ItemCategory category;
 
 	/**
 	 * 아이템 구매 여부 -> 멤버아이템이면 구매한 아이템

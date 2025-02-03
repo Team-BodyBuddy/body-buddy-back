@@ -3,15 +3,19 @@ package BodyBuddy.demo.domain.avatar.controller;
 import BodyBuddy.demo.domain.avatar.dto.AvatarDecoDTO;
 import BodyBuddy.demo.domain.avatar.service.AvatarDecoService;
 import BodyBuddy.demo.domain.avatar.service.AvatarService;
+import BodyBuddy.demo.domain.item.DTO.CategoryItemDTO;
+import BodyBuddy.demo.domain.item.service.ItemService;
 import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.service.MemberService;
 import BodyBuddy.demo.global.apiPayload.ApiResponse;
 import BodyBuddy.demo.global.apiPayload.code.status.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +29,7 @@ public class AvatarDecoController {
   private final AvatarService avatarService;
   private final AvatarDecoService avatarDecoService;
   private final MemberService memberService;
+  private final ItemService itemService;
 
   /**
    * 포인트 총합 조회 API
@@ -63,14 +68,23 @@ public class AvatarDecoController {
    * 카테고리 별 아이템 조회 API
    */
 
-//  @Operation(summary = "카테고리별 아이템 조회", description = "특정 카테고리에 속한 아이템 목록을 반환")
-//  @GetMapping("/{memberId}/items")
-//  public ApiResponse<CategoryItemResponse> getItemsByCategory(
-//      @PathVariable Long memberId,
-//      @RequestParam(name = "category", defaultValue = "DEFAULT") String category
-//  ) {
-//    CategoryItemResponse response = decoPageService.getItemsByCategory(memberId, category);
-//    return ApiResponse.of(SuccessStatus.USERINFO_SUCCESS, response);
+  @Operation(summary = "카테고리별 아이템 조회", description = "모든 아이템을 카테고리별로 조회하며, 구매한 아이템은 ACTIVE, 구매하지 않은 아이템은 INACTIVE로 표시")
+  @GetMapping("/{memberId}/itemCategory")
+  public ApiResponse<List<CategoryItemDTO>> getAllItemsByCategory(@PathVariable Long memberId) {
+    List<CategoryItemDTO> categorizedItems = itemService.getAllItemsByCategory(memberId);
+    return ApiResponse.of(SuccessStatus.USERINFO_SUCCESS, categorizedItems);
+  }
+
+  /**
+   * 아이템 구매 시 상태 변경 API
+   * 구매시 포인트 차감 필요 + 에러 핸들링
+   */
+
+//  @Operation(summary = "아이템 구매", description = "유저가 특정 아이템을 구매하면 해당 아이템을 ACTIVE 상태로 변경")
+//  @PostMapping("/{memberId}/item/{itemId}")
+//  public ApiResponse<Void> purchaseItem(@PathVariable Long memberId, @PathVariable Long itemId) {
+//    purchaseService.purchaseItem(memberId, itemId);
+//    return ApiResponse.of(SuccessStatus.PURCHASE_SUCCESS);
 //  }
 
   /**

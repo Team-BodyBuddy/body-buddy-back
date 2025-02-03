@@ -10,7 +10,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000") // 허용된 출처
+                .allowedOrigins("http://localhost:3000, https://body-buddy.aoimiu.com") // 허용된 출처
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용된 HTTP 메서드
                 .allowedHeaders("*") // 모든 요청 헤더 허용
                 .exposedHeaders("Authorization", "Content-Type") // 클라이언트에 노출할 헤더

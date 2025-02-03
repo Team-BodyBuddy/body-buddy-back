@@ -1,6 +1,7 @@
 package BodyBuddy.demo.domain.item.entity;
 
 import BodyBuddy.demo.domain.avatar.entity.Avatar;
+import BodyBuddy.demo.global.common.commonEnum.ItemType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -41,9 +42,6 @@ public class Item {
 
 	private Integer requiredLevel;
 
-	@Enumerated(EnumType.STRING)
-	private ItemStatus status;
-
 	@Column(nullable = false)
 	private Float price;
 
@@ -59,9 +57,20 @@ public class Item {
 	// updatable = false -> update 쿼리 실행 시 createdAt필드 변경 X
 	private LocalDateTime createdAt = LocalDateTime.now();
 
+	// 아이템 구매 여부
+	@Enumerated(EnumType.STRING)
+	private ItemStatus status;
 
+	// 아이템 카테고리
+	@Enumerated(EnumType.STRING)
+	private ItemType type;
+
+	/**
+	 * 아이템 구매 여부 -> 멤버아이템이면 구매한 아이템
+	 * 구매하지 않은 아이템은 null 가능
+	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "memberItem_id", nullable = false)
+	@JoinColumn(name = "memberItem_id", nullable = true)
 	private MemberItem memberItem;
 
 	// 특정 회원이 아이템을 소유하고 있는지 확인

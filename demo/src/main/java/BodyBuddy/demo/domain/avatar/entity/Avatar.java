@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.avatar.entity;
 
+import BodyBuddy.demo.domain.avatar.service.LevelUpService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,12 @@ public class Avatar {
 
 	public void addExp(long amount) {
 		this.exp += amount;
+
+		// 경험치 증가 후 바로 레벨업 검사 실행
+		long newLevel = LevelUpService.checkLevelUp(this.level, this.exp);
+		if (newLevel > this.level) {
+			this.level = newLevel;
+		}
 	}
 
 	public void addPoint(long amount) {
@@ -71,6 +78,12 @@ public class Avatar {
 	public void updatePointsAndExp(int additionalPoints, int additionalExp) {
 		this.point = (this.point == null ? 0 : this.point) + additionalPoints;
 		this.exp = (this.exp == null ? 0 : this.exp) + additionalExp;
+
+		// 경험치 증가 후 바로 레벨업 검사 실행
+		long newLevel = LevelUpService.checkLevelUp(this.level, this.exp);
+		if (newLevel > this.level) {
+			this.level = newLevel;
+		}
 	}
 
 	// 랭킹 스코어를 설정하는 메서드

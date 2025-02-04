@@ -6,6 +6,8 @@ import BodyBuddy.demo.domain.inbody.dto.InBodyToRankingScoreDTO;
 import BodyBuddy.demo.domain.inbody.entity.InBody;
 import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
 import BodyBuddy.demo.domain.inbody.repository.InBodyRepository;
+import BodyBuddy.demo.global.apiPayload.code.error.CommonErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import BodyBuddy.demo.global.common.commonEnum.Gender;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ public class InBodyToRankingScoreService {
         List<InBody> inBodyData = inBodyRepository.findTop2ByMemberIdOrderByCreatedAtDesc(memberId);
 
         if (inBodyData.size() < 2) {
-            throw new IllegalArgumentException("랭크 점수 갱신하기에 분석할 수 있는 인바디 데이터 수가 2개 미만입니다.");
+            throw new BodyBuddyException(CommonErrorCode.INBODY_SIZE_ERROR);
         }
 
         InBody current = inBodyData.get(0);
@@ -34,7 +36,7 @@ public class InBodyToRankingScoreService {
         int score = calculateRankingScore(current, previous, current.getMember().getGender());
 
         Avatar avatar = avatarRepository.findByMemberId(memberId)
-            .orElseThrow(() -> new IllegalArgumentException("멤버Id에 따른 아바타를 찾지 못했습니다.: " + memberId));
+            .orElseThrow(() -> new BodyBuddyException(CommonErrorCode.AVATAR_NOT_FOUND));
 
         avatar.updateRankingScore(score);
         avatarRepository.save(avatar);

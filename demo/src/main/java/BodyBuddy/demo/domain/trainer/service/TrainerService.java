@@ -1,6 +1,8 @@
 package BodyBuddy.demo.domain.trainer.service;
 
 import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
+import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,13 +11,7 @@ import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
 import BodyBuddy.demo.domain.trainer.converter.TrainerConverter;
 import BodyBuddy.demo.domain.trainer.dto.TrainerResponse;
-import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
-import BodyBuddy.demo.domain.trainer.dto.TrainerMyPageResponseDto;
-import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.global.common.commonEnum.AuthenticationRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +26,7 @@ public class TrainerService {
 
     public TrainerResponse getTrainerDetails(Long trainerId) {
         Trainer trainer = trainerRepository.findById(trainerId)
-                .orElseThrow(() -> new IllegalArgumentException("트레이너를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.TRAINER_NOT_FOUND));
         return trainerConverter.convertToTrainerResponse(trainer);
     }
 
@@ -40,7 +36,7 @@ public class TrainerService {
 	@Transactional(readOnly = true)
 	public TrainerMyPageResponseDto getTrainerMyPage(Long trainerId) {
 		Trainer trainer = trainerRepository.findById(trainerId)
-			.orElseThrow(() -> new IllegalArgumentException("트레이너가 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.TRAINER_NOT_FOUND));
 
 		long pendingRequestCount = matchingAuthenticationRepository.countByTrainerAndStatus(trainer, AuthenticationRequest.PENDING);
 
@@ -52,7 +48,7 @@ public class TrainerService {
 	 */
 	public void updateProfileImage(Long trainerId, String newProfileImageUrl) {
 		Trainer trainer = trainerRepository.findById(trainerId)
-			.orElseThrow(() -> new IllegalArgumentException("트레이너가 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.TRAINER_NOT_FOUND));
 
 		trainer.updateProfileImage(newProfileImageUrl);
 		trainerRepository.save(trainer);

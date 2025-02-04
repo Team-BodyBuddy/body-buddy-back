@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.badge.service;
 
+
 import BodyBuddy.demo.domain.badge.entity.Badge;
 import BodyBuddy.demo.domain.badge.repository.BadgeRepository;
 import BodyBuddy.demo.domain.inbody.entity.InBody;
@@ -8,6 +9,8 @@ import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
+import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import BodyBuddy.demo.global.common.commonEnum.Gender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +32,7 @@ public class BadgeService {
      */
     public List<Badge> checkAndAssignBadges(Long trainerId) {
         Trainer trainer = trainerRepository.findById(trainerId)
-                .orElseThrow(() -> new IllegalArgumentException("트레이너를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.TRAINER_NOT_FOUND));
 
         List<Badge> newBadges = new ArrayList<>();
         
@@ -160,7 +163,7 @@ public class BadgeService {
             else if (height <= 185) return 26.5f; // (24 + 29) / 2
             else return 26.5f; // 최대값 이상일 때
         }
-        throw new IllegalArgumentException("잘못된 성별입니다.");
+        throw new BodyBuddyException(MemberErrorCode.GENDER_NOT_FOUND);
     }
 
 }

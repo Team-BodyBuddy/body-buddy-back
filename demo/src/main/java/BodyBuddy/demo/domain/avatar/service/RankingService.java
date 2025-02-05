@@ -6,6 +6,9 @@ import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.gym.service.GymService;
+import BodyBuddy.demo.global.apiPayload.code.error.GymErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,18 +44,18 @@ public class RankingService {
 
     public RankingResponse.GlobalRanking getUserGlobalRanking(Long memberId) {
         Avatar avatar = avatarRepository.findByMemberId(memberId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+            .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
         int rank = avatarRepository.findGlobalRankForMember(memberId);
         return rankingConverter.convertToGlobalRanking(avatar, rank);
     }
 
     public RankingResponse.GlobalRanking getUserGymRanking(Long memberId, Long gymId) {
         Avatar avatar = avatarRepository.findByMemberId(memberId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+            .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
         Gym gym = gymService.validateGym(gymId);
 
         if (!avatar.getMember().getGym().equals(gym)) {
-            throw new IllegalArgumentException("회원은 해당 체육관에 속해 있지 않습니다.");
+            throw new BodyBuddyException(GymErrorCode.GYM_NOT_MATCH);
         }
 
         int rank = avatarRepository.findGymRankForMember(memberId, gymId);

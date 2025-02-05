@@ -6,7 +6,7 @@ import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
 import BodyBuddy.demo.domain.gym.entity.Gym;
 import BodyBuddy.demo.domain.gym.service.GymService;
-import BodyBuddy.demo.global.apiPayload.code.error.CommonErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.GymErrorCode;
 import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
 import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +55,7 @@ public class RankingService {
         Gym gym = gymService.validateGym(gymId);
 
         if (!avatar.getMember().getGym().equals(gym)) {
-            throw new BodyBuddyException(CommonErrorCode.GYM_NOT_MATCH);
+            throw new BodyBuddyException(GymErrorCode.GYM_NOT_MATCH);
         }
 
         int rank = avatarRepository.findGymRankForMember(memberId, gymId);

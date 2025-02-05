@@ -2,6 +2,7 @@ package BodyBuddy.demo.domain.trainer.service;
 
 import BodyBuddy.demo.domain.matchingAuthentication.repository.MatchingAuthenticationRepository;
 import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.TrainerErrorCode;
 import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class TrainerService {
 
     public TrainerResponse getTrainerDetails(Long trainerId) {
         Trainer trainer = trainerRepository.findById(trainerId)
-                .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.TRAINER_NOT_FOUND));
+                .orElseThrow(() -> new BodyBuddyException(TrainerErrorCode.TRAINER_NOT_FOUND));
         return trainerConverter.convertToTrainerResponse(trainer);
     }
 
@@ -36,7 +37,7 @@ public class TrainerService {
 	@Transactional(readOnly = true)
 	public TrainerMyPageResponseDto getTrainerMyPage(Long trainerId) {
 		Trainer trainer = trainerRepository.findById(trainerId)
-			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.TRAINER_NOT_FOUND));
+			.orElseThrow(() -> new BodyBuddyException(TrainerErrorCode.TRAINER_NOT_FOUND));
 
 		long pendingRequestCount = matchingAuthenticationRepository.countByTrainerAndStatus(trainer, AuthenticationRequest.PENDING);
 
@@ -48,7 +49,7 @@ public class TrainerService {
 	 */
 	public void updateProfileImage(Long trainerId, String newProfileImageUrl) {
 		Trainer trainer = trainerRepository.findById(trainerId)
-			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.TRAINER_NOT_FOUND));
+			.orElseThrow(() -> new BodyBuddyException(TrainerErrorCode.TRAINER_NOT_FOUND));
 
 		trainer.updateProfileImage(newProfileImageUrl);
 		trainerRepository.save(trainer);

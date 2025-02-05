@@ -6,7 +6,9 @@ import BodyBuddy.demo.domain.inbody.dto.InBodyToRankingScoreDTO;
 import BodyBuddy.demo.domain.inbody.entity.InBody;
 import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
 import BodyBuddy.demo.domain.inbody.repository.InBodyRepository;
+import BodyBuddy.demo.global.apiPayload.code.error.AvatarErrorCode;
 import BodyBuddy.demo.global.apiPayload.code.error.CommonErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.InbodyErrorCode;
 import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import BodyBuddy.demo.global.common.commonEnum.Gender;
 import jakarta.transaction.Transactional;
@@ -27,7 +29,7 @@ public class InBodyToRankingScoreService {
         List<InBody> inBodyData = inBodyRepository.findTop2ByMemberIdOrderByCreatedAtDesc(memberId);
 
         if (inBodyData.size() < 2) {
-            throw new BodyBuddyException(CommonErrorCode.INBODY_SIZE_ERROR);
+            throw new BodyBuddyException(InbodyErrorCode.INBODY_SIZE_ERROR);
         }
 
         InBody current = inBodyData.get(0);
@@ -36,7 +38,7 @@ public class InBodyToRankingScoreService {
         int score = calculateRankingScore(current, previous, current.getMember().getGender());
 
         Avatar avatar = avatarRepository.findByMemberId(memberId)
-            .orElseThrow(() -> new BodyBuddyException(CommonErrorCode.AVATAR_NOT_FOUND));
+            .orElseThrow(() -> new BodyBuddyException(AvatarErrorCode.AVATAR_NOT_FOUND));
 
         avatar.updateRankingScore(score);
         avatarRepository.save(avatar);

@@ -1,11 +1,10 @@
 package BodyBuddy.demo.domain.inbody.service;
 
-import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
 import BodyBuddy.demo.domain.inbody.dto.AvatarInBodyDTO;
 import BodyBuddy.demo.domain.inbody.dto.WeightHistoryListDTO;
 import BodyBuddy.demo.domain.inbody.entity.InBody;
 import BodyBuddy.demo.domain.inbody.repository.InBodyRepository;
-import BodyBuddy.demo.global.apiPayload.code.error.CommonErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.InbodyErrorCode;
 import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import BodyBuddy.demo.global.common.commonEnum.InBodyStatus;
 import java.util.List;
@@ -22,7 +21,7 @@ public class InBodyService {
     List<InBody> inBodies = inBodyRepository.findTop2ByMemberIdOrderByCreatedAtDesc(memberId);
 
     if (inBodies.isEmpty()) {
-      throw new BodyBuddyException(CommonErrorCode.INBODY_NOT_FOUND);
+      throw new BodyBuddyException(InbodyErrorCode.INBODY_NOT_FOUND);
     }
 
     InBody current = inBodies.get(0); // 최신 인바디 데이터
@@ -45,7 +44,7 @@ public class InBodyService {
     List<InBody> inBodies =inBodyRepository.findTop5ByMemberIdOrderByCreatedAtDesc(memberId);
 
     if (inBodies.isEmpty()) {
-      throw new BodyBuddyException(CommonErrorCode.INBODY_NOT_FOUND);
+      throw new BodyBuddyException(InbodyErrorCode.INBODY_NOT_FOUND);
     }
 
     return WeightHistoryListDTO.from(inBodies);

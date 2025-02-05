@@ -5,7 +5,7 @@ import BodyBuddy.demo.domain.avatar.dto.AvatarInfoRequestDTO;
 import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
 import BodyBuddy.demo.domain.member.entity.Member;
-import BodyBuddy.demo.global.apiPayload.code.error.CommonErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.AvatarErrorCode;
 import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class AvatarService {
     public Long getTotalPoints(Long memberId) {
         return avatarRepository.findByMemberId(memberId)
             .map(Avatar::getPoint)
-            .orElseThrow(() -> new BodyBuddyException(CommonErrorCode.AVATAR_NOT_FOUND));
+            .orElseThrow(() -> new BodyBuddyException(AvatarErrorCode.AVATAR_NOT_FOUND));
     }
 
     /**
@@ -41,7 +41,7 @@ public class AvatarService {
      */
     public AvatarInfoRequestDTO getAvatarInfoRequestDTO(Long memberId) {
         Avatar avatar = avatarRepository.findByMemberId(memberId)
-            .orElseThrow(() -> new BodyBuddyException(CommonErrorCode.AVATAR_NOT_FOUND));
+            .orElseThrow(() -> new BodyBuddyException(AvatarErrorCode.AVATAR_NOT_FOUND));
         return AvatarInfoRequestDTO.from(avatar);
     }
 

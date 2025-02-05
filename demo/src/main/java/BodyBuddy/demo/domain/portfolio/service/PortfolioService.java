@@ -6,8 +6,8 @@ import BodyBuddy.demo.domain.portfolio.entity.Portfolio;
 import BodyBuddy.demo.domain.portfolio.repository.PortfolioRepository;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
-import BodyBuddy.demo.global.apiPayload.code.error.CommonErrorCode;
-import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.PortfolioErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.TrainerErrorCode;
 import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class PortfolioService {
     @Transactional
     public void createPortfolio(Long trainerId, PortfolioRequest request) {
         Trainer trainer = trainerRepository.findById(trainerId)
-                .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.TRAINER_NOT_FOUND));
+                .orElseThrow(() -> new BodyBuddyException(TrainerErrorCode.TRAINER_NOT_FOUND));
 
         Portfolio portfolio = portfolioConverter.toEntity(request, trainer);
         portfolioRepository.save(portfolio);
@@ -39,10 +39,10 @@ public class PortfolioService {
     @Transactional
     public void updatePortfolio(Long trainerId, Long portfolioId, PortfolioRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
-                .orElseThrow(() -> new BodyBuddyException(CommonErrorCode.PORTFOLIO_NOT_FOUND));
+                .orElseThrow(() -> new BodyBuddyException(PortfolioErrorCode.PORTFOLIO_NOT_FOUND));
 
         if (!portfolio.getTrainer().getId().equals(trainerId)) {
-            throw new BodyBuddyException(CommonErrorCode.PORTFOLIO_UNAUTHORIZED);
+            throw new BodyBuddyException(PortfolioErrorCode.PORTFOLIO_UNAUTHORIZED);
         }
 
         portfolioConverter.updatePortfolio(portfolio, request);

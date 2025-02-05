@@ -10,6 +10,7 @@ import BodyBuddy.demo.domain.member.repository.MemberRepository;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
 import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.TrainerErrorCode;
 import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import BodyBuddy.demo.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -129,7 +130,7 @@ public class MemberService {
         // 트레이너(Trainer) 탈퇴
         if (trainerRepository.existsByLoginId(loginId)) {
             Trainer trainer = trainerRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.TRAINER_NOT_FOUND));
+                .orElseThrow(() -> new BodyBuddyException(TrainerErrorCode.TRAINER_NOT_FOUND));
             trainerRepository.delete(trainer);
             return;
         }

@@ -90,8 +90,15 @@ public class Trainer {
 	@OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Portfolio> portfolios = new ArrayList<>();
 
+	@Column(name = "refresh_token")
+	private String refreshToken;
+
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 
 	@PrePersist

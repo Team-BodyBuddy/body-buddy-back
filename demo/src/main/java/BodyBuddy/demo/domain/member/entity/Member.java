@@ -35,13 +35,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
 @Table(name = "Member")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -96,6 +98,9 @@ public class Member {
 	@JoinColumn(name = "trainer_id")
 	private Trainer trainer;
 
+	@Column(name = "refresh_token")
+	private String refreshToken;
+
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -121,8 +126,4 @@ public class Member {
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TrainerCalendar> trainerCalendars = new ArrayList<>();
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 }

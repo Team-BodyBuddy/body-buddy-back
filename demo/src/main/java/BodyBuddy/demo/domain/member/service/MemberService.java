@@ -94,7 +94,6 @@ public class MemberService {
      */
     public Map<String, String> login(SignUpRequestDto.MemberLoginRequest request) {
         Member member = memberRepository.findByLoginId(request.getLoginId()).orElse(null);
-        Trainer trainer = trainerRepository.findByLoginId(request.getLoginId()).orElse(null);
 
         if (member != null) {
             if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
@@ -102,6 +101,8 @@ public class MemberService {
             }
             return jwtTokenService.generateTokens(member.getLoginId(), "ROLE_MEMBER");
         }
+
+        Trainer trainer = trainerRepository.findByLoginId(request.getLoginId()).orElse(null);
 
         if (trainer != null) {
             if (!passwordEncoder.matches(request.getPassword(), trainer.getPassword())) {

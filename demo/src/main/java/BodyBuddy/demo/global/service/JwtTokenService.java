@@ -36,8 +36,17 @@ public class JwtTokenService {
         String accessToken = createToken(loginId, role, accessValidity);
         String refreshToken = createToken(loginId, null, refreshValidity);
 
-        memberRepository.updateRefreshToken(loginId, refreshToken);
-        trainerRepository.updateRefreshToken(loginId, refreshToken);
+        if ("ROLE_MEMBER".equals(role)) {
+            Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.NOT_FOUND_ID));
+            member.setRefreshToken(refreshToken);
+            memberRepository.save(member);
+        } else if ("ROLE_TRAINER".equals(role)) {
+            Trainer trainer = trainerRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.NOT_FOUND_ID));
+            trainer.setRefreshToken(refreshToken);
+            trainerRepository.save(trainer);
+        }
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
@@ -50,17 +59,16 @@ public class JwtTokenService {
         String accessToken = createToken(loginId, role, accessValidity);
         String refreshToken = createToken(loginId, null, refreshValidity);
 
-        Member member = memberRepository.findByLoginId(loginId).orElse(null);
-        Trainer trainer = trainerRepository.findByLoginId(loginId).orElse(null);
-
-        if (member != null) {
-            member.setRefreshToken(refreshToken);
-            memberRepository.save(member);
-        } else if (trainer != null) {
+        if ("ROLE_TRAINER".equals(role)) {
+            Trainer trainer = trainerRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.NOT_FOUND_ID));
             trainer.setRefreshToken(refreshToken);
             trainerRepository.save(trainer);
-        } else {
-            throw new BodyBuddyException(MemberErrorCode.NOT_FOUND_ID);
+        } else if ("ROLE_MEMBER".equals(role)) {
+            Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new BodyBuddyException(MemberErrorCode.NOT_FOUND_ID));
+            member.setRefreshToken(refreshToken);
+            memberRepository.save(member);
         }
 
         Map<String, String> tokens = new HashMap<>();

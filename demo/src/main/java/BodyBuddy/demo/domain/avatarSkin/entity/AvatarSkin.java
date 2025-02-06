@@ -43,7 +43,7 @@ public class AvatarSkin {
 	private LocalDateTime acquiredAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "avatar_id", nullable = false)   //FK 컬럼 이름
+	@JoinColumn(name = "avatar_id", nullable =true)   //FK 컬럼 이름
 	private Avatar avatar;
 
 }

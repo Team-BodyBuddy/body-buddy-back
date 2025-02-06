@@ -24,9 +24,10 @@ public class PurchaseDTO {
     private Long itemId;
     private String name;
     private String imagePath;
-    private Float price;
+    private Long price;
     private ItemStatus status;
     private LocalDateTime purchasedAt;
+    private Long remainingPoints;
 
   }
 }

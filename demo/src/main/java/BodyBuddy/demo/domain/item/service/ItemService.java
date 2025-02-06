@@ -52,6 +52,7 @@ public class ItemService {
 
   @Transactional
   public PurchaseDTO.ResponseDTO purchaseItem(PurchaseDTO.RequestDTO requestDTO) {
+    // 1. 아이템 조회
     Item item = itemRepository.findById(requestDTO.getItemId())
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이템입니다."));
 
@@ -59,9 +60,20 @@ public class ItemService {
       throw new IllegalStateException("이미 구매한 아이템입니다.");
     }
 
+    // 2. 사용자 조회
     Avatar avatar = avatarRepository.findByMemberId(requestDTO.getMemberId())
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
+    // 3. 포인트 부족한 경우
+    if (avatar.getPoint() < item.getPrice()) {
+      throw new IllegalStateException("포인트가 부족합니다.");
+    }
+
+    // 4. Avatar.Point - Item.Price
+    avatar.usePoints(item.getPrice());
+    avatarRepository.save(avatar);
+
+    // 5. 아이템 -> 멤버 아이템
     MemberItem memberItem = MemberItem.builder()
         .avatar(avatar)
         .usedPoints(item.getPrice())
@@ -78,7 +90,8 @@ public class ItemService {
         item.getImagePath(),
         item.getPrice(),
         item.getStatus(),
-        LocalDateTime.now()
+        LocalDateTime.now(),
+        avatar.getPoint()
     );
   }
 

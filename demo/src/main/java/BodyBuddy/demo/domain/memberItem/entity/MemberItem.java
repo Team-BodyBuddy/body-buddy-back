@@ -37,7 +37,7 @@ public class MemberItem {
 	private Long id;
 
 	//사용된 포인트
-	private Float usedPoints;
+	private Long usedPoints;
 
 	// 현재 아이템 상태 (true: 착용 중)
 	private boolean isEquipped;

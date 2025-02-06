@@ -6,7 +6,6 @@ import BodyBuddy.demo.domain.avatar.service.AvatarService;
 import BodyBuddy.demo.domain.item.DTO.CategoryItemDTO;
 import BodyBuddy.demo.domain.item.DTO.PurchaseDTO;
 import BodyBuddy.demo.domain.item.service.ItemService;
-import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.service.MemberService;
 import BodyBuddy.demo.global.apiPayload.ApiResponse;
 import BodyBuddy.demo.global.apiPayload.code.status.SuccessStatus;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -94,6 +92,10 @@ public class AvatarDecoController {
    * 웹이라면 프론트 측에서 조회를 할 때 최종적으로 전체 페이지에 대한 API도 의미가 있을지는 모르겠습니다.
    * 모바일에서는 통합 API 사용도 유용할 수 있다고 하는데 상의 후 작성하도록 하겠습니다.
    */
+
+
+
+
 
   /**
   public DecoPageDTO getDecoPageInfo(Long memberId) {

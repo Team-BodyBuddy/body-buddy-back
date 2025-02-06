@@ -2,6 +2,7 @@ package BodyBuddy.demo.domain.avatar.entity;
 
 import BodyBuddy.demo.domain.memberItem.entity.MemberItem;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PostPersist;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,5 +89,13 @@ public class Avatar {
 	// 장착 중인 아이템
 	@OneToMany(mappedBy = "avatar", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<MemberItem> wearingItems;
+
+	// 포인트 차감 메서드
+	public void usePoints(Long amount) {
+		if (this.point < amount) {
+			throw new IllegalStateException("포인트가 부족합니다.");
+		}
+		this.point -= amount;
+	}
 
 }

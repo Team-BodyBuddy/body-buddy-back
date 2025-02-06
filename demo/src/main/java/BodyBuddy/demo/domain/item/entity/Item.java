@@ -36,7 +36,7 @@ public class Item {
 	private Integer requiredLevel;
 
 	@Column(nullable = false)
-	private Float price;
+	private Long price;
 
 	@Column(nullable = false)
 	private String Type;

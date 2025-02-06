@@ -20,7 +20,8 @@ public enum MemberErrorCode implements ErrorCode {
 	NOT_MATCH_CONFIRMEDPASS(HttpStatus.BAD_REQUEST, "MEMBER_004", "비밀번호와 비밀번호 확인이 일치하지 않습니다."),
 	NOT_MATCH_PASSWORD(HttpStatus.BAD_REQUEST, "MEMBER_005", "비밀번호가 일치하지 않습니다."),
 	DUPLICATE_ID(HttpStatus.BAD_REQUEST, "MEMBER_006", "이미 사용 중인 ID입니다."),
-	GENDER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_007", "잘못된 성별입니다.")
+	GENDER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_007", "잘못된 성별입니다."),
+	INVALID_TOKEN(HttpStatus.BAD_REQUEST, "TOKEN_402", "유효하지 않은 토큰입니다.")
 	;
 
 	private final HttpStatus httpStatus;

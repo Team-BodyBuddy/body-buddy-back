@@ -16,27 +16,27 @@ public class SwaggerConfig {
 	public OpenAPI BodyBuddyAPI() {
 		// API 정보 설정
 		Info info = new Info()
-			.title("BodyBuddy API")
-			.description("BodyBuddy 프로젝트의 API 명세서입니다.")
-			.version("1.0.0");
+				.title("BodyBuddy API")
+				.description("BodyBuddy 프로젝트의 API 명세서입니다.")
+				.version("1.0.0");
 
 		// JWT Security Scheme 설정
 		SecurityScheme securityScheme = new SecurityScheme()
-			.type(SecurityScheme.Type.HTTP)
-			.scheme("bearer")
-			.bearerFormat("JWT")
-			.in(SecurityScheme.In.HEADER)
-			.name("Authorization");
+				.type(SecurityScheme.Type.HTTP)
+				.scheme("bearer")
+				.bearerFormat("JWT")
+				.in(SecurityScheme.In.HEADER)
+				.name("Authorization");
 
 		// Security Requirement 설정
 		SecurityRequirement securityRequirement = new SecurityRequirement()
-			.addList("bearerAuth");
+				.addList("bearerAuth");
 
 		// OpenAPI 설정 반환
 		return new OpenAPI()
-			.addServersItem(new Server().url("/")) // 기본 서버 URL 설정
-			.info(info)
-			.components(new Components().addSecuritySchemes("bearerAuth", securityScheme)) // SecuritySchemes 추가
-			.addSecurityItem(securityRequirement); // 모든 API에 SecurityRequirement 추가
+				.addServersItem(new Server().url("/api/")) // 기본 서버 URL 설정
+				.info(info)
+				.components(new Components().addSecuritySchemes("bearerAuth", securityScheme)) // SecuritySchemes 추가
+				.addSecurityItem(securityRequirement); // 모든 API에 SecurityRequirement 추가
 	}
 }

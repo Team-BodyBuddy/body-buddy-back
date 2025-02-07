@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/deco")
+@RequestMapping("/deco")
 @Tag(name = "Deco", description = "DECO 관련 API")
 @RequiredArgsConstructor
 public class AvatarDecoController {

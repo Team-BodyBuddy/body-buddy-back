@@ -26,7 +26,7 @@ import BodyBuddy.demo.global.apiPayload.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/trainer-calendar")
+@RequestMapping("trainer-calendar")
 @RequiredArgsConstructor
 public class TrainerCalendarController {
 

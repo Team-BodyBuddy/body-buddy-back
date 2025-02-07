@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.member.entity;
 
+import jakarta.persistence.PrePersist;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,6 @@ import BodyBuddy.demo.global.common.commonEnum.Region;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import BodyBuddy.demo.domain.dailyEvaluation.entity.DailyEvaluation;
-import BodyBuddy.demo.domain.memberItem.entity.MemberItem;
 import BodyBuddy.demo.domain.routine.entity.Routine;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainerCalendar.entity.TrainerCalendar;
@@ -97,7 +97,6 @@ public class Member {
 	private Trainer trainer;
 
 
-
 	@JsonIgnore
 	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Avatar avatar;
@@ -122,4 +121,6 @@ public class Member {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+
 }

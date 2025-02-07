@@ -1,6 +1,7 @@
 package BodyBuddy.demo.domain.avatar.controller;
 
 import BodyBuddy.demo.domain.avatar.dto.AvatarDecoDTO;
+import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.avatar.service.AvatarDecoService;
 import BodyBuddy.demo.domain.avatar.service.AvatarService;
 import BodyBuddy.demo.domain.item.DTO.CategoryItemDTO;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,11 +90,18 @@ public class AvatarDecoController {
   }
 
   /**
-   * DECO 페이지 통합 정보 조회
-   * 웹이라면 프론트 측에서 조회를 할 때 최종적으로 전체 페이지에 대한 API도 의미가 있을지는 모르겠습니다.
-   * 모바일에서는 통합 API 사용도 유용할 수 있다고 하는데 상의 후 작성하도록 하겠습니다.
+   * 아바타 스킨 변경 API
    */
 
+  @Operation(summary = "아바타 스킨 변경", description = "유저가 특정 레벨 달성시에 아바타 스킨 변경")
+  @PatchMapping("/{memberId}/level/{newLevel}")
+  public ApiResponse<Avatar> updateAvatarLevel(
+      @PathVariable Long memberId,
+      @PathVariable Long newLevel
+  ) {
+    Avatar updatedAvatar = avatarService.updateAvatarLevel(memberId, newLevel);
+    return ApiResponse.of(SuccessStatus.USERINFO_SUCCESS, updatedAvatar);
+  }
 
 
 

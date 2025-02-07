@@ -20,16 +20,17 @@ public record TrainerRequestDto(
 	public static TrainerRequestDto from(MatchingAuthentication request) {
 		Member member = request.getMember();
 		int age = Period.between(member.getBirthday(), LocalDate.now()).getYears();
-		List<AvatarSkin> avatarSkins = member.getAvatar().getAvatarSkins();
-		AvatarSkin mostRecentAvatarSkin = avatarSkins.get(avatarSkins.size() - 1);
+
+		//아바타 스킨 가져오기
+		AvatarSkin avatarSkin = member.getAvatar().getAvatarSkin();
 
 		return new TrainerRequestDto(
-			request.getId(),
-			member.getRealName(),
-			age,
-			member.getGender(),
-			mostRecentAvatarSkin.getImagePath(),
-			member.getBirthday()
+				request.getId(),
+				member.getRealName(),
+				age,
+				member.getGender(),
+				avatarSkin != null ? avatarSkin.getImagePath() : null, // 스킨이 없을 수도 있으므로 체크
+				member.getBirthday()
 		);
 	}
 }

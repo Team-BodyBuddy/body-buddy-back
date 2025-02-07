@@ -11,6 +11,7 @@ import BodyBuddy.demo.domain.member.repository.MemberRepository;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
 import BodyBuddy.demo.global.jwt.JwtTokenProvider;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -145,6 +146,19 @@ public class MemberService {
         return memberRepository.findById(memberId)
             .map(Member::getNickname)
             .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+    }
+
+    /**
+     * 회원가입시 아바타 자동 생성
+     */
+    @Transactional
+    public Member registerMember(Member member) {
+        Member savedMember = memberRepository.save(member);
+
+        // 회원가입 후 아바타 자동 생성 (기본 레벨 0)
+        avatarService.createDefaultAvatar(savedMember);
+
+        return savedMember;
     }
 
 }

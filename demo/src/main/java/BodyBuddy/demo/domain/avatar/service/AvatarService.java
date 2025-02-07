@@ -49,7 +49,7 @@ public class AvatarService {
             .orElseThrow(() -> new IllegalStateException("기본 스킨이 존재하지 않습니다."));
 
         Avatar avatar = Avatar.builder()
-            .level(0L)  // 기본 레벨 0
+            .level(1L)  // 기본 레벨 0
             .exp(0L)
             .point(0L)
             .rankingScore(0L)

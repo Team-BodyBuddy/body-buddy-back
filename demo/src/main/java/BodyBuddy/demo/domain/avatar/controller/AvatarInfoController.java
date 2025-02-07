@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/mainPage")
+@RequestMapping("/mainPage")
 @Tag(name = "Avatar", description = "아바타 관련 API")
 @RequiredArgsConstructor
 public class AvatarInfoController {

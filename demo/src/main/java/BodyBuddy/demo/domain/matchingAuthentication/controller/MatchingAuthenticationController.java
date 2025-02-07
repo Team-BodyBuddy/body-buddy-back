@@ -15,7 +15,7 @@ import BodyBuddy.demo.global.apiPayload.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/matching")
+@RequestMapping("/matching")
 @RequiredArgsConstructor
 public class MatchingAuthenticationController {
 

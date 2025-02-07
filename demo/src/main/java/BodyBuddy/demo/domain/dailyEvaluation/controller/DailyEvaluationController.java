@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/evaluation")
+@RequestMapping("/evaluation")
 @RequiredArgsConstructor
 public class DailyEvaluationController {
 

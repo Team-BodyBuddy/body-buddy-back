@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/gyms")
+@RequestMapping("/gyms")
 public class GymController {
 
     private final GymRepository gymRepository;

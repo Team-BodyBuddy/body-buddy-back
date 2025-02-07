@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/mypage")
+@RequestMapping("/mypage")
 @RequiredArgsConstructor
 public class MemberMyPageController {
 

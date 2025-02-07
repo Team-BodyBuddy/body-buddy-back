@@ -16,3 +16,6 @@ spring:
       secret: ${auth.secret-key}
   jackson:
     time-zone: Asia/Seoul
+server:
+  servlet:
+    context-path: /api

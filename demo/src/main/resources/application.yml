@@ -19,8 +19,4 @@ spring:
 server:
   servlet:
     context-path: /api
-springdoc:
-  swagger-ui:
-    path: /api/swagger-ui.html
-    config-url: /api/v3/api-docs/swagger-config
-    url: /api/v3/api-docs
+  forward-headers-strategy: framework

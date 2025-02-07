@@ -7,6 +7,8 @@ import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
 import BodyBuddy.demo.domain.avatarSkin.entity.AvatarSkin;
 import BodyBuddy.demo.domain.avatarSkin.repository.AvatarSkinRepository;
 import BodyBuddy.demo.domain.member.entity.Member;
+import BodyBuddy.demo.global.apiPayload.code.error.AvatarErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ public class AvatarService {
     public Long getTotalPoints(Long memberId) {
         return avatarRepository.findByMemberId(memberId)
             .map(Avatar::getPoint)
-            .orElseThrow(() -> new IllegalArgumentException("해당 회원의 아바타 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new BodyBuddyException(AvatarErrorCode.AVATAR_NOT_FOUND));
     }
 
     /**
@@ -33,7 +35,7 @@ public class AvatarService {
      */
     public AvatarInfoRequestDTO getAvatarInfoRequestDTO(Long memberId) {
         Avatar avatar = avatarRepository.findByMemberId(memberId)
-            .orElseThrow(() -> new IllegalArgumentException("해당 회원의 아바타 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new BodyBuddyException(AvatarErrorCode.AVATAR_NOT_FOUND));
         return AvatarInfoRequestDTO.from(avatar);
     }
 

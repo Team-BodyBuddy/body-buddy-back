@@ -10,4 +10,9 @@ import lombok.RequiredArgsConstructor;
 public class BodyBuddyException extends RuntimeException {
 
 	private final ErrorCode errorCode;
+
+	public BodyBuddyException(ErrorCode errorCode, String message) {
+		super(message);
+		this.errorCode = errorCode;
+	}
 }

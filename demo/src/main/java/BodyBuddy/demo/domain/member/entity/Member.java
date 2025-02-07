@@ -84,6 +84,9 @@ public class Member {
 	@Column(nullable = false)
 	private long totalPoints = 0L;
 
+	@Column(name = "refresh_token")
+	private String refreshToken;
+
 	@NotNull(message = "지역은 필수 입력 항목입니다.")
 	@Enumerated(EnumType.STRING)
 	private Region region;

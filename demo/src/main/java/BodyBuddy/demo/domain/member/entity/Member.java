@@ -1,5 +1,6 @@
 package BodyBuddy.demo.domain.member.entity;
 
+import jakarta.persistence.PrePersist;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,6 @@ import BodyBuddy.demo.global.common.commonEnum.Region;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import BodyBuddy.demo.domain.dailyEvaluation.entity.DailyEvaluation;
-import BodyBuddy.demo.domain.memberItem.entity.MemberItem;
 import BodyBuddy.demo.domain.routine.entity.Routine;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainerCalendar.entity.TrainerCalendar;
@@ -35,15 +35,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Entity
 @Table(name = "Member")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -86,6 +84,9 @@ public class Member {
 	@Column(nullable = false)
 	private long totalPoints = 0L;
 
+	@Column(name = "refresh_token")
+	private String refreshToken;
+
 	@NotNull(message = "지역은 필수 입력 항목입니다.")
 	@Enumerated(EnumType.STRING)
 	private Region region;
@@ -98,13 +99,6 @@ public class Member {
 	@JoinColumn(name = "trainer_id")
 	private Trainer trainer;
 
-	@Column(name = "refresh_token")
-	private String refreshToken;
-
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<MemberItem> items = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -126,4 +120,10 @@ public class Member {
 
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TrainerCalendar> trainerCalendars = new ArrayList<>();
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
 }

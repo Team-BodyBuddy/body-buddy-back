@@ -9,10 +9,10 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum AvatarErrorCode implements ErrorCode {
 
-    AVATAR_NOT_FOUND(HttpStatus.NOT_FOUND, "AVATAR404", "멤버Id에 따른 아바타를 찾지 못했습니다.")
-    ;
+  AVATAR_NOT_FOUND(HttpStatus.NOT_FOUND, "AVATAR404", "멤버Id에 따른 아바타를 찾지 못했습니다.")
+  ;
 
-    private final HttpStatus httpStatus;
-    private final String code;
-    private final String message;
+  private final HttpStatus httpStatus;
+  private final String code;
+  private final String message;
 }

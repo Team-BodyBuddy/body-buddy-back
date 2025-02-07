@@ -14,6 +14,9 @@ public enum SuccessStatus implements BaseCode {
 	// 일반적인 응답
 	_OK(HttpStatus.OK, "COMMON200", "성공입니다."),
 
+	// 토큰 관련 응답
+	TOKEN_REFRESH_SUCCESS(HttpStatus.OK, "TOKEN200", "토큰 리프레시 성공입니다."),
+
 	// 로그인 관련 응답
 	LOGIN_SUCCESS(HttpStatus.OK, "AUTH2000", "로그인 성공입니다."),
 

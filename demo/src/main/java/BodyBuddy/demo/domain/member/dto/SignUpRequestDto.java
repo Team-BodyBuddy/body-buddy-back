@@ -128,4 +128,21 @@ public class SignUpRequestDto {
         @NotBlank(message = "비밀번호는 필수 입력 항목입니다.")
         private final String password;
     }
+
+    @Getter
+    @NoArgsConstructor(force = true)
+    @AllArgsConstructor
+    @Builder
+    public static class JwtTokenRequest {
+        @NotBlank(message = "RefreshToken은 필수 입력 항목입니다.")
+        private final String refreshToken;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class JwtTokenResponse {
+        private final String accessToken;
+        private final String refreshToken;
+    }
 }

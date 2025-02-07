@@ -10,7 +10,7 @@ public interface ErrorCode {
 	HttpStatus getHttpStatus();
 
 	/**
-	 * 에러 코드 반환 (예: MEMBER_001)
+	 * 에러 코드 반환 (예: "MEMBER_001")
 	 */
 	String getCode();
 

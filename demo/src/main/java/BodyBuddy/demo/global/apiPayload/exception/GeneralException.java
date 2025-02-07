@@ -1,5 +1,10 @@
 package BodyBuddy.demo.global.apiPayload.exception;
 
-public class GeneralException {
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
+public class GeneralException extends RuntimeException {
+    private final ErrorCode errorCode;
 }

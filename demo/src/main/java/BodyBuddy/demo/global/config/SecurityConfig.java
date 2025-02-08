@@ -34,7 +34,8 @@ public class SecurityConfig {
                         "/v3/api-docs/**",
                         "/swagger-ui.html",
                         "/swagger-resources/**",
-                        "/webjars/**"
+                        "/webjars/**",
+                        "/api-docs/**" // -----추가-----
                     ).permitAll() // 인증 없이 접근 가능하도록 수정
                     .anyRequest().authenticated() // 나머지는 인증 필요
                 )

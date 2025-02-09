@@ -30,7 +30,7 @@ public class CalendarService {
 	/**
 	 * 특정 날짜의 캘린더 조회 또는 생성
 	 */
-	@Transactional(readOnly = true)
+	@Transactional
 	public Calendar getOrCreateCalendarByDate(Long memberId, LocalDate date) {
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));

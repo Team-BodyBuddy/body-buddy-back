@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface TrainerRepository extends JpaRepository<Trainer, Long> {
     Optional<Trainer> findByLoginId(String loginId);
+    Optional<Trainer> findByUuid(String uuid);
     boolean existsByLoginId(String loginId);
 
     @Query("UPDATE Trainer t SET t.refreshToken = :refreshToken WHERE t.loginId = :loginId")

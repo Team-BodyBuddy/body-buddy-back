@@ -56,8 +56,8 @@ public class MemberMyPageController {
 	@PostMapping("/{memberId}/trainer-request")
 	public ResponseEntity<ApiResponse<String>> requestTrainerAuthentication(
 		@PathVariable Long memberId,
-		@RequestParam String trainerId) {
-		memberMyPageService.requestTrainerAuthentication(memberId, trainerId);
+		@RequestParam String uuId) {
+		memberMyPageService.requestTrainerAuthentication(memberId, uuId);
 		return ResponseEntity.ok(ApiResponse.onSuccess("트레이너 인증 요청이 성공적으로 전송되었습니다."));
 	}
 

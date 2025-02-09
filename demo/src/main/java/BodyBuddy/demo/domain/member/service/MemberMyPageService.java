@@ -63,11 +63,11 @@ public class MemberMyPageService {
 	/**
 	 * 트레이너 인증 요청
 	 */
-	public void requestTrainerAuthentication(Long memberId, String trainerId) {
+	public void requestTrainerAuthentication(Long memberId, String uuId) {
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
 
-		Trainer trainer = trainerRepository.findByLoginId(trainerId)
+		Trainer trainer = trainerRepository.findByLoginId(uuId)
 			.orElseThrow(() -> new IllegalArgumentException("트레이너가 존재하지 않습니다."));
 
 		MatchingAuthentication authentication = new MatchingAuthentication(

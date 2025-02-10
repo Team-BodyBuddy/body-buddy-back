@@ -11,4 +11,5 @@ import BodyBuddy.demo.domain.trainerCalendar.entity.TrainerCalendar;
 @Repository
 public interface TrainerCalendarRepository extends JpaRepository<TrainerCalendar, Long> {
 	Optional<TrainerCalendar> findByTrainerIdAndMemberIdAndDate(Long trainerId, Long memberId, LocalDate date);
+
 }

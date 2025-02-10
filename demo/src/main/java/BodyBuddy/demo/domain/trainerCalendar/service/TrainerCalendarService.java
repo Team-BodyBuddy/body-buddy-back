@@ -15,6 +15,10 @@ import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
 import BodyBuddy.demo.domain.trainerCalendar.entity.TrainerCalendar;
 import BodyBuddy.demo.domain.trainerCalendar.repository.TrainerCalendarRepository;
+import BodyBuddy.demo.global.apiPayload.code.error.CalendarErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.TrainerErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,12 +34,12 @@ public class TrainerCalendarService {
 	/**
 	 * 특정 트레이너, 회원의 특정 날짜의 캘린더 조회
 	 */
-	@Transactional(readOnly = true)
+	@Transactional
 	public TrainerCalendar getOrCreateCalendarByDate(Long trainerId, Long memberId, LocalDate date) {
 		Trainer trainer = trainerRepository.findById(trainerId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 트레이너가 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(TrainerErrorCode.TRAINER_NOT_FOUND));
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
 
 		// 캘린더 조회 또는 생성
 		return trainerCalendarRepository.findByTrainerIdAndMemberIdAndDate(trainerId, memberId, date)
@@ -55,7 +59,7 @@ public class TrainerCalendarService {
 	 */
 	public ClassSchedule addClassSchedule(Long calendarId, String description) {
 		TrainerCalendar calendar = trainerCalendarRepository.findById(calendarId)
-			.orElseThrow(() -> new IllegalArgumentException("Calendar not found"));
+			.orElseThrow(() -> new BodyBuddyException(CalendarErrorCode.CALENDAR_NOT_FOUND));
 		ClassSchedule schedule = ClassSchedule.builder()
 			.description(description)
 			.completed(false)
@@ -74,8 +78,7 @@ public class TrainerCalendarService {
 	 */
 	public void removeClassSchedule(Long classScheduleId) {
 		ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
-			.orElseThrow(() -> new IllegalArgumentException("ClassSchedule not found"));
-		classScheduleRepository.delete(classSchedule);
+			.orElseThrow(() -> new BodyBuddyException(CalendarErrorCode.CLASS_SCHEDULE_NOT_FOUND));
 
 		TrainerCalendar calendar = classSchedule.getTrainerCalendar();
 		classScheduleRepository.delete(classSchedule);
@@ -90,7 +93,7 @@ public class TrainerCalendarService {
 	 */
 	public ClassSchedule toggleClassCompletion(Long classScheduleId) {
 		ClassSchedule classSchedule = classScheduleRepository.findById(classScheduleId)
-			.orElseThrow(() -> new IllegalArgumentException("ClassSchedule not found"));
+			.orElseThrow(() ->  new BodyBuddyException(CalendarErrorCode.CLASS_SCHEDULE_NOT_FOUND));
 		classSchedule.toggleCompleted();
 		return classSchedule;
 	}
@@ -100,7 +103,7 @@ public class TrainerCalendarService {
 	 */
 	public DailyMemo updateDailyMemo(Long calendarId, String memo) {
 		TrainerCalendar calendar = trainerCalendarRepository.findById(calendarId)
-			.orElseThrow(() -> new IllegalArgumentException("Calendar not found"));
+			.orElseThrow(() -> new BodyBuddyException(CalendarErrorCode.CALENDAR_NOT_FOUND));
 		DailyMemo dailyMemo = calendar.getDailyMemo();
 		if (dailyMemo == null) {
 			dailyMemo = DailyMemo.builder().memo(memo).trainerCalendar(calendar).build();

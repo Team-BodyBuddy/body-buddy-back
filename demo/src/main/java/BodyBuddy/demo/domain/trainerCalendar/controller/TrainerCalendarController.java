@@ -18,6 +18,7 @@ import BodyBuddy.demo.domain.classSchedule.entity.ClassSchedule;
 import BodyBuddy.demo.domain.dailyMemo.dto.DailyMemoResponse;
 import BodyBuddy.demo.domain.dailyMemo.entity.DailyMemo;
 
+import BodyBuddy.demo.domain.trainerCalendar.dto.TrainerCalendarRequest;
 import BodyBuddy.demo.domain.trainerCalendar.dto.TrainerCalendarResponse;
 import BodyBuddy.demo.domain.trainerCalendar.entity.TrainerCalendar;
 import BodyBuddy.demo.domain.trainerCalendar.service.TrainerCalendarService;
@@ -25,6 +26,7 @@ import BodyBuddy.demo.global.apiPayload.ApiResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -41,12 +43,11 @@ public class TrainerCalendarController {
 	@Operation(summary = "특정 날짜의 캘린더 조회", description = "트레이너의 특정 회원의 특정 날짜 캘린더를 조회하거나 생성합니다.")
 	@PostMapping("/date")
 	public ResponseEntity<ApiResponse<TrainerCalendarResponse>> getOrCreateCalendarByDate(
-		@RequestParam Long trainerId,
-		@RequestParam Long memberId,
-		@RequestParam String date
+		@Valid @RequestBody TrainerCalendarRequest request
 	) {
-		LocalDate parsedDate = LocalDate.parse(date);
-		TrainerCalendar calendar = trainerCalendarService.getOrCreateCalendarByDate(trainerId, memberId, parsedDate);
+		LocalDate parsedDate = LocalDate.parse(request.date());
+		TrainerCalendar calendar = trainerCalendarService.getOrCreateCalendarByDate(
+			request.trainerId(), request.memberId(), parsedDate);
 		return ResponseEntity.ok(ApiResponse.onSuccess(TrainerCalendarResponse.from(calendar)));
 	}
 

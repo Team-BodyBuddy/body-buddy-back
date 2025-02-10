@@ -13,6 +13,9 @@ import BodyBuddy.demo.domain.dailyEvaluation.entity.DailyEvaluation;
 import BodyBuddy.demo.domain.dailyEvaluation.repository.DailyEvaluationRepository;
 import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
+import BodyBuddy.demo.global.apiPayload.code.error.DailyEvaluationErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import BodyBuddy.demo.global.common.commonEnum.EvaluationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +37,7 @@ public class DailyEvaluationService {
 	 */
 	public CalendarResponse setDailyEvaluation(DailyEvaluationRequestDto dto) {
 		Member member = memberRepository.findById(dto.memberId())
-			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
 
 		// Calendar 조회 또는 생성
 		Calendar calendar = calendarService.getOrCreateCalendar(member, dto.date());
@@ -65,10 +68,10 @@ public class DailyEvaluationService {
 	@Transactional(readOnly = true)
 	public DailyEvaluationResponseDto getDailyEvaluation(Long memberId, LocalDate date) {
 		memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
 
 		DailyEvaluation evaluation = dailyEvaluationRepository.findByMemberIdAndDate(memberId, date)
-			.orElseThrow(() -> new IllegalArgumentException("해당 날짜에 대한 평가가 존재하지 않습니다."));
+			.orElseThrow(() ->new BodyBuddyException(DailyEvaluationErrorCode.DAILY_EVALUATION_ERROR_CODE));
 
 		return DailyEvaluationResponseDto.from(evaluation);
 	}

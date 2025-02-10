@@ -11,6 +11,9 @@ import BodyBuddy.demo.domain.dailyEvalExpr.entity.DailyEvalExpr;
 import BodyBuddy.demo.domain.dailyEvalExpr.repository.DailyEvalExprRepository;
 import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
+import BodyBuddy.demo.global.apiPayload.code.error.AvatarErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,6 +29,8 @@ public class DailyEvalExprService {
 	 * 오늘의 평가 연속 수행 일수 업데이트 및 아바타 점수 증가
 	 */
 	public void updateStreakAndAvatar(Member member, LocalDate today) {
+		memberRepository.findById(member.getId())
+			.orElseThrow(()-> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
 		DailyEvalExpr dailyEvalExpr = dailyEvalExprRepository.findByMemberId(member.getId())
 			.orElseGet(() -> DailyEvalExpr.builder()
 				.member(member)
@@ -50,8 +55,7 @@ public class DailyEvalExprService {
 		// 아바타 점수 업데이트
 		Avatar avatar = member.getAvatar();
 		if (avatar == null) {
-			// 아바타가 없는 경우 예외 처리
-			throw new IllegalStateException("회원에게 아바타가 없습니다.");
+			throw new BodyBuddyException(AvatarErrorCode.AVATAR_NOT_FOUND);
 		}
 
 		int streak = dailyEvalExpr.getCurrentStreak();

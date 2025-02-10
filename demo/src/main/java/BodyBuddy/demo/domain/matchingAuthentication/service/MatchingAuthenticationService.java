@@ -22,7 +22,6 @@ public class MatchingAuthenticationService {
 
 	private final MatchingAuthenticationRepository matchingAuthenticationRepository;
 	private final TrainerRepository trainerRepository;
-	private final MemberRepository memberRepository;
 
 	/**
 	 * 트레이너 인증 요청 리스트 조회

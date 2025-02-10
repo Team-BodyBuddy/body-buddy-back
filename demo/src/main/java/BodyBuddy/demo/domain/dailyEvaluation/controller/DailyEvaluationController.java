@@ -31,7 +31,7 @@ public class DailyEvaluationController {
 	/**
 	 * 오늘의 평가 상태 설정
 	 */
-	@Operation(summary = "오늘의 평가 상태 설정", description = "회원이 오늘의 평가 상태를 설정합니다.")
+	@Operation(summary = "오늘의 평가 상태 설정", description = "회원이 오늘의 평가 상태를 설정합니다.(NONE,BAD,SOSO,GOOD)")
 	@PostMapping("/set")
 	public ResponseEntity<ApiResponse<CalendarResponse>> setDailyEvaluation(@RequestBody @Valid DailyEvaluationRequestDto dto) {
 		CalendarResponse response = dailyEvaluationService.setDailyEvaluation(dto);

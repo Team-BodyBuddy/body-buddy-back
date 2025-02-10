@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import BodyBuddy.demo.domain.calendar.dto.CalendarDayInfo;
-import BodyBuddy.demo.domain.calendar.dto.CalendarResponse;
+import BodyBuddy.demo.domain.calendar.dto.CalendarMonthResponse;
 import BodyBuddy.demo.domain.calendar.entity.Calendar;
 import BodyBuddy.demo.domain.calendar.repository.CalendarRepository;
 import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
+import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import BodyBuddy.demo.global.common.commonEnum.RoutineType;
 import lombok.RequiredArgsConstructor;
 
@@ -77,6 +79,22 @@ public class CalendarService {
 			return CalendarDayInfo.IndicatorType.NONE;
 		}
 	}
+	public List<CalendarMonthResponse> getCalendarsByMonth(Long memberId,String month){
+		memberRepository.findById(memberId)
+			.orElseThrow(()-> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
 
+		YearMonth yearMonth = (month == null || month.isBlank())
+			? YearMonth.now()
+			: YearMonth.parse(month);  // "yyyy-MM" 형식이어야 함
+
+		LocalDate startDate = yearMonth.atDay(1);
+		LocalDate endDate = yearMonth.atEndOfMonth();
+
+		List<Calendar> calendars=calendarRepository.findByMemberIdAndDateBetween(memberId, startDate, endDate);
+
+		return calendars.stream()
+			.map(CalendarMonthResponse::from)
+			.collect(Collectors.toList());
+	}
 
 }

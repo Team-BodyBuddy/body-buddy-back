@@ -16,6 +16,11 @@ import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
+import BodyBuddy.demo.global.apiPayload.code.error.GymErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.MatchingAuthenticationErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.MemberErrorCode;
+import BodyBuddy.demo.global.apiPayload.code.error.TrainerErrorCode;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import BodyBuddy.demo.global.common.commonEnum.AuthenticationRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +40,7 @@ public class MemberMyPageService {
 	@Transactional(readOnly = true)
 	public MyPageResponseDto getMyPage(Long memberId) {
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
 
 		return MyPageResponseDto.from(member);
 	}
@@ -46,7 +51,7 @@ public class MemberMyPageService {
 	 */
 	public MyPageResponseDto updateMemberInfo(Long memberId, UpdateMemberInfoRequestDto requestDto) {
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
 
 		member.setRegion(requestDto.region());
 		member.setHeight(requestDto.height());
@@ -54,7 +59,7 @@ public class MemberMyPageService {
 
 		if (requestDto.gymId() != null) {
 			Gym gym = gymRepository.findById(requestDto.gymId())
-				.orElseThrow(() -> new IllegalArgumentException("GYM이 존재하지 않습니다."));
+				.orElseThrow(() -> new BodyBuddyException(GymErrorCode.GYM_NOT_FOUND));
 			member.setGym(gym);
 		}
 
@@ -65,10 +70,16 @@ public class MemberMyPageService {
 	 */
 	public void requestTrainerAuthentication(Long memberId, String uuId) {
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
 
 		Trainer trainer = trainerRepository.findByLoginId(uuId)
-			.orElseThrow(() -> new IllegalArgumentException("트레이너가 존재하지 않습니다."));
+			.orElseThrow(() -> new BodyBuddyException(TrainerErrorCode.TRAINER_NOT_FOUND));
+
+		matchingAuthenticationRepository
+			.findByMemberIdAndTrainerIdAndStatus(member.getId(), trainer.getId(), AuthenticationRequest.PENDING)
+			.ifPresent(existing -> {
+				throw new BodyBuddyException(MatchingAuthenticationErrorCode.DUPLICATE_AUTH_REQUEST);
+			});
 
 		MatchingAuthentication authentication = new MatchingAuthentication(
 			null,

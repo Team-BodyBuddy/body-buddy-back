@@ -8,6 +8,7 @@ import BodyBuddy.demo.global.common.commonEnum.Gender;
 
 
 public record TrainerMyPageResponseDto(
+	Long trainerId,
 	String nameAndAge, // 이름(XX세, 성별)
 	String uuid,  // ID: xxx
 	String gymName,    // 소속 GYM 이름
@@ -20,6 +21,7 @@ public record TrainerMyPageResponseDto(
 		String uuid = "ID: " + trainer.getUuid();
 
 		return new TrainerMyPageResponseDto(
+			trainer.getId(),
 			nameAndAge,
 			uuid,
 			trainer.getGym() != null ? trainer.getGym().getName() : "미소속",

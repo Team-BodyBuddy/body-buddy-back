@@ -1,6 +1,10 @@
 package BodyBuddy.demo.domain.trainerCalendar.service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +17,7 @@ import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
 import BodyBuddy.demo.domain.trainer.entity.Trainer;
 import BodyBuddy.demo.domain.trainer.repository.TrainerRepository;
+import BodyBuddy.demo.domain.trainerCalendar.dto.TrainerCalendarSimpleResponse;
 import BodyBuddy.demo.domain.trainerCalendar.entity.TrainerCalendar;
 import BodyBuddy.demo.domain.trainerCalendar.repository.TrainerCalendarRepository;
 import BodyBuddy.demo.global.apiPayload.code.error.CalendarErrorCode;
@@ -113,6 +118,44 @@ public class TrainerCalendarService {
 			dailyMemo.updateMemo(memo);
 		}
 		return dailyMemo;
+	}
+
+	/**
+	 * 특정 trainerId, memberId에 대해 원하는 달(yyyy-MM 형식)의 캘린더들을 조회합니다.
+	 * month 파라미터가 없으면 현재 달로 조회합니다.
+	 */
+	@Transactional(readOnly = true)
+	public List<TrainerCalendarSimpleResponse> getCalendarsByMonth(
+		final Long trainerId,
+		final Long memberId,
+		final String month) {
+
+		// trainer와 member 존재 여부 체크
+		Trainer trainer = trainerRepository.findById(trainerId)
+			.orElseThrow(() -> new BodyBuddyException(TrainerErrorCode.TRAINER_NOT_FOUND));
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new BodyBuddyException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+		YearMonth yearMonth;
+		if (month == null || month.isBlank()) {
+			yearMonth = YearMonth.now();
+		} else {
+			try {
+				yearMonth = YearMonth.parse(month);
+			} catch (DateTimeParseException e) {
+				throw new BodyBuddyException(CalendarErrorCode.CALENDAR_NOT_FOUND,
+					"month 형식이 올바르지 않습니다. (yyyy-MM)");
+			}
+		}
+		LocalDate startDate = yearMonth.atDay(1);
+		LocalDate endDate = yearMonth.atEndOfMonth();
+
+		List<TrainerCalendar> calendars = trainerCalendarRepository
+			.findByTrainerIdAndMemberIdAndDateBetween(trainerId, memberId, startDate, endDate);
+
+		return calendars.stream()
+			.map(TrainerCalendarSimpleResponse::from)
+			.collect(Collectors.toList());
 	}
 
 }

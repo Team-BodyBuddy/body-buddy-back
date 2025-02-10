@@ -1,10 +1,12 @@
 package BodyBuddy.demo.domain.trainerCalendar.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,7 @@ import BodyBuddy.demo.domain.dailyMemo.entity.DailyMemo;
 
 import BodyBuddy.demo.domain.trainerCalendar.dto.TrainerCalendarRequest;
 import BodyBuddy.demo.domain.trainerCalendar.dto.TrainerCalendarResponse;
+import BodyBuddy.demo.domain.trainerCalendar.dto.TrainerCalendarSimpleResponse;
 import BodyBuddy.demo.domain.trainerCalendar.entity.TrainerCalendar;
 import BodyBuddy.demo.domain.trainerCalendar.service.TrainerCalendarService;
 import BodyBuddy.demo.global.apiPayload.ApiResponse;
@@ -27,6 +30,7 @@ import BodyBuddy.demo.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -98,5 +102,19 @@ public class TrainerCalendarController {
 		DailyMemo updatedMemo = trainerCalendarService.updateDailyMemo(calendarId, memo);
 		return ResponseEntity.ok(ApiResponse.onSuccess(DailyMemoResponse.
 			from(updatedMemo)));
+	}
+
+	@Operation(summary = "특정 달의 캘린더 조회",
+		description = "요청된 달의(yyyy-MM) 해당 트레이너와 회원의 캘린더 목록을 조회합니다. "
+			+ "응답은 calendarId, date, hasClass만 포함합니다. "
+			+ "month가 없으면 현재 달을 기본으로 사용합니다."+ "길어서 죄송합니다")
+	@GetMapping("/trainer-calendar/month")
+	public ResponseEntity<ApiResponse<List<TrainerCalendarSimpleResponse>>> getCalendarsByMonth(
+		@RequestParam @NotNull Long trainerId,
+		@RequestParam @NotNull Long memberId,
+		@RequestParam(required = false) String month) {
+
+		List<TrainerCalendarSimpleResponse> responses = trainerCalendarService.getCalendarsByMonth(trainerId, memberId, month);
+		return ResponseEntity.ok(ApiResponse.onSuccess(responses));
 	}
 }

@@ -7,6 +7,7 @@ import BodyBuddy.demo.global.common.commonEnum.Gender;
 import BodyBuddy.demo.global.common.commonEnum.Region;
 
 public record MyPageResponseDto(
+	Long memberId,
 	String nickname,
 	Long avatarLevel,
 	String realName,
@@ -19,6 +20,7 @@ public record MyPageResponseDto(
 	public static MyPageResponseDto from(Member member) {
 		String heightWeight = String.format("%.0fcm / %.0fkg", member.getHeight(), member.getWeight());
 		return new MyPageResponseDto(
+			member.getId(),
 			member.getNickname(),
 			member.getAvatar() != null ? member.getAvatar().getLevel() : 1,
 			member.getRealName(),

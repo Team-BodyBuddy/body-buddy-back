@@ -18,6 +18,7 @@ public class TrainerConverter {
 
     public TrainerResponse convertToTrainerResponse(Trainer trainer) {
         return TrainerResponse.builder()
+                .id(trainer.getId())
                 .realName(trainer.getRealName())
                 .age(calculateAge(trainer.getBirthday()))
                 .gender(trainer.getGender())
@@ -75,6 +76,7 @@ public class TrainerConverter {
      */
     public TrainerResponseDto convertToTrainerDto(Trainer trainer) {
         return TrainerResponseDto.builder()
+                .id(trainer.getId())
                 .realName(trainer.getRealName())
                 .age(calculateAge(trainer.getBirthday()))
                 .build();

@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Builder
 public class TrainerResponse {
+    private Long id;
     private String realName;
     private int age;
     private Gender gender;

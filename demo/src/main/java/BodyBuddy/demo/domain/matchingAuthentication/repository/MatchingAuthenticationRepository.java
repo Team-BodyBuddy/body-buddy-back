@@ -1,6 +1,7 @@
 package BodyBuddy.demo.domain.matchingAuthentication.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,6 @@ public interface MatchingAuthenticationRepository extends JpaRepository<Matching
 	List<MatchingAuthentication> findByTrainerAndStatus(Trainer trainer, AuthenticationRequest status);
 
 	long countByTrainerAndStatus(Trainer trainer, AuthenticationRequest status);
+	Optional<MatchingAuthentication> findByMemberIdAndTrainerIdAndStatus(
+		Long memberId, Long trainerId, AuthenticationRequest status);
 }

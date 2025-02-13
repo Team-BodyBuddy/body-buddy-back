@@ -35,7 +35,8 @@ public class SecurityConfig {
                         "/swagger-ui.html",
                         "/swagger-resources/**",
                         "/webjars/**",
-                        "/api-docs/**" // -----추가-----
+                        "/api-docs/**",
+                        "/actuator/**" //for actuator (prometheus)
                     ).permitAll() // 인증 없이 접근 가능하도록 수정
                     .anyRequest().authenticated() // 나머지는 인증 필요
                 )

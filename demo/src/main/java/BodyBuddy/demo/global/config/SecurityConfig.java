@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @RequiredArgsConstructor
@@ -27,22 +28,22 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용 안 함
                 )
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(
-                        "/auth/members/signup",
-                        "/auth/trainers/signup",
-                        "/auth/login",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/swagger-ui.html",
-                        "/swagger-resources/**",
-                        "/webjars/**",
-                        "/api-docs/**",
-                        "/actuator/**" //for actuator (prometheus)
-                    ).permitAll() // 인증 없이 접근 가능하도록 수정
-                    .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                    .anyRequest().authenticated() // 나머지는 인증 필요
+                        .requestMatchers(
+                                "/auth/members/signup",
+                                "/auth/trainers/signup",
+                                "/auth/login",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/api-docs/**",
+                                "/actuator/**" //for actuator (prometheus)
+                        ).permitAll() // 인증 없이 접근 가능하도록 수정
+                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                        .anyRequest().authenticated() // 나머지는 인증 필요
                 )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
         return http.build();
     }
 

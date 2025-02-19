@@ -18,6 +18,8 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 
     Page<Avatar> findByMemberGymOrderByRankingScoreDesc(Gym gym, Pageable pageable);
 
+    Optional<Long> findPointByMemberId(Long memberId);
+
     Optional<Avatar> findByMemberId(Long memberId);
 
     List<Avatar> findAllByOrderByRankingScoreDesc();

@@ -2,7 +2,8 @@ package BodyBuddy.demo.domain.avatar.controller;
 
 import BodyBuddy.demo.domain.avatar.dto.AvatarInfoResponseDTO;
 import BodyBuddy.demo.domain.avatar.service.AvatarService;
-import BodyBuddy.demo.domain.inbody.dto.AvatarInBodyDTO;
+import BodyBuddy.demo.domain.inbody.dto.InBodyResponseDTO;
+import BodyBuddy.demo.domain.inbody.dto.InBodyResponseDTO.HistoryData;
 import BodyBuddy.demo.domain.inbody.dto.WeightHistoryListDTO;
 import BodyBuddy.demo.domain.inbody.service.InBodyService;
 import BodyBuddy.demo.domain.member.service.MemberService;
@@ -11,8 +12,8 @@ import BodyBuddy.demo.global.apiPayload.code.status.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,17 +49,17 @@ public class AvatarInfoController {
   // 인바디 정보 조회
   @Operation(summary = "인바디 정보 조회", description = "체중,골격근량,체지방률을 반환 후 비교합니다.")
   @GetMapping("/{memberId}/inBody")
-  public ApiResponse<AvatarInBodyDTO> getAvatarInBody(@PathVariable Long memberId) {
-    AvatarInBodyDTO avatarInBody = inBodyService.getAvatarInBody(memberId);
-    return ApiResponse.of(SuccessStatus.INBODY_SUCCESS,avatarInBody);
+  public ApiResponse<InBodyResponseDTO.LatestData> getLatestInBody(@PathVariable Long memberId) {
+    InBodyResponseDTO.LatestData latestData = inBodyService.getLatestInBody(memberId);
+    return ApiResponse.of(SuccessStatus.INBODY_SUCCESS, latestData);
   }
 
   // 최근 5개 체중 조회
   @Operation(summary = "인바디 체중 기록 조회", description = "최근 5개의 체중을 반환합니다.")
   @GetMapping("/{memberId}/inBody/weightHistory")
-  public ApiResponse<WeightHistoryListDTO> getWeightHistory(@PathVariable Long memberId) {
-    WeightHistoryListDTO weightHistory = inBodyService.getRecentWeightHistory(memberId);
-    return ApiResponse.of(SuccessStatus.INBODY_SUCCESS,weightHistory);
+  public ApiResponse<List<HistoryData>> getInBodyHistory(@PathVariable Long memberId) {
+    List<InBodyResponseDTO.HistoryData> historyData = inBodyService.getRecentInBodyHistory(memberId);
+    return ApiResponse.of(SuccessStatus.INBODY_SUCCESS, historyData);
   }
 
 }

@@ -1,7 +1,6 @@
 package BodyBuddy.demo.domain.avatar.service;
 
-
-import BodyBuddy.demo.domain.avatar.dto.AvatarInfoRequestDTO;
+import BodyBuddy.demo.domain.avatar.dto.AvatarInfoResponseDTO;
 import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
 import BodyBuddy.demo.domain.avatarSkin.entity.AvatarSkin;
@@ -21,22 +20,27 @@ public class AvatarService {
     private final AvatarRepository avatarRepository;
     private final AvatarSkinRepository avatarSkinRepository;
 
+    // 회원 아바타 조회 메서드
+    private Avatar findAvatarByMemberId(Long memberId) {
+        return avatarRepository.findByMemberId(memberId)
+            .orElseThrow(() -> new BodyBuddyException(AvatarErrorCode.AVATAR_NOT_FOUND));
+    }
+
     /**
      * 회원의 포인트 총합 조회
      */
     public Long getTotalPoints(Long memberId) {
-        return avatarRepository.findByMemberId(memberId)
-            .map(Avatar::getPoint)
+        return avatarRepository.findPointByMemberId(memberId)
             .orElseThrow(() -> new BodyBuddyException(AvatarErrorCode.AVATAR_NOT_FOUND));
     }
 
     /**
      * 회원의 기본 정보 조회
      */
-    public AvatarInfoRequestDTO getAvatarInfoRequestDTO(Long memberId) {
-        Avatar avatar = avatarRepository.findByMemberId(memberId)
-            .orElseThrow(() -> new BodyBuddyException(AvatarErrorCode.AVATAR_NOT_FOUND));
-        return AvatarInfoRequestDTO.from(avatar);
+    public AvatarInfoResponseDTO getAvatarInfoRequestDTO(Long memberId) {
+        Avatar avatar = findAvatarByMemberId(memberId);
+
+        return AvatarInfoResponseDTO.from(avatar);
     }
 
     /**
@@ -65,8 +69,7 @@ public class AvatarService {
      */
     @Transactional
     public Avatar updateAvatarLevel(Long memberId, Long newLevel) {
-        Avatar avatar = avatarRepository.findByMemberId(memberId)
-            .orElseThrow(() -> new IllegalArgumentException("해당 회원의 아바타가 존재하지 않습니다."));
+        Avatar avatar = findAvatarByMemberId(memberId);
 
         avatar.updateLevelAndSkin(newLevel, avatarSkinRepository);
         return avatarRepository.save(avatar);

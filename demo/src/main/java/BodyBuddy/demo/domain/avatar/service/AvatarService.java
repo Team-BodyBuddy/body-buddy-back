@@ -11,8 +11,10 @@ import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AvatarService {

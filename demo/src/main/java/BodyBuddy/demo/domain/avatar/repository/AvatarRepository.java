@@ -18,7 +18,9 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 
     Page<Avatar> findByMemberGymOrderByRankingScoreDesc(Gym gym, Pageable pageable);
 
-    Optional<Long> findPointByMemberId(Long memberId);
+    // 멤버 포인트 조회
+    @Query("SELECT a.point FROM Avatar a WHERE a.member.id = :memberId")
+    Optional<Long> findPointByMemberId(@Param("memberId") Long memberId);
 
     Optional<Avatar> findByMemberId(Long memberId);
 

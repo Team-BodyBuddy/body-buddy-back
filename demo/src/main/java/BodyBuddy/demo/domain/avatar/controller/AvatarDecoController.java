@@ -67,6 +67,7 @@ public class AvatarDecoController {
   }
 
   /**
+   * FIXME
    * 카테고리 별 아이템 조회 API
    */
 
@@ -78,6 +79,7 @@ public class AvatarDecoController {
   }
 
   /**
+   * FIXME
    * 아이템 구매 시 상태 변경 API
    * 구매시 포인트 차감 필요 + 에러 핸들링
    */
@@ -90,6 +92,7 @@ public class AvatarDecoController {
   }
 
   /**
+   * FIXME
    * 아바타 스킨 변경 API
    */
 

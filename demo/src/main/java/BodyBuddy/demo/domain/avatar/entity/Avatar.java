@@ -42,7 +42,8 @@ public class Avatar {
 
 	private Long exp;
 
-	private Long point;
+	@Column(nullable = false)
+	private Long point = 0L;
 
 	private Long rankingScore; // 나의 랭킹 점수
 

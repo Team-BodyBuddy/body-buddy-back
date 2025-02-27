@@ -36,7 +36,7 @@ public class MemberItem {
 	@Column(name = "memberItem_id")
 	private Long id;
 
-	//사용된 포인트
+	// 사용된 포인트
 	private Long usedPoints;
 
 	// 현재 아이템 상태 (true: 착용 중)
@@ -46,10 +46,18 @@ public class MemberItem {
 	@JoinColumn(name = "avatar_id", nullable = false)
 	private Avatar avatar;
 
-	@OneToMany(mappedBy = "memberItem", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Item> items = new ArrayList<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "item_id", nullable = false)  // 변경: 아이템을 직접 참조
+	private Item item;
 
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime purchasedAt = LocalDateTime.now();
+
+	/**
+	 * 아이템 구매 시 활성화 메서드
+	 */
+	public void equip() {
+		this.isEquipped = true;
+	}
 
 }

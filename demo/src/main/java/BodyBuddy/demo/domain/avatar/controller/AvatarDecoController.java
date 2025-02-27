@@ -9,7 +9,10 @@ import BodyBuddy.demo.domain.item.DTO.PurchaseDTO;
 import BodyBuddy.demo.domain.item.service.ItemService;
 import BodyBuddy.demo.domain.member.service.MemberService;
 import BodyBuddy.demo.global.apiPayload.ApiResponse;
+import BodyBuddy.demo.global.apiPayload.code.error.ItemErrorCode;
 import BodyBuddy.demo.global.apiPayload.code.status.SuccessStatus;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
+import BodyBuddy.demo.global.common.commonEnum.ItemCategory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -71,12 +75,6 @@ public class AvatarDecoController {
    * 카테고리 별 아이템 조회 API
    */
 
-  @Operation(summary = "카테고리별 아이템 조회", description = "모든 아이템을 카테고리별로 조회하며, 구매한 아이템은 ACTIVE, 구매하지 않은 아이템은 INACTIVE로 표시")
-  @GetMapping("/{memberId}/itemCategory")
-  public ApiResponse<List<CategoryItemDTO>> getAllItemsByCategory(@PathVariable Long memberId) {
-    List<CategoryItemDTO> categorizedItems = itemService.getAllItemsByCategory(memberId);
-    return ApiResponse.of(SuccessStatus.USERINFO_SUCCESS, categorizedItems);
-  }
 
   /**
    * FIXME

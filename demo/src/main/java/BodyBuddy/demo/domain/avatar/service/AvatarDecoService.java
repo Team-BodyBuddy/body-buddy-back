@@ -4,6 +4,7 @@ import BodyBuddy.demo.domain.avatar.dto.AvatarDecoDTO;
 import BodyBuddy.demo.domain.avatar.dto.AvatarDecoDTO.EquippedItem;
 import BodyBuddy.demo.domain.avatar.entity.Avatar;
 import BodyBuddy.demo.domain.avatar.repository.AvatarRepository;
+import BodyBuddy.demo.domain.item.entity.Item;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
 import BodyBuddy.demo.domain.memberItem.repository.MemberItemRepository;
 import jakarta.transaction.Transactional;
@@ -29,12 +30,14 @@ public class AvatarDecoService {
 
     // 현재 착용 중인 아이템 가져오기
     List<EquippedItem> equippedItems = memberItemRepository.findWearingItemsByAvatar(avatar.getId()).stream()
-        .flatMap(memberItem -> memberItem.getItems().stream()
-            .map(item -> new AvatarDecoDTO.EquippedItem(
-                item.getName(),
-                item.getImagePath(),
-                item.getType()
-            )))
+        .map(memberItem -> {
+          Item item = memberItem.getItem();
+          return new AvatarDecoDTO.EquippedItem(
+              item.getName(),
+              item.getImagePath(),
+              item.getType()
+          );
+        })
         .collect(Collectors.toList());
 
     return AvatarDecoDTO.AvatarInfo.builder()

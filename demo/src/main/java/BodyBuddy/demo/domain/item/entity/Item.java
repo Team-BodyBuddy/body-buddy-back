@@ -59,25 +59,12 @@ public class Item {
 	private ItemCategory category;
 
 	/**
-	 * 아이템 구매 여부 -> 멤버아이템이면 구매한 아이템
-	 * 구매하지 않은 아이템은 null 가능
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "memberItem_id", nullable = true)
-	private MemberItem memberItem;
-
-	/**
 	 * 아이템 구매 시 상태 변경 메서드
 	 */
 
-	public void activate(MemberItem memberItem) {
+	public void activate() {
 		this.status = ItemStatus.ACTIVE;
-		this.memberItem = memberItem;
 	}
 
-	// 특정 회원이 아이템을 소유하고 있는지 확인
-	public boolean isOwnedByMember(Long memberId) {
-		return this.memberItem.getAvatar().getMember().getId().equals(memberId);
-	}
 
 }

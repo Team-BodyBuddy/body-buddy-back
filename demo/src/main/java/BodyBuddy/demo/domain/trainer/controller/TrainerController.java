@@ -7,9 +7,12 @@ import BodyBuddy.demo.domain.trainer.dto.TrainerMyPageResponseDto;
 import BodyBuddy.demo.domain.trainer.dto.TrainerResponse;
 import BodyBuddy.demo.domain.trainer.dto.TrainerResponseDto;
 import BodyBuddy.demo.domain.trainer.dto.UpdateProfileImageRequestDto;
+import BodyBuddy.demo.domain.trainer.dto.UpdateTrainerProfileDto;
 import BodyBuddy.demo.domain.trainer.service.TrainerService;
 import BodyBuddy.demo.global.apiPayload.ApiResponse;
+import BodyBuddy.demo.global.apiPayload.code.error.GymErrorCode;
 import BodyBuddy.demo.global.apiPayload.code.status.SuccessStatus;
+import BodyBuddy.demo.global.apiPayload.exception.BodyBuddyException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -36,7 +39,7 @@ public class TrainerController {
 	@GetMapping("/list/{gymId}")
     public ApiResponse<List<TrainerResponseDto>> getTrainersByGym(@PathVariable Long gymId) {
         Gym gym = gymRepository.findById(gymId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 헬스장이 존재하지 않습니다."));
+                .orElseThrow(() -> new BodyBuddyException(GymErrorCode.GYM_NOT_FOUND));
 
         List<TrainerResponseDto> trainers = trainerConverter.convertToTrainerDtoList(gym.getTrainers());
 
@@ -68,6 +71,24 @@ public class TrainerController {
 		@RequestBody @Valid UpdateProfileImageRequestDto requestDto) {
 		trainerService.updateProfileImage(trainerId, requestDto.profileImageUrl());
 		return ResponseEntity.ok(ApiResponse.onSuccess("프로필 이미지가 수정되었습니다."));
+	}
+
+	/**
+	 * 트레이너 프로필 정보 수정 (헬스장, 지역, 키, 몸무게)
+	 */
+	@Operation(summary = "트레이너 프로필 정보 수정", description = "트레이너의 헬스장, 지역, 키, 몸무게 정보를 수정합니다.")
+	@PatchMapping("/{trainerId}/profile")
+	public ResponseEntity<ApiResponse<String>> updateTrainerProfile(
+		@PathVariable Long trainerId,
+		@RequestBody @Valid UpdateTrainerProfileDto requestDto) {
+		trainerService.updateTrainerProfile(
+			trainerId,
+			requestDto.gymId(),
+			requestDto.region(),
+			requestDto.height(),
+			requestDto.weight()
+		);
+		return ResponseEntity.ok(ApiResponse.onSuccess("트레이너 프로필 정보가 수정되었습니다."));
 	}
 
 }

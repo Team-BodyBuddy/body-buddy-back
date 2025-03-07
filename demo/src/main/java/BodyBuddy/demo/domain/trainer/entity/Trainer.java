@@ -109,4 +109,17 @@ public class Trainer {
 	public void updateProfileImage(String newProfileImageUrl) {
 		this.profileImageUrl = newProfileImageUrl;
 	}
+
+	public void updateProfile(Gym gym, Region region, Float height, Float weight) {
+		this.gym = gym;
+		this.region = region;
+
+		if (height != null) {
+			this.height = height;
+		}
+
+		if (weight != null) {
+			this.weight = weight;
+		}
+	}
 }

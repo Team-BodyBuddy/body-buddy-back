@@ -70,14 +70,11 @@ public class RoutineService {
 			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
 
 		// 2. 해당 루틴 조회
-		List<Routine> routines = routineRepository.findByMemberIdAndDateAndType(member.getId(), dto.date(), dto.routineType());
-
-		if (routines.isEmpty()) {
-			throw new IllegalArgumentException("해당 루틴/수업이 존재하지 않습니다.");
-		}
+		Routine routine = routineRepository.findById(dto.routineId())
+			.orElseThrow(() -> new IllegalArgumentException("해당 루틴/수업이 존재하지 않습니다."));
 
 		// 3. 루틴 삭제
-		routineRepository.deleteAll(routines);
+		routineRepository.delete(routine);
 
 		// 4. Calendar 조회
 		Calendar calendar = calendarService.getOrCreateCalendar(member, dto.date());

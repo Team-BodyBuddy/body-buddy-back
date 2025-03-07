@@ -10,6 +10,7 @@ public record RoutineRequestDto(
 	@NotNull Long memberId,
 	@NotNull LocalDate date,
 	@NotNull RoutineType routineType,
+	@NotNull Long routineId,
 	@Size(min = 1, max = 100) String name
 
 ) {}

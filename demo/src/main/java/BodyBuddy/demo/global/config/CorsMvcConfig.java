@@ -11,7 +11,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000", "https://body-buddy.aoimiu.com") // 허용된 도메인 추가
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Content-Type")
                 .allowCredentials(true);

@@ -5,7 +5,8 @@ import BodyBuddy.demo.domain.calendar.entity.Calendar;
 import BodyBuddy.demo.domain.calendar.service.CalendarService;
 import BodyBuddy.demo.domain.member.entity.Member;
 import BodyBuddy.demo.domain.member.repository.MemberRepository;
-import BodyBuddy.demo.domain.routine.dto.RoutineRequestDto;
+import BodyBuddy.demo.domain.routine.dto.RoutineAddRequestDto;
+import BodyBuddy.demo.domain.routine.dto.RoutineRemoveRequestDto;
 import BodyBuddy.demo.domain.routine.dto.RoutineResponseDto;
 import BodyBuddy.demo.domain.routine.entity.Routine;
 import BodyBuddy.demo.domain.routine.repository.RoutineRepository;
@@ -28,7 +29,7 @@ public class RoutineService {
 	/**
 	 * 루틴 또는 수업 추가
 	 */
-	public CalendarResponse addRoutine(RoutineRequestDto dto) {
+	public CalendarResponse addRoutine(RoutineAddRequestDto dto) {
 		// 1. 회원 조회
 		Member member = memberRepository.findById(dto.memberId())
 			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
@@ -64,7 +65,7 @@ public class RoutineService {
 	/**
 	 * 루틴 또는 수업 삭제
 	 */
-	public CalendarResponse removeRoutine(RoutineRequestDto dto) {
+	public CalendarResponse removeRoutine(RoutineRemoveRequestDto dto) {
 		// 1. 회원 조회
 		Member member = memberRepository.findById(dto.memberId())
 			.orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));

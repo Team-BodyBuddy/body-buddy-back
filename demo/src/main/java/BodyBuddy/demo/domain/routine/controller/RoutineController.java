@@ -4,7 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import BodyBuddy.demo.domain.calendar.dto.CalendarResponse;
-import BodyBuddy.demo.domain.routine.dto.RoutineRequestDto;
+import BodyBuddy.demo.domain.routine.dto.RoutineAddRequestDto;
+import BodyBuddy.demo.domain.routine.dto.RoutineRemoveRequestDto;
 import BodyBuddy.demo.domain.routine.dto.RoutineResponseDto;
 import BodyBuddy.demo.domain.routine.service.RoutineService;
 import BodyBuddy.demo.global.apiPayload.ApiResponse;
@@ -28,7 +29,7 @@ public class RoutineController {
 	 */
 	@Operation(summary = "루틴 추가", description = "회원의 루틴 또는 수업을 추가합니다.")
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse<CalendarResponse>> addRoutine(@RequestBody @Valid RoutineRequestDto dto) {
+	public ResponseEntity<ApiResponse<CalendarResponse>> addRoutine(@RequestBody @Valid RoutineAddRequestDto dto) {
 		CalendarResponse response = routineService.addRoutine(dto);
 		return ResponseEntity.ok(ApiResponse.onSuccess(response));
 	}
@@ -38,7 +39,7 @@ public class RoutineController {
 	 */
 	@Operation(summary = "루틴 삭제", description = "회원의 루틴 또는 수업을 삭제합니다.")
 	@PostMapping("/remove")
-	public ResponseEntity<ApiResponse<CalendarResponse>> removeRoutine(@RequestBody @Valid RoutineRequestDto dto) {
+	public ResponseEntity<ApiResponse<CalendarResponse>> removeRoutine(@RequestBody @Valid RoutineRemoveRequestDto dto) {
 		CalendarResponse response = routineService.removeRoutine(dto);
 		return ResponseEntity.ok(ApiResponse.onSuccess(response));
 	}
